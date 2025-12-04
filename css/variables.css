@@ -1,0 +1,237 @@
+/* ============================================================================
+   VARIABLES.CSS - Design Tokens for Tomorrowland: The Story of Planaxis
+   
+   WHY: CSS Custom Properties (variables) allow us to define values once and
+   reuse them throughout the entire stylesheet. When we need to change a color
+   or spacing value, we update it in one place instead of hundreds.
+   
+   HOW: Variables are defined with the -- prefix inside a :root selector, making
+   them globally accessible. We reference them with var(--variable-name).
+   
+   RESULT: Consistent design system that's easy to maintain and modify.
+   ============================================================================ */
+
+:root {
+  /* ========================================================================
+     COLOR SYSTEM - Planaxis Ocean Theme
+     
+     WHY: The Planaxis story is about a mystical underwater kingdom, so we use
+     deep ocean blues and blacks instead of purples. The color palette evokes
+     bioluminescence, depths of the ocean, and mysterious sea creatures.
+     ======================================================================== */
+  
+  /* WHY: This near-black blue (#050a14) serves as our primary background because
+     pure black (#000000) can feel harsh on screens, especially for long reading.
+     The subtle blue tint connects to the ocean theme.
+     
+     HOW: The hex value has very low RGB values (5, 10, 20), making it almost
+     black but with a cool tone.
+     
+     RESULT: A sophisticated dark background that's easier on the eyes than pure
+     black while maintaining the mysterious ocean depth aesthetic. */
+  --color-bg-primary: #050a14;
+  
+  /* WHY: This deeper blue (#0a1e3c) creates depth and hierarchy. We use it for
+     cards, overlays, and sections that need to stand out from the main background.
+     
+     HOW: It's significantly lighter than the primary background (RGB: 10, 30, 60),
+     creating clear visual separation while staying within the dark theme.
+     
+     RESULT: UI elements have subtle contrast without breaking the cohesive dark
+     ocean aesthetic. */
+  --color-bg-secondary: #0a1e3c;
+  
+  /* WHY: Gold (#ffd700) represents the mythical "golden seahorse" creatures of
+     Planaxis lore. It's also Tomorrowland's signature accent color, providing
+     warmth against the cool blues.
+     
+     HOW: Pure gold (255, 215, 0) is highly saturated and visible, ensuring it
+     stands out for important CTAs and hover states.
+     
+     RESULT: Interactive elements (buttons, links) immediately catch the eye and
+     feel premium/luxurious. */
+  --color-accent-gold: #ffd700;
+  
+  /* WHY: Cyan (#00bcd4) mimics bioluminescent sea creatures that glow in the deep
+     ocean. It's used for subtle interactive states and glowing effects.
+     
+     HOW: This cyan (RGB: 0, 188, 212) is bright enough to be visible on dark
+     backgrounds but cooler than gold, creating visual hierarchy.
+     
+     RESULT: A secondary accent that adds variety to interactions without competing
+     with the primary gold accent. */
+  --color-accent-cyan: #00bcd4;
+  
+  /* WHY: Pure white (#ffffff) for primary text ensures maximum readability against
+     the dark backgrounds. Accessibility guidelines require high contrast ratios
+     (WCAG AA requires 4.5:1 for normal text).
+     
+     HOW: White on dark blue/black provides a contrast ratio well above 12:1,
+     exceeding AAA standards (7:1).
+     
+     RESULT: Text is effortlessly readable even for users with low vision. */
+  --color-text-main: #ffffff;
+  
+  /* WHY: Muted blue-gray (#a0b3c5) is used for secondary text (captions, metadata)
+     to create hierarchy. Not everything should demand equal attention.
+     
+     HOW: This color (RGB: 160, 179, 197) is desaturated and lighter, reducing
+     visual weight while maintaining readability (contrast ratio ~5:1).
+     
+     RESULT: Clear distinction between primary content and supporting information. */
+  --color-text-muted: #a0b3c5;
+  
+  /* ========================================================================
+     SPACING SYSTEM - 8px Base Unit
+     
+     WHY: Using multiples of 8 (8, 16, 24, 32, 48, 64) creates visual rhythm and
+     makes spacing decisions easier. It's a common design system standard used by
+     Google Material Design, Apple HIG, and many others.
+     
+     HOW: All spacing values are calculated from a base unit (8px), ensuring
+     proportional relationships. We use rem instead of px so spacing scales with
+     user's browser font size settings (accessibility).
+     
+     RESULT: Consistent, harmonious spacing throughout the design that respects
+     user preferences for larger text.
+     ======================================================================== */
+  
+  /* WHY: 0.5rem = 8px (assuming default 16px root font size). This is our smallest
+     spacing unit for tight areas like gaps between inline elements.
+     
+     HOW: rem units are relative to the root font size. If a user sets their browser
+     to 20px, this automatically becomes 10px (0.5 × 20).
+     
+     RESULT: Spacing adapts to user's accessibility settings. */
+  --spacing-xs: 0.5rem;   /* 8px */
+  --spacing-sm: 1rem;     /* 16px - Comfortable spacing for list items, card padding */
+  --spacing-md: 1.5rem;   /* 24px - Standard section padding */
+  --spacing-lg: 2rem;     /* 32px - Large section padding */
+  --spacing-xl: 3rem;     /* 48px - Section gaps */
+  --spacing-2xl: 4rem;    /* 64px - Major section separation */
+  
+  /* ========================================================================
+     TYPOGRAPHY SYSTEM
+     
+     WHY: Font choices dramatically affect readability and brand personality.
+     We use system fonts for fast loading and native appearance.
+     ======================================================================== */
+  
+  /* WHY: System font stack uses the native UI font for each OS (-apple-system for
+     macOS/iOS, Segoe UI for Windows, Roboto for Android). This eliminates font
+     loading time and feels native to each platform.
+     
+     HOW: Browsers try each font in order, falling back to the next if unavailable.
+     sans-serif is the ultimate fallback.
+     
+     RESULT: Instant text rendering with no FOUT (Flash of Unstyled Text), and
+     the site feels native to whatever device you're on. */
+  --font-primary: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 
+                   'Helvetica Neue', Arial, sans-serif;
+  
+  /* WHY: Georgia is a serif font designed for screen reading. Serifs add elegance
+     and are often used for quotes or special sections to create contrast.
+     
+     HOW: If Georgia isn't available, we fallback to Times New Roman, then any serif.
+     
+     RESULT: Elegant, readable serif font for special content sections. */
+  --font-secondary: Georgia, 'Times New Roman', serif;
+  
+  /* WHY: Type scale creates hierarchy. Larger text = more important. We use rem
+     so the scale adapts to user's font size preferences.
+     
+     HOW: Each size is proportional, roughly following a 1.25 multiplier scale:
+     0.875 → 1 → 1.125 → 1.5 → 2 → 3
+     
+     RESULT: Clear visual hierarchy that's flexible and accessible. */
+  --font-size-sm: 0.875rem;    /* 14px - Captions, fine print */
+  --font-size-base: 1rem;      /* 16px - Body text (browser default) */
+  --font-size-md: 1.125rem;    /* 18px - Emphasized body text */
+  --font-size-lg: 1.5rem;      /* 24px - Section headings */
+  --font-size-xl: 2rem;        /* 32px - Page headings */
+  --font-size-2xl: 3rem;       /* 48px - Hero titles */
+  
+  /* WHY: Font weights create emphasis. 400 is normal, 700 is bold. Using numeric
+     values (instead of "bold") gives us precise control and works better with
+     variable fonts.
+     
+     HOW: Not all fonts support all weights. System fonts generally support
+     300, 400, 600, and 700.
+     
+     RESULT: Flexible typography with clear emphasis options. */
+  --font-weight-normal: 400;
+  --font-weight-medium: 600;
+  --font-weight-bold: 700;
+  
+  /* ========================================================================
+     RESPONSIVE BREAKPOINTS
+     
+     WHY: Websites need to work on phones (320px wide), tablets (768px), and
+     desktops (1024px+). We define these widths as variables for consistency.
+     
+     HOW: These values represent typical device widths where layouts need to change.
+     We use em units in media queries because they handle browser zoom better.
+     
+     RESULT: Consistent breakpoints throughout all responsive CSS.
+     ======================================================================== */
+  --breakpoint-mobile: 320px;     /* Small phones */
+  --breakpoint-tablet: 768px;     /* iPads, small tablets */
+  --breakpoint-desktop: 1024px;   /* Laptops and larger */
+  
+  /* ========================================================================
+     TRANSITIONS & ANIMATIONS
+     
+     WHY: Smooth animations feel premium and provide visual feedback for interactions.
+     Instant changes can feel jarring.
+     
+     HOW: We define standard durations (in milliseconds) and easing functions
+     (how the animation accelerates/decelerates).
+     
+     RESULT: Consistent, smooth animations across all interactive elements.
+     ======================================================================== */
+  
+  /* WHY: 200ms is fast enough to feel immediate but slow enough to be perceived.
+     It's ideal for hover states and small UI changes.
+     
+     HOW: Applied to transitions like color changes on hover.
+     
+     RESULT: Smooth, responsive hover effects. */
+  --transition-fast: 200ms;
+  
+  /* WHY: 300ms is the sweet spot for most UI animations - noticeable but not slow.
+     
+     HOW: Used for dropdowns, modals, and medium-complexity animations.
+     
+     RESULT: Polished interactions that feel intentional. */
+  --transition-normal: 300ms;
+  
+  /* WHY: 500ms is for larger movements like sidebars sliding in or sections expanding.
+     
+     HOW: Longer duration prevents disorientation when large UI elements move.
+     
+     RESULT: Smooth, easy-to-follow animations for big changes. */
+  --transition-slow: 500ms;
+  
+  /* WHY: Ease-in-out creates natural motion by starting slow, accelerating in the
+     middle, and slowing down at the end - mimicking real-world physics.
+     
+     HOW: It's a cubic-bezier curve defined by CSS. The curve controls acceleration.
+     
+     RESULT: Animations feel organic and professional, not robotic. */
+  --easing-default: ease-in-out;
+  
+  /* ========================================================================
+     Z-INDEX LAYERS
+     
+     WHY: Multiple overlapping elements need a clear stacking order. Without a
+     system, z-index values become arbitrary (z-index: 9999!important).
+     
+     HOW: We define standard layers: 0 (content), 10 (sidebars), 100 (modals), etc.
+     
+     RESULT: Predictable layering without conflicts.
+     ======================================================================== */
+  --z-content: 1;      /* Normal page content */
+  --z-sidebar: 900;    /* Fixed sidebar */
+  --z-header: 1000;    /* Navigation header (highest priority) */
+}
+

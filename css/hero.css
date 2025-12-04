@@ -1,0 +1,409 @@
+/* ============================================================================
+   HERO.CSS - Full-Screen Hero Section
+   
+   WHY: The hero section is the first thing visitors see. It needs to make an
+   immediate impact by filling the entire screen (100vh), displaying a stunning
+   background image, and presenting the core message clearly.
+   
+   HOW: We use viewport height units (vh), background-size: cover for the image,
+   and flexbox for content centering.
+   
+   RESULT: A dramatic, immersive introduction that works on all screen sizes.
+   ============================================================================ */
+
+/* WHY: The hero section must fill the entire viewport height (100vh) to create
+   that "wow" moment when the page loads - no scrolling needed to see the key message.
+   
+   HOW: height: 100vh means "100% of the viewport height". On a 1080px tall screen,
+   this is 1080px. On a phone (800px tall), it's 800px. Always fills the screen.
+   
+   RESULT: The hero section perfectly fills the visible area on any device, from
+   phones to 4K monitors. */
+.hero {
+  height: 100vh;
+  /* WHY: position: relative establishes a positioning context for the absolutely
+     positioned header (which overlays this section) and for the dark overlay.
+     
+     HOW: Child elements with position: absolute will be positioned relative to
+     this hero section, not the entire page.
+     
+     RESULT: The header and overlay stay properly aligned with the hero section. */
+  position: relative;
+  
+  /* WHY: We use flexbox to center the hero content (title, tagline, button) both
+     horizontally and vertically in the middle of the screen.
+     
+     HOW: display: flex activates flexbox. justify-content: center centers along
+     the horizontal axis, and align-items: center does the same vertically.
+     
+     RESULT: Content is perfectly centered regardless of how much content there is. */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  
+  /* WHY: We add padding to prevent content from touching the screen edges on mobile,
+     especially in cases where notches or rounded corners might cut off content.
+     
+     HOW: Padding creates an inner cushion. Even if the content is centered, this
+     ensures text doesn't get too close to edges.
+     
+     RESULT: Safe, readable content on all devices, including iPhone notches. */
+  padding: var(--spacing-md);
+  
+  /* WHY: The background image creates the visual foundation of the hero section.
+     We set it on the hero itself so it can be easily changed in HTML or via JavaScript.
+     
+     HOW: background properties control how the image is displayed, positioned, and sized.
+     
+     RESULT: A beautiful, scalable background that adapts to any screen size. */
+  background-position: center center;
+  background-repeat: no-repeat;
+  /* WHY: background-size: cover ensures the image always fills the entire hero
+     section, maintaining aspect ratio. The image scales up or down as needed.
+     
+     HOW: "cover" means "scale the image to cover the entire container, even if
+     some parts are cropped". The alternative, "contain", would show the entire
+     image but might leave gaps.
+     
+     RESULT: Edge-to-edge background with no gaps or white space, regardless of
+     image dimensions or screen size. */
+  background-size: cover;
+  
+  /* WHY: We set a fallback background color in case the image fails to load or
+     while it's loading. This prevents a jarring white flash.
+     
+     HOW: background-color is only visible if the image is transparent or missing.
+     
+     RESULT: Smooth loading experience with no visual gaps. */
+  background-color: var(--color-bg-primary);
+  
+  /* WHY: Overflow: hidden prevents any child elements from extending beyond the
+     hero section boundaries, keeping the layout clean.
+     
+     HOW: Any content that would extend past the edges is clipped and hidden.
+     
+     RESULT: Clean edges with no unexpected overflow on smaller screens. */
+  overflow: hidden;
+}
+
+/* WHY: The hero content needs to be layered on top of the background image AND
+   above the dark overlay (which improves text readability).
+   
+   HOW: position: relative with z-index: 10 ensures the content stays above the
+   overlay (which has z-index: 5).
+   
+   RESULT: Text and buttons remain clearly visible and interactive. */
+.hero-content {
+  position: relative;
+  z-index: 10;
+  text-align: center;
+  /* WHY: We constrain the content width so that on ultra-wide screens, the text
+     doesn't stretch too wide, which hurts readability.
+     
+     HOW: max-width: 800px limits the content area, while width: 100% allows it
+     to shrink on smaller screens.
+     
+     RESULT: Optimal reading width (50-75 characters per line) on all screen sizes. */
+  max-width: 800px;
+  width: 100%;
+}
+
+/* WHY: A dark overlay between the background image and text ensures text remains
+   readable regardless of the image's colors. Light images can make white text
+   invisible without this.
+   
+   HOW: We use a pseudo-element (::before) to create a semi-transparent black layer.
+   position: absolute with inset: 0 makes it cover the entire hero section.
+   
+   RESULT: Text is always readable, even if the background image changes. */
+.hero::before {
+  content: '';
+  position: absolute;
+  /* WHY: inset: 0 is shorthand for top: 0, right: 0, bottom: 0, left: 0. This makes
+     the overlay cover the entire hero section.
+     
+     HOW: The pseudo-element stretches to all four edges of its positioned parent.
+     
+     RESULT: Full-coverage overlay with minimal code. */
+  inset: 0;
+  /* WHY: rgba(5, 10, 20, 0.6) creates a semi-transparent version of our primary
+     background color (60% opacity). This darkens the image while letting it show through.
+     
+     HOW: RGBA adds an alpha channel (transparency) to RGB colors. 0.6 = 60% opaque.
+     
+     RESULT: The background image is visible but darkened, creating the perfect
+     contrast for white text. */
+  background-color: rgba(5, 10, 20, 0.6);
+  /* WHY: z-index: 5 places the overlay above the background image (z-index: 1)
+     but below the content (z-index: 10).
+     
+     HOW: CSS stacks elements by z-index value within the same stacking context.
+     
+     RESULT: Proper layering: background < overlay < content. */
+  z-index: 5;
+}
+
+/* WHY: The hero title is the most important text on the page. It must be large,
+   bold, and immediately grab attention.
+   
+   HOW: We use our largest font size (48px), bold weight, and generous line-height
+   for readability.
+   
+   RESULT: A commanding title that dominates the hero section. */
+.hero-title {
+  font-size: var(--font-size-2xl);
+  font-weight: var(--font-weight-bold);
+  /* WHY: line-height: 1.2 (120% of font size) keeps the title compact while
+     maintaining readability. Titles can use tighter line-height than body text.
+     
+     HOW: A unitless value scales proportionally with font-size changes.
+     
+     RESULT: Visually powerful title with optimal spacing. */
+  line-height: 1.2;
+  color: var(--color-text-main);
+  /* WHY: Margin-bottom creates space between the title and tagline, separating
+     the two messages visually.
+     
+     HOW: --spacing-md gives us 24px of space.
+     
+     RESULT: Clear visual hierarchy between title and supporting text. */
+  margin-bottom: var(--spacing-md);
+  
+  /* WHY: Text-transform: uppercase makes the title feel more authoritative and
+     impactful, perfect for an event like Tomorrowland.
+     
+     HOW: CSS automatically converts lowercase letters to capitals.
+     
+     RESULT: "The Story of Planaxis" becomes "THE STORY OF PLANAXIS" - more dramatic. */
+  text-transform: uppercase;
+  
+  /* WHY: Letter-spacing adds space between letters, creating an elegant, luxurious
+     feel. It's particularly effective with uppercase text.
+     
+     HOW: 0.05em = 5% of the font size. At 48px, this adds ~2.4px between letters.
+     
+     RESULT: The title feels premium and is easier to read at large sizes. */
+  letter-spacing: 0.05em;
+  
+  /* WHY: A subtle text shadow adds depth and improves readability if the overlay
+     isn't dark enough in certain areas.
+     
+     HOW: We create a soft black shadow (rgba) that's offset 2px down and 4px to
+     the right with a 10px blur.
+     
+     RESULT: Text "pops" off the background, ensuring readability. */
+  text-shadow: 2px 4px 10px rgba(0, 0, 0, 0.7);
+}
+
+/* WHY: The tagline supports the main title with additional context. It should be
+   visible but less prominent than the title.
+   
+   HOW: We use a smaller font size (18px vs 48px) and medium weight instead of bold.
+   
+   RESULT: Clear hierarchy - the tagline supports but doesn't compete with the title. */
+.hero-tagline {
+  font-size: var(--font-size-md);
+  font-weight: var(--font-weight-medium);
+  color: var(--color-text-muted);
+  /* WHY: Margin-bottom creates space before the CTA button, giving the tagline
+     breathing room and drawing attention to the button.
+     
+     HOW: --spacing-xl gives us 48px of space, creating significant visual separation.
+     
+     RESULT: The button feels distinct and important, not cramped next to the text. */
+  margin-bottom: var(--spacing-xl);
+  
+  /* WHY: line-height: 1.6 is more generous than the title's 1.2 because taglines
+     are longer and need more breathing room for readability.
+     
+     HOW: Unitless values scale with font-size automatically.
+     
+     RESULT: Easy-to-read supporting text that complements the title. */
+  line-height: 1.6;
+  
+  /* WHY: Max-width: 600px constrains the tagline to an even narrower width than
+     the overall hero-content (800px), creating visual variety.
+     
+     HOW: The tagline won't exceed 600px even if the hero-content container is wider.
+     
+     RESULT: Optimal line length for comfortable reading (50-75 characters). */
+  max-width: 600px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* WHY: Call-to-action (CTA) buttons are critical conversion points. They must be
+   immediately recognizable, attractive, and clearly interactive.
+   
+   HOW: We use bold colors, generous padding, and hover effects to make the button
+   irresistible to click.
+   
+   RESULT: A prominent, professional button that drives user action. */
+.hero-cta {
+  /* WHY: display: inline-block allows the button to have padding and dimensions
+     while still centering with the text around it.
+     
+     HOW: Unlike block elements (full width) or inline elements (no padding), inline-block
+     gives us the best of both worlds.
+     
+     RESULT: A button that's sized to its content but can have padding and margins. */
+  display: inline-block;
+  
+  /* WHY: Generous padding (16px vertical, 48px horizontal) creates a large click
+     target and makes the button feel substantial and important.
+     
+     HOW: Larger horizontal padding creates a wide, elegant button shape.
+     
+     RESULT: Easy to click on desktop, easy to tap on mobile, and visually appealing. */
+  padding: var(--spacing-md) var(--spacing-xl);
+  
+  /* WHY: The gold background immediately draws attention as the primary accent
+     color. Against the dark theme, it pops dramatically.
+     
+     HOW: We use our accent gold variable for consistency across the design.
+     
+     RESULT: A button that's impossible to miss and feels premium. */
+  background-color: var(--color-accent-gold);
+  
+  /* WHY: Dark text on the gold background ensures high contrast and readability.
+     
+     HOW: Our primary background color (nearly black) provides excellent contrast
+     against gold (contrast ratio ~10:1).
+     
+     RESULT: Text is effortlessly readable on the button. */
+  color: var(--color-bg-primary);
+  
+  font-size: var(--font-size-md);
+  font-weight: var(--font-weight-bold);
+  
+  /* WHY: Uppercase text makes the CTA feel more authoritative and action-oriented.
+     "Discover the Story" becomes "DISCOVER THE STORY" - more commanding.
+     
+     HOW: CSS text-transform handles the conversion automatically.
+     
+     RESULT: A CTA that feels strong and drives action. */
+  text-transform: uppercase;
+  
+  /* WHY: Letter-spacing improves legibility of uppercase text and adds a touch
+     of elegance.
+     
+     HOW: 0.05em adds ~0.9px between letters at 18px font size.
+     
+     RESULT: Clear, readable button text with a premium feel. */
+  letter-spacing: 0.05em;
+  
+  /* WHY: border-radius: 4px softens the button corners slightly, creating a modern
+     look. Not too rounded (which would look cartoonish), just subtle.
+     
+     HOW: 4px rounds the corners just enough to soften the hard edges.
+     
+     RESULT: A contemporary button that feels polished and professional. */
+  border-radius: 4px;
+  
+  border: none;
+  cursor: pointer;
+  
+  /* WHY: Transitions make hover effects smooth and polished instead of jarring.
+     We transition multiple properties for a comprehensive hover animation.
+     
+     HOW: Each property animates over 300ms with ease-in-out timing (starts slow,
+     speeds up, slows down at the end).
+     
+     RESULT: Smooth, professional hover effects that feel premium. */
+  transition: background-color var(--transition-normal) var(--easing-default),
+              transform var(--transition-normal) var(--easing-default),
+              box-shadow var(--transition-normal) var(--easing-default);
+}
+
+/* WHY: Hover effects provide immediate visual feedback that the button is interactive
+   and something will happen when clicked.
+   
+   HOW: We change the background to cyan (our bioluminescent accent), slightly
+   enlarge the button (scale: 1.05 = 5% larger), and add a glowing shadow.
+   
+   RESULT: The button appears to "light up" and lift off the page on hover, creating
+   an engaging, tactile interaction. */
+.hero-cta:hover {
+  background-color: var(--color-accent-cyan);
+  /* WHY: transform: scale(1.05) makes the button grow by 5%, creating a subtle
+     zoom effect that draws attention.
+     
+     HOW: Scale transforms the element proportionally. 1.05 means 105% of original size.
+     
+     RESULT: The button feels responsive and "comes alive" when you hover over it. */
+  transform: scale(1.05);
+  
+  /* WHY: A glowing box-shadow mimics bioluminescence (glowing sea creatures in the
+     deep ocean), reinforcing the Planaxis theme.
+     
+     HOW: We create a cyan-colored shadow with 0 offset (centered), 20px blur, and
+     0.6 opacity for a soft glow.
+     
+     RESULT: The button appears to glow like a bioluminescent creature, creating
+     a magical, underwater feel. */
+  box-shadow: 0 0 20px rgba(0, 188, 212, 0.6);
+}
+
+/* WHY: The :active pseudo-class captures the moment when the button is being clicked,
+   providing tactile feedback.
+   
+   HOW: We slightly shrink the button (scale: 0.98) to create a "pressed" effect.
+   
+   RESULT: The button feels like a physical button being pushed, enhancing the
+   interaction feel. */
+.hero-cta:active {
+  transform: scale(0.98);
+}
+
+/* WHY: A scroll indicator tells users there's more content below. Without it, users
+   might think the hero section IS the entire page.
+   
+   HOW: We position it at the bottom center of the hero section and animate it to
+   draw attention.
+   
+   RESULT: Users are encouraged to scroll down and explore more content. */
+.scroll-indicator {
+  position: absolute;
+  bottom: var(--spacing-lg);
+  left: 50%;
+  /* WHY: transform: translateX(-50%) centers the indicator horizontally. Setting
+     left: 50% positions its left edge at the center, then translateX shifts it
+     back by half its own width.
+     
+     HOW: This is the standard CSS centering trick for absolutely positioned elements.
+     
+     RESULT: The indicator is perfectly centered horizontally. */
+  transform: translateX(-50%);
+  z-index: 10;
+  
+  /* WHY: We animate the indicator with a subtle bounce to draw the eye downward,
+     suggesting scrolling action.
+     
+     HOW: The animation is defined below and runs infinitely.
+     
+     RESULT: A gentle, eye-catching motion that encourages scrolling. */
+  animation: bounce 2s infinite;
+  
+  color: var(--color-text-main);
+  font-size: var(--font-size-sm);
+  opacity: 0.8;
+}
+
+/* WHY: The @keyframes rule defines the bounce animation for the scroll indicator.
+   Animations require keyframes to specify how properties change over time.
+   
+   HOW: We define three states: 0% (start), 50% (middle), and 100% (end). The
+   indicator moves down 10px at the midpoint, creating a bounce effect.
+   
+   RESULT: A looping animation that moves the indicator down and back up, suggesting
+   downward scrolling action. */
+@keyframes bounce {
+  0%, 100% {
+    transform: translateX(-50%) translateY(0);
+  }
+  50% {
+    transform: translateX(-50%) translateY(10px);
+  }
+}
+

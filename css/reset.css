@@ -1,0 +1,124 @@
+/* ============================================================================
+   RESET.CSS - Browser Normalization
+   
+   WHY: Different browsers apply different default styles (margins, padding, 
+   font sizes) to HTML elements. This creates inconsistencies where a page 
+   looks different in Chrome vs Firefox vs Safari.
+   
+   HOW: We explicitly reset all common elements to have zero margin/padding
+   and consistent box-sizing, giving us a clean slate to build upon.
+   
+   RESULT: Consistent appearance across all browsers, and we control exactly
+   how much spacing each element has.
+   ============================================================================ */
+
+/* WHY: We use the universal selector (*) to target every element on the page,
+   including pseudo-elements (::before, ::after). This ensures no element has
+   unexpected default spacing.
+   
+   HOW: The asterisk selector has low specificity, so our specific styles will
+   easily override these defaults.
+   
+   RESULT: A truly blank canvas with no margin or padding anywhere. */
+*,
+*::before,
+*::after {
+  margin: 0;
+  padding: 0;
+  /* WHY: border-box makes width/height calculations intuitive. Without it,
+     padding and borders ADD to the declared width, causing layout surprises.
+     
+     HOW: With border-box, if we say width: 300px with 20px padding, the total
+     width stays 300px (content shrinks to 260px to accommodate padding).
+     
+     RESULT: Predictable sizing where width means total width, not just content. */
+  box-sizing: border-box;
+}
+
+/* WHY: HTML and body are the foundation of our page. Setting their height to 
+   100% allows child elements (like full-screen hero sections) to calculate
+   their own 100vh heights correctly.
+   
+   HOW: Percentages in CSS are relative to the parent. By ensuring html and body
+   are full height, children can use percentage-based heights.
+   
+   RESULT: Full-screen layouts work properly without weird spacing issues. */
+html,
+body {
+  height: 100%;
+  /* WHY: We set the line-height to 1.6 instead of the browser default (usually 1.2)
+     because it improves readability by adding more vertical space between lines.
+     
+     HOW: Line-height is unitless (no px or %), which means it scales proportionally
+     with font-size. A value of 1.6 means 160% of the font size.
+     
+     RESULT: Text is easier to read, especially in paragraphs and longer content. */
+  line-height: 1.6;
+}
+
+/* WHY: Browsers add bullets and extra left padding to lists by default, which
+   often conflicts with navigation menus and custom list designs.
+   
+   HOW: We remove list-style (bullets/numbers) and set margin/padding to zero.
+   
+   RESULT: Lists start as blank slates, perfect for navigation menus where we
+   want full control over styling. */
+ul,
+ol {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+/* WHY: Links have default underlines and colors (usually blue/purple) that
+   rarely match our design. We need to override these.
+   
+   HOW: text-decoration removes underlines, and "inherit" for color makes links
+   use their parent's text color instead of the browser's default blue.
+   
+   RESULT: Links look like normal text until we explicitly style them. */
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+/* WHY: Images are inline elements by default, which can cause unexpected extra
+   space below them (from line-height). Also, large images can overflow containers.
+   
+   HOW: display: block removes inline spacing issues, and max-width: 100% ensures
+   images never exceed their container's width while maintaining aspect ratio.
+   
+   RESULT: Images behave predictably and responsively, shrinking on small screens. */
+img {
+  display: block;
+  max-width: 100%;
+  height: auto;
+}
+
+/* WHY: Buttons and inputs inherit font properties inconsistently across browsers.
+   Safari, Chrome, and Firefox all handle form elements differently.
+   
+   HOW: We explicitly tell form elements to inherit font family and size from
+   their parent, ensuring consistency.
+   
+   RESULT: Form elements look cohesive with the rest of the design. */
+button,
+input,
+textarea,
+select {
+  font-family: inherit;
+  font-size: inherit;
+}
+
+/* WHY: Buttons have default browser styling (3D bevels, gradients) that look dated.
+   We need to remove these to apply our custom styles.
+   
+   HOW: Setting background, border, and cursor resets the button to a neutral state.
+   
+   RESULT: Buttons start as blank rectangles that we can style to match our theme. */
+button {
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+

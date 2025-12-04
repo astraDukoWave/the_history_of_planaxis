@@ -1,0 +1,408 @@
+/* ============================================================================
+   SIDEBAR.CSS - Fixed Utility Navigation
+   
+   WHY: The sidebar provides quick access to important sections (Line-Up, Ticket Sale,
+   etc.) without cluttering the main header. By fixing it to the side, it's always
+   available as users scroll through long content.
+   
+   HOW: We use position: fixed to keep it in place during scrolling, and place it
+   on the right side with vertical stacking.
+   
+   RESULT: Persistent, convenient access to key sections from anywhere on the page.
+   ============================================================================ */
+
+/* WHY: The utility-sidebar must stay in a fixed position on the right side of the
+   screen, always visible even when the user scrolls. This differs from position: absolute
+   which scrolls with the content.
+   
+   HOW: position: fixed removes the element from normal document flow and positions
+   it relative to the viewport. top: 50% and right: 0 place it on the right edge,
+   centered vertically.
+   
+   RESULT: A sidebar that follows the user down the page, always accessible. */
+.utility-sidebar {
+  position: fixed;
+  top: 50%;
+  right: 0;
+  /* WHY: transform: translateY(-50%) centers the sidebar vertically. Since top: 50%
+     positions its top edge at the vertical center, we need to shift it up by half
+     its own height to truly center it.
+     
+     HOW: translateY with a negative percentage moves the element up by that percentage
+     of its own height.
+     
+     RESULT: The sidebar is perfectly centered vertically regardless of its height. */
+  transform: translateY(-50%);
+  
+  /* WHY: z-index: 900 ensures the sidebar stays above content but below the main
+     header (z-index: 1000). This creates proper layering hierarchy.
+     
+     HOW: We use the value from our variables (--z-sidebar) for consistency.
+     
+     RESULT: The sidebar is always visible but doesn't interfere with the header. */
+  z-index: var(--z-sidebar);
+  
+  /* WHY: The sidebar needs a defined width to create a column for the links. 280px
+     provides enough space for descriptive link text without taking too much screen area.
+     
+     HOW: Fixed width ensures consistent layout and prevents content reflow.
+     
+     RESULT: A stable, predictable sidebar width that works well with our overall layout. */
+  width: 280px;
+  
+  /* WHY: The semi-transparent background (95% opaque) allows subtle hints of content
+     behind it, creating depth while maintaining readability.
+     
+     HOW: rgba with 0.95 alpha gives us 95% opacity, letting 5% of background show through.
+     
+     RESULT: A modern, layered look that feels sophisticated rather than flat. */
+  background-color: rgba(10, 30, 60, 0.95);
+  
+  /* WHY: Padding creates inner spacing so links don't touch the edges of the sidebar.
+     This improves readability and creates a more comfortable click area.
+     
+     HOW: --spacing-lg gives us 32px of padding on all sides.
+     
+     RESULT: Links have breathing room, making the sidebar feel spacious and easy to use. */
+  padding: var(--spacing-lg);
+  
+  /* WHY: border-radius on the left side only (topLeft and bottomLeft) creates a
+     softened edge where the sidebar meets the content, but keeps the right edge
+     flush with the screen edge.
+     
+     HOW: We specify individual corner radii - top-left and bottom-left get 8px
+     rounding, top-right and bottom-right stay sharp (0px).
+     
+     RESULT: A polished, modern appearance that feels intentional and refined. */
+  border-radius: 8px 0 0 8px;
+  
+  /* WHY: A subtle shadow helps separate the sidebar from the content behind it,
+     adding depth to the design.
+     
+     HOW: box-shadow with -5px offset casts the shadow to the left (negative x),
+     0px vertical offset, 15px blur, and 20% opacity for subtlety.
+     
+     RESULT: The sidebar appears to float above the content, enhancing the layered effect. */
+  box-shadow: -5px 0 15px rgba(0, 0, 0, 0.2);
+  
+  /* WHY: If the sidebar content exceeds the viewport height, we need scrolling to
+     access all links without breaking the layout.
+     
+     HOW: overflow-y: auto adds a vertical scrollbar only when needed.
+     
+     RESULT: The sidebar gracefully handles any amount of content without breaking. */
+  overflow-y: auto;
+  
+  /* WHY: max-height: 80vh prevents the sidebar from becoming too tall on large
+     screens, maintaining proportion with the viewport.
+     
+     HOW: 80vh = 80% of viewport height, leaving space above and below.
+     
+     RESULT: Balanced proportions on all screen sizes. */
+  max-height: 80vh;
+  
+  /* WHY: Transitions enable smooth animations when the sidebar appears/disappears
+     on different screen sizes (handled by responsive.css).
+     
+     HOW: We transition transform and opacity for smooth slide-in/fade effects.
+     
+     RESULT: Polished animations when toggling the sidebar on mobile/tablet. */
+  transition: transform var(--transition-normal) var(--easing-default),
+              opacity var(--transition-normal) var(--easing-default);
+}
+
+/* WHY: The sidebar links need to be stacked vertically (like a traditional sidebar menu)
+   rather than horizontally.
+   
+   HOW: display: flex with flex-direction: column stacks children vertically.
+   
+   RESULT: Links appear one below the other in a clean, organized list. */
+.sidebar-links {
+  display: flex;
+  flex-direction: column;
+  /* WHY: gap: 12px creates consistent spacing between each link without manually
+     adding margins to each item.
+     
+     HOW: Flexbox gap applies spacing between children automatically.
+     
+     RESULT: Even, predictable spacing throughout the list. */
+  gap: calc(var(--spacing-sm) * 0.75); /* 12px */
+}
+
+/* WHY: Each sidebar link needs to be a comfortable click target with clear visual
+   hierarchy and interactive feedback.
+   
+   HOW: We style each link with padding, transitions, and hover effects.
+   
+   RESULT: Professional, usable navigation links that feel responsive and polished. */
+.sidebar-links li a {
+  /* WHY: display: block makes the entire link area clickable, not just the text.
+     This is crucial for usability - users shouldn't have to precisely click the text.
+     
+     HOW: Block elements fill their container's width, making the full area interactive.
+     
+     RESULT: Larger, easier-to-click links that improve user experience. */
+  display: block;
+  
+  /* WHY: Padding increases the clickable area and creates visual weight. 12px vertical
+     and 16px horizontal provides comfortable spacing.
+     
+     HOW: Padding expands the clickable area beyond just the text bounds.
+     
+     RESULT: Links that are easy to click/tap even for users with limited dexterity. */
+  padding: calc(var(--spacing-sm) * 0.75) var(--spacing-sm);
+  
+  color: var(--color-text-main);
+  font-size: var(--font-size-base);
+  font-weight: var(--font-weight-medium);
+  
+  /* WHY: position: relative allows us to add a left border pseudo-element that
+     animates on hover.
+     
+     HOW: Child pseudo-elements with position: absolute will be positioned relative
+     to this link.
+     
+     RESULT: We can create a animated left-border hover effect. */
+  position: relative;
+  
+  /* WHY: border-radius: 4px softens the link corners slightly for a modern look.
+     
+     HOW: 4px provides subtle rounding without looking overly rounded or cartoonish.
+     
+     RESULT: Contemporary, polished link styling. */
+  border-radius: 4px;
+  
+  /* WHY: Transitions smooth out color changes and background effects on hover.
+     
+     HOW: We transition background-color, color, and padding-left for comprehensive
+     hover animations.
+     
+     RESULT: Smooth, professional hover effects. */
+  transition: background-color var(--transition-fast) var(--easing-default),
+              color var(--transition-fast) var(--easing-default),
+              padding-left var(--transition-fast) var(--easing-default);
+}
+
+/* WHY: The ::before pseudo-element creates a colored left border that grows on hover,
+   providing visual feedback.
+   
+   HOW: We create a 3px wide bar on the left edge that starts transparent and becomes
+   gold on hover.
+   
+   RESULT: An elegant accent that indicates interactivity. */
+.sidebar-links li a::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 3px;
+  background-color: var(--color-accent-gold);
+  /* WHY: scaleY(0) makes the border invisible initially. We'll animate to scaleY(1)
+     on hover, creating a growing effect.
+     
+     HOW: Scale transform with 0 collapses the element to invisible. Transform-origin
+     top means it grows from the top downward.
+     
+     RESULT: The gold border appears to "draw itself" from top to bottom on hover. */
+  transform: scaleY(0);
+  transform-origin: top;
+  transition: transform var(--transition-normal) var(--easing-default);
+  border-radius: 4px 0 0 4px;
+}
+
+/* WHY: Hover effects provide immediate visual feedback that the link is interactive
+   and will respond to clicks.
+   
+   HOW: We change the background to a lighter blue, the text to gold, shift the link
+   slightly right, and animate the left border.
+   
+   RESULT: Multi-layered hover effect that feels polished and responsive. */
+.sidebar-links li a:hover {
+  /* WHY: A slightly lighter background (our secondary color) creates depth by
+     suggesting the link is "lighting up" or activating.
+     
+     HOW: We use our secondary background variable for consistency.
+     
+     RESULT: Clear visual indication that the link is being hovered. */
+  background-color: var(--color-bg-secondary);
+  color: var(--color-accent-gold);
+  
+  /* WHY: padding-left increase from 16px to 24px creates a subtle slide-right effect,
+     making the link feel like it's "stepping forward."
+     
+     HOW: Increasing left padding shifts the text to the right while maintaining
+     overall link size.
+     
+     RESULT: Dynamic, engaging hover interaction. */
+  padding-left: calc(var(--spacing-md) * 1.5);
+}
+
+/* WHY: On hover, the left border "grows" from invisible to full height, creating
+   a drawing animation.
+   
+   HOW: scaleY(1) expands the border to full height (100% of link height).
+   
+   RESULT: The gold accent bar appears to draw itself from top to bottom. */
+.sidebar-links li a:hover::before {
+  transform: scaleY(1);
+}
+
+/* WHY: Active links (current page) should be visually distinct so users know where
+   they are in the site hierarchy.
+   
+   HOW: We apply the same styles as hover, but permanently, so they're always visible.
+   
+   RESULT: Clear indication of the current page in the sidebar navigation. */
+.sidebar-links li a.active {
+  background-color: var(--color-bg-secondary);
+  color: var(--color-accent-gold);
+  padding-left: calc(var(--spacing-md) * 1.5);
+}
+
+.sidebar-links li a.active::before {
+  transform: scaleY(1);
+}
+
+/* WHY: Icons next to link text provide quick visual recognition, making it easier
+   to scan and find specific links.
+   
+   HOW: We use inline-flex to align the icon with the text and add margin for spacing.
+   
+   RESULT: Professional-looking links with icons that enhance usability. */
+.sidebar-links li a .icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  /* WHY: margin-right creates space between the icon and text, preventing them
+     from being cramped together.
+     
+     HOW: 8px provides comfortable separation without excessive space.
+     
+     RESULT: Clear visual separation between icon and text. */
+  margin-right: var(--spacing-xs);
+  /* WHY: Fixed width and height ensure all icons are the same size, creating
+     visual consistency even if the icon designs vary.
+     
+     HOW: 20x20px is large enough to be visible but small enough to not overpower text.
+     
+     RESULT: Uniform icon sizing throughout the sidebar. */
+  width: 20px;
+  height: 20px;
+  /* WHY: Cyan color for icons creates visual hierarchy - gold text, cyan icons.
+     This adds variety while staying within our color system.
+     
+     HOW: We use our bioluminescent accent color for a thematic connection.
+     
+     RESULT: Icons that complement the text without competing for attention. */
+  color: var(--color-accent-cyan);
+  transition: color var(--transition-fast) var(--easing-default);
+}
+
+/* WHY: On hover, icons should also change color to maintain cohesion with the
+   text color change.
+   
+   HOW: We transition from cyan to gold, matching the text.
+   
+   RESULT: Unified hover effect where both icon and text change together. */
+.sidebar-links li a:hover .icon {
+  color: var(--color-accent-gold);
+}
+
+/* WHY: Mobile and tablet devices don't have space for a fixed sidebar. We hide it
+   by default and it will be shown via a toggle button (handled in responsive.css).
+   
+   HOW: This class will be added by JavaScript or media queries to hide the sidebar.
+   
+   RESULT: The sidebar gracefully disappears on small screens without breaking layout. */
+.utility-sidebar.hidden {
+  /* WHY: transform: translateX(100%) moves the sidebar completely off-screen to
+     the right (100% of its own width = 280px).
+     
+     HOW: Positive translateX moves right, negative moves left.
+     
+     RESULT: The sidebar slides off-screen smoothly (thanks to our transition). */
+  transform: translateX(100%) translateY(-50%);
+  opacity: 0;
+  /* WHY: pointer-events: none prevents the hidden sidebar from intercepting clicks
+     meant for content behind it.
+     
+     HOW: This CSS property disables all mouse/touch interaction with the element.
+     
+     RESULT: Hidden sidebar doesn't interfere with the rest of the page. */
+  pointer-events: none;
+}
+
+/* WHY: On smaller screens, we need a toggle button to show/hide the sidebar since
+   it takes up too much space to be always visible.
+   
+   HOW: This button is hidden by default (display: none) and shown on mobile/tablet
+   via media queries in responsive.css.
+   
+   RESULT: Clean mobile experience with toggle-able sidebar access. */
+.sidebar-toggle {
+  display: none;
+  position: fixed;
+  bottom: var(--spacing-lg);
+  right: var(--spacing-lg);
+  z-index: 950;
+  
+  /* WHY: Circular button (50x50px with border-radius: 50%) is a common pattern
+     for floating action buttons, instantly recognizable.
+     
+     HOW: Equal width and height with 50% border-radius creates a perfect circle.
+     
+     RESULT: Modern, mobile-friendly toggle button. */
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  
+  background-color: var(--color-accent-gold);
+  color: var(--color-bg-primary);
+  
+  /* WHY: Flexbox centering ensures the icon/text inside is perfectly centered
+     within the circular button.
+     
+     HOW: justify-content and align-items: center work together for perfect centering.
+     
+     RESULT: Centered content regardless of button size or content. */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  
+  border: none;
+  cursor: pointer;
+  
+  /* WHY: A shadow makes the floating button stand out from the page content,
+     suggesting it's interactive and layered above.
+     
+     HOW: 0 4px 12px creates a drop shadow that extends downward.
+     
+     RESULT: The button appears to float above the page. */
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  
+  transition: transform var(--transition-fast) var(--easing-default),
+              box-shadow var(--transition-fast) var(--easing-default),
+              background-color var(--transition-fast) var(--easing-default);
+}
+
+/* WHY: Hover effect on the toggle button provides feedback that it's interactive.
+   
+   HOW: We slightly enlarge it and change to cyan for visual interest.
+   
+   RESULT: Engaging hover effect that encourages interaction. */
+.sidebar-toggle:hover {
+  transform: scale(1.1);
+  background-color: var(--color-accent-cyan);
+  box-shadow: 0 6px 20px rgba(0, 188, 212, 0.4);
+}
+
+/* WHY: Active state (button being clicked) provides tactile feedback.
+   
+   HOW: Slightly shrinking the button mimics a physical button press.
+   
+   RESULT: Satisfying, realistic button interaction. */
+.sidebar-toggle:active {
+  transform: scale(0.95);
+}
+

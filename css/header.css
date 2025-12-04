@@ -1,0 +1,291 @@
+/* ============================================================================
+   HEADER.CSS - Transparent Navigation Overlay
+   
+   WHY: Modern websites often feature transparent navigation that overlays the
+   hero image, creating an immersive, edge-to-edge design. This eliminates the
+   traditional white bar at the top and makes the hero section more impactful.
+   
+   HOW: We use position: absolute to remove the header from the normal document
+   flow and layer it on top of the hero section with z-index.
+   
+   RESULT: A floating navigation bar that blends seamlessly with the hero image
+   while remaining visible and functional.
+   ============================================================================ */
+
+/* WHY: The main-header class defines our primary navigation bar. position: absolute
+   is crucial because it allows the header to overlay the hero section instead of
+   pushing it down.
+   
+   HOW: top: 0 positions it at the very top of the page, and width: 100% makes it
+   span the entire viewport. left: 0 ensures it starts from the leftmost edge.
+   
+   RESULT: The header floats above the hero image, starting from the top edge with
+   no gap. */
+.main-header {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  /* WHY: z-index: 1000 ensures the header stays on top of all other content. Without
+     this, the hero image or other sections might overlap and hide the navigation.
+     
+     HOW: We use the value from our variables (--z-header) to maintain consistency
+     across the entire stacking context system.
+     
+     RESULT: Navigation is always clickable and visible, never hidden behind content. */
+  z-index: var(--z-header);
+  
+  /* WHY: Adding vertical padding creates space above and below the navigation links,
+     making them easier to click (larger touch target) and visually balanced.
+     
+     HOW: --spacing-md gives us 24px of padding top and bottom. This creates a
+     comfortable click area without making the header too tall.
+     
+     RESULT: A header that's easy to use on both desktop (mouse) and mobile (touch). */
+  padding-top: var(--spacing-md);
+  padding-bottom: var(--spacing-md);
+  
+  /* WHY: Transitions make the header smoothly adapt when we add effects on scroll
+     (like changing background color or adding shadow when the user scrolls down).
+     
+     HOW: We're setting up the transition here even though the scroll effect isn't
+     implemented yet. This is forward-thinking design.
+     
+     RESULT: When scroll effects are added later, they'll animate smoothly instead
+     of jumping abruptly. */
+  transition: background-color var(--transition-normal) var(--easing-default),
+              box-shadow var(--transition-normal) var(--easing-default);
+}
+
+/* WHY: When users scroll down, we want the header to gain a background color for
+   readability. The .scrolled class (added via JavaScript) triggers this change.
+   
+   HOW: The background uses our secondary blue with 95% opacity (rgba alpha channel),
+   creating a semi-transparent backdrop that hints at content behind it.
+   
+   RESULT: The header becomes more visible against varied content while maintaining
+   a subtle transparency effect. */
+.main-header.scrolled {
+  background-color: rgba(10, 30, 60, 0.95);
+  /* WHY: A subtle shadow helps separate the header from content below it, adding
+     depth to the design.
+     
+     HOW: box-shadow creates a soft black shadow (rgba 0,0,0) with 10% opacity
+     that extends 10px down and blurs over 30px for a gradual fade.
+     
+     RESULT: The header appears to "float" above the page content. */
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+/* WHY: The nav element contains all navigation links. We need to distribute space
+   between the logo (left) and menu (right) while keeping everything vertically centered.
+   
+   HOW: Flexbox with justify-content: space-between pushes the first child (logo)
+   to the left and the last child (nav links) to the right, with maximum space between.
+   
+   RESULT: Classic header layout with logo on left, menu on right, automatically
+   responsive to content size. */
+.main-header nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  
+  /* WHY: We constrain the navigation to a max-width and center it so that on very
+     wide screens (like 4K monitors), the nav doesn't stretch uncomfortably.
+     
+     HOW: max-width uses our standard container width (1200px), and margin: 0 auto
+     centers it horizontally. Padding prevents edge-touching on smaller screens.
+     
+     RESULT: The navigation stays readable and well-proportioned on all screen sizes. */
+  max-width: 1200px;
+  margin: 0 auto;
+  padding-left: var(--spacing-md);
+  padding-right: var(--spacing-md);
+}
+
+/* WHY: The logo needs to be visually prominent and clickable. We style it as a
+   text element rather than an image for flexibility and fast loading.
+   
+   HOW: Larger font size (--font-size-lg = 24px) and bold weight (700) make it stand
+   out. The gold color connects to the Planaxis theme.
+   
+   RESULT: A clear, recognizable brand identifier that's immediately visible. */
+.logo {
+  font-size: var(--font-size-lg);
+  font-weight: var(--font-weight-bold);
+  color: var(--color-accent-gold);
+  /* WHY: Text-transform: uppercase creates a strong, authoritative brand presence.
+     It's a common technique for logos to increase visual impact.
+     
+     HOW: CSS automatically converts lowercase letters to capitals.
+     
+     RESULT: "Planaxis" becomes "PLANAXIS" - more striking and memorable. */
+  text-transform: uppercase;
+  /* WHY: Letter-spacing (tracking) adds space between letters, creating an elegant,
+     luxurious feel. It's commonly used in high-end branding.
+     
+     HOW: 0.1em means 10% of the font size. At 24px, this adds ~2.4px between letters.
+     
+     RESULT: The logo feels premium and easier to read at a glance. */
+  letter-spacing: 0.1em;
+  /* WHY: Adding a transition allows the logo to smoothly change color on hover,
+     providing subtle feedback that it's interactive.
+     
+     HOW: We transition the color property over 200ms (fast) with ease-in-out timing.
+     
+     RESULT: Smooth, polished interaction when users hover over the logo. */
+  transition: color var(--transition-fast) var(--easing-default);
+}
+
+/* WHY: Hover states provide visual feedback that an element is interactive. Without
+   this, users might not realize the logo is clickable (returns to homepage).
+   
+   HOW: On hover, we change to cyan (our bioluminescent accent color).
+   
+   RESULT: The logo appears to "light up" when you hover over it, like bioluminescence
+   in the deep ocean. */
+.logo:hover {
+  color: var(--color-accent-cyan);
+}
+
+/* WHY: Navigation links need to be horizontal (side-by-side) rather than stacked.
+   By default, <ul> is a block element with bullets.
+   
+   HOW: display: flex makes children (the <li> elements) line up horizontally.
+   gap adds spacing between each link without manual margins.
+   
+   RESULT: A clean, horizontal navigation menu with consistent spacing. */
+.nav-links {
+  display: flex;
+  gap: var(--spacing-lg);
+  align-items: center;
+}
+
+/* WHY: Each navigation link should be a comfortable click target. Links that are too
+   small are hard to click, especially on touch devices.
+   
+   HOW: We add padding to increase the clickable area beyond just the text itself.
+   
+   RESULT: Links are easier to click/tap, improving usability on all devices. */
+.nav-links li a {
+  font-size: var(--font-size-base);
+  font-weight: var(--font-weight-medium);
+  color: var(--color-text-main);
+  padding: var(--spacing-xs) var(--spacing-sm);
+  
+  /* WHY: Position: relative is needed for the ::after pseudo-element (the underline)
+     to be positioned relative to the link, not the whole page.
+     
+     HOW: The ::after element will use position: absolute, which positions it relative
+     to the nearest positioned ancestor (this link).
+     
+     RESULT: The animated underline appears exactly under the link text. */
+  position: relative;
+  
+  /* WHY: We're setting up transitions for both color and the ::after element's
+     transform. This enables smooth hover animations.
+     
+     HOW: "all" means every animatable property will transition, but we could be
+     more specific for performance (only transition properties that change).
+     
+     RESULT: Smooth color change and underline animation on hover. */
+  transition: color var(--transition-fast) var(--easing-default);
+}
+
+/* WHY: The ::after pseudo-element creates a decorative underline that animates on
+   hover. This is more flexible than text-decoration: underline.
+   
+   HOW: content: '' creates an empty element. position: absolute with bottom: -4px
+   positions it 4px below the link. width: 0 makes it invisible initially.
+   
+   RESULT: An invisible underline that's ready to animate on hover. */
+.nav-links li a::after {
+  content: '';
+  position: absolute;
+  bottom: -4px;
+  left: 0;
+  width: 0;
+  height: 2px;
+  background-color: var(--color-accent-gold);
+  
+  /* WHY: We transition width and opacity to create a smooth "drawing" effect where
+     the line appears to extend from left to right.
+     
+     HOW: Starting at width: 0 and opacity: 0, these will animate to width: 100%
+     and opacity: 1 on hover.
+     
+     RESULT: A elegant, animated underline that draws itself in on hover. */
+  transition: width var(--transition-normal) var(--easing-default),
+              opacity var(--transition-normal) var(--easing-default);
+  opacity: 0;
+}
+
+/* WHY: On hover, we want the link text to turn gold and the underline to appear.
+   This provides clear, immediate feedback that the link is interactive.
+   
+   HOW: We change the text color and trigger the ::after animation by changing
+   its width to 100% and opacity to 1.
+   
+   RESULT: A polished hover effect where the text turns gold and an underline
+   smoothly draws itself from left to right. */
+.nav-links li a:hover {
+  color: var(--color-accent-gold);
+}
+
+.nav-links li a:hover::after {
+  width: 100%;
+  opacity: 1;
+}
+
+/* WHY: The active class indicates the current page in the navigation. Users need
+   to know where they are in the site hierarchy.
+   
+   HOW: We permanently show the gold underline and gold text for the active page.
+   
+   RESULT: Clear visual indication of the current page in the navigation. */
+.nav-links li a.active {
+  color: var(--color-accent-gold);
+}
+
+.nav-links li a.active::after {
+  width: 100%;
+  opacity: 1;
+}
+
+/* WHY: Mobile devices need a hamburger menu button since there isn't enough space
+   for all navigation links horizontally. We hide it by default (desktop-first).
+   
+   HOW: display: none removes it from the layout. Media queries in responsive.css
+   will show it on small screens.
+   
+   RESULT: The button exists in the HTML but is hidden until needed on mobile. */
+.mobile-menu-toggle {
+  display: none;
+  /* WHY: Flexbox centers the hamburger icon (three horizontal lines) within the button.
+     
+     HOW: justify-content and align-items: center work together to perfectly center
+     the icon both horizontally and vertically.
+     
+     RESULT: The hamburger icon is perfectly centered in its clickable area. */
+  justify-content: center;
+  align-items: center;
+  /* WHY: A square button (40x40px) provides a comfortable touch target on mobile.
+     Apple's HIG recommends minimum 44x44px, so we're close to that guideline.
+     
+     HOW: Fixed width and height create a square.
+     
+     RESULT: Easy-to-tap button that meets accessibility guidelines. */
+  width: 40px;
+  height: 40px;
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+  /* WHY: Transitions make the hamburger icon animate smoothly when transforming
+     into an X (close icon) on mobile.
+     
+     HOW: We'll use transform to rotate the lines, and this transition makes it smooth.
+     
+     RESULT: Polished animation when opening/closing the mobile menu. */
+  transition: transform var(--transition-fast) var(--easing-default);
+}
+

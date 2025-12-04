@@ -1,0 +1,572 @@
+/* ============================================================================
+   RESPONSIVE.CSS - Mobile-First Media Queries
+   
+   WHY: Websites must work on devices of all sizes - from 320px phones to 4K
+   monitors. A mobile-first approach means we style for phones first, then
+   progressively enhance for larger screens.
+   
+   HOW: Media queries detect viewport width and apply different styles at
+   specific breakpoints (768px for tablets, 1024px for desktops).
+   
+   RESULT: A fluid, adaptive design that works beautifully on all devices.
+   ============================================================================ */
+
+/* ============================================================================
+   BASE (MOBILE) STYLES - Default for screens < 768px
+   
+   WHY: Most web traffic now comes from mobile devices. By designing for mobile
+   first, we ensure the core experience works for the majority of users.
+   
+   HOW: These styles apply by default and are overridden by media queries for
+   larger screens.
+   
+   RESULT: Mobile devices get optimized styles without downloading unnecessary
+   desktop CSS.
+   ============================================================================ */
+
+/* WHY: On mobile, the sidebar takes up too much screen space to be permanently
+   visible. We hide it by default and show it via a toggle button.
+   
+   HOW: transform: translateX(100%) moves it completely off-screen to the right.
+   
+   RESULT: More screen space for content on mobile devices. */
+.utility-sidebar {
+  transform: translateX(100%) translateY(-50%);
+  opacity: 0;
+  pointer-events: none;
+  
+  /* WHY: On mobile, we want the sidebar to overlay content (not push it aside)
+     when opened, so we adjust its positioning.
+     
+     HOW: We maintain the fixed positioning but prepare it for toggle interaction.
+     
+     RESULT: When toggled, the sidebar slides in from the right as an overlay. */
+}
+
+/* WHY: The sidebar needs to be accessible on mobile, so we show a toggle button
+   that reveals/hides it.
+   
+   HOW: Changing display from none to flex makes the button visible on mobile.
+   
+   RESULT: Mobile users can access the sidebar via an intuitive toggle button. */
+.sidebar-toggle {
+  display: flex;
+}
+
+/* WHY: When users toggle the sidebar open on mobile (by adding .show class via
+   JavaScript), we slide it back onto the screen.
+   
+   HOW: transform: translateX(0) brings it back to its original position, and
+   pointer-events: auto re-enables interaction.
+   
+   RESULT: Smooth slide-in animation when the sidebar is opened. */
+.utility-sidebar.show {
+  transform: translateX(0) translateY(-50%);
+  opacity: 1;
+  pointer-events: auto;
+}
+
+/* WHY: On very small screens (phones), horizontal navigation doesn't fit. We need
+   to hide the main navigation and show a hamburger menu instead.
+   
+   HOW: display: none removes the nav links, and we'll show a hamburger icon.
+   
+   RESULT: Clean mobile interface without cramped, overlapping navigation. */
+.nav-links {
+  /* WHY: On mobile, we transform the horizontal navigation into a vertical dropdown
+     menu that slides down from the header.
+     
+     HOW: position: absolute positions it below the header, and we transform it
+     off-screen until toggled.
+     
+     RESULT: Mobile-optimized dropdown navigation. */
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  flex-direction: column;
+  background-color: rgba(10, 30, 60, 0.98);
+  padding: var(--spacing-md);
+  gap: 0;
+  
+  /* WHY: Initially hidden off-screen with transform: translateY(-100%), the menu
+     will slide down when opened.
+     
+     HOW: Negative translateY moves it up by 100% of its own height (completely hidden).
+     
+     RESULT: Hidden until the hamburger menu is clicked. */
+  transform: translateY(-100%);
+  opacity: 0;
+  pointer-events: none;
+  transition: transform var(--transition-normal) var(--easing-default),
+              opacity var(--transition-normal) var(--easing-default);
+  
+  /* WHY: box-shadow creates depth, making the dropdown feel like it's layered
+     above the content.
+     
+     HOW: 0 4px 12px creates a soft shadow below the menu.
+     
+     RESULT: Clear visual separation from content below. */
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+/* WHY: When the mobile menu is opened (via .show class from JavaScript), we slide
+   it down into view.
+   
+   HOW: transform: translateY(0) returns it to its natural position, making it visible.
+   
+   RESULT: Smooth dropdown animation when the hamburger menu is clicked. */
+.nav-links.show {
+  transform: translateY(0);
+  opacity: 1;
+  pointer-events: auto;
+}
+
+/* WHY: Each link in the mobile menu needs full-width touch targets with clear
+   visual separation.
+   
+   HOW: display: block makes each link full-width, and we add borders between them.
+   
+   RESULT: Easy-to-tap navigation links optimized for touch screens. */
+.nav-links li {
+  /* WHY: border-bottom creates visual separation between menu items, making them
+     easier to distinguish.
+     
+     HOW: 1px solid border with subtle rgba color.
+     
+     RESULT: Clear menu structure with defined items. */
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.nav-links li:last-child {
+  border-bottom: none;
+}
+
+/* WHY: Mobile links need larger padding for comfortable finger tapping. Apple's
+   HIG recommends minimum 44x44px touch targets.
+   
+   HOW: We increase vertical padding to create taller, easier-to-tap links.
+   
+   RESULT: Mobile-optimized navigation that's easy to use with thumbs. */
+.nav-links li a {
+  display: block;
+  padding: var(--spacing-md) var(--spacing-sm);
+  text-align: left;
+}
+
+/* WHY: The hamburger menu button needs to be visible on mobile to open the nav.
+   
+   HOW: Changing display from none to flex makes it appear.
+   
+   RESULT: Clear, recognizable menu button on mobile devices. */
+.mobile-menu-toggle {
+  display: flex;
+}
+
+/* WHY: On mobile, the hero section can be slightly shorter (90vh instead of 100vh)
+   to hint that there's content below, encouraging scrolling.
+   
+   HOW: Reducing height from 100vh to 90vh leaves 10% of the screen for content peek.
+   
+   RESULT: Users are more likely to scroll down and explore. */
+.hero {
+  height: 90vh;
+}
+
+/* WHY: Hero title needs to be smaller on mobile to prevent line breaks and
+   maintain readability on narrow screens.
+   
+   HOW: We reduce from 48px (3rem) to 32px (2rem).
+   
+   RESULT: Title fits comfortably on phone screens without awkward breaks. */
+.hero-title {
+  font-size: var(--font-size-xl);
+  /* WHY: Letter-spacing can be reduced on smaller screens because the title is
+     smaller and doesn't need as much spacing.
+     
+     HOW: We reduce from 0.05em to 0.03em.
+     
+     RESULT: Better use of limited mobile screen space. */
+  letter-spacing: 0.03em;
+}
+
+/* WHY: Tagline text also needs to be slightly smaller on mobile for optimal
+   readability and space management.
+   
+   HOW: We reduce from 18px to 16px (base font size).
+   
+   RESULT: Comfortable reading experience on small screens. */
+.hero-tagline {
+  font-size: var(--font-size-base);
+}
+
+/* WHY: CTA buttons on mobile should be slightly smaller to fit better, but still
+   large enough to tap easily.
+   
+   HOW: We reduce font size and adjust padding proportionally.
+   
+   RESULT: Well-proportioned button that's easy to tap on mobile. */
+.hero-cta {
+  font-size: var(--font-size-base);
+  padding: var(--spacing-sm) var(--spacing-lg);
+}
+
+/* WHY: Container padding should be smaller on mobile to maximize content space
+   while still preventing edge-touching.
+   
+   HOW: We reduce from 24px to 16px padding.
+   
+   RESULT: More usable space on small screens without sacrificing readability. */
+.container,
+.container-fluid {
+  padding-left: var(--spacing-sm);
+  padding-right: var(--spacing-sm);
+}
+
+/* ============================================================================
+   TABLET STYLES - 768px to 1023px
+   
+   WHY: Tablets have more screen space than phones but less than desktops. They
+   need a middle-ground layout that takes advantage of the extra space.
+   
+   HOW: Media query with min-width: 768px applies these styles only when the
+   viewport is at least 768px wide.
+   
+   RESULT: Optimized experience for iPad, Android tablets, and small laptops.
+   ============================================================================ */
+
+@media (min-width: 768px) {
+  /* WHY: On tablet, we have enough space to show the navigation links horizontally
+     in the header instead of a dropdown menu.
+     
+     HOW: We reset the mobile styles, changing back to horizontal flex layout.
+     
+     RESULT: Traditional horizontal navigation that fits comfortably. */
+  .nav-links {
+    position: static;
+    flex-direction: row;
+    background-color: transparent;
+    padding: 0;
+    gap: var(--spacing-lg);
+    transform: none;
+    opacity: 1;
+    pointer-events: auto;
+    box-shadow: none;
+  }
+  
+  /* WHY: With horizontal navigation working, we no longer need the hamburger menu.
+     
+     HOW: display: none hides it.
+     
+     RESULT: Cleaner header without unnecessary mobile controls. */
+  .mobile-menu-toggle {
+    display: none;
+  }
+  
+  /* WHY: Tablets have more vertical space, so we can use full viewport height
+     for the hero again.
+     
+     HOW: Restoring height: 100vh from the mobile 90vh.
+     
+     RESULT: Dramatic, full-screen hero on tablets. */
+  .hero {
+    height: 100vh;
+  }
+  
+  /* WHY: On tablet, we can increase text sizes back toward desktop values for
+     better visual hierarchy and impact.
+     
+     HOW: Increasing font-size progressively as screen size grows.
+     
+     RESULT: Appropriately scaled typography for medium-sized screens. */
+  .hero-title {
+    font-size: calc(var(--font-size-2xl) * 0.85); /* ~40px */
+    letter-spacing: 0.04em;
+  }
+  
+  .hero-tagline {
+    font-size: var(--font-size-md);
+  }
+  
+  .hero-cta {
+    font-size: var(--font-size-md);
+    padding: var(--spacing-md) var(--spacing-xl);
+  }
+  
+  /* WHY: On tablets, the sidebar still takes too much space to be always visible,
+     but we want it to work differently than mobile - as an overlay that can be toggled.
+     
+     HOW: We keep it hidden by default but allow the toggle button to show it as
+     an overlay.
+     
+     RESULT: Tablet users can access the sidebar without sacrificing content space. */
+  .utility-sidebar {
+    /* WHY: On tablet, when the sidebar is shown, it should overlay content with
+       a narrower width than desktop.
+       
+       HOW: Reducing width from 280px to 240px for better proportions.
+       
+       RESULT: Sidebar fits better on medium-width screens. */
+    width: 240px;
+  }
+  
+  /* WHY: The sidebar toggle remains visible on tablets for showing/hiding the
+     sidebar overlay.
+     
+     HOW: We maintain display: flex from mobile styles.
+     
+     RESULT: Consistent sidebar access pattern across mobile and tablet. */
+  .sidebar-toggle {
+    display: flex;
+  }
+  
+  /* WHY: Container padding can increase on tablets, taking advantage of the extra
+     screen width while maintaining comfortable margins.
+     
+     HOW: Increasing from 16px back to 24px.
+     
+     RESULT: Better use of available space with comfortable breathing room. */
+  .container,
+  .container-fluid {
+    padding-left: var(--spacing-md);
+    padding-right: var(--spacing-md);
+  }
+  
+  /* WHY: On tablet, borders between mobile menu items are no longer needed since
+     we're back to horizontal navigation.
+     
+     HOW: Removing border-bottom from list items.
+     
+     RESULT: Clean horizontal navigation without distracting dividers. */
+  .nav-links li {
+    border-bottom: none;
+  }
+  
+  /* WHY: Tablet link padding can be reduced from mobile's large touch targets
+     since the links are horizontal again.
+     
+     HOW: Reverting to original desktop padding.
+     
+     RESULT: Properly proportioned horizontal navigation. */
+  .nav-links li a {
+    padding: var(--spacing-xs) var(--spacing-sm);
+  }
+}
+
+/* ============================================================================
+   DESKTOP STYLES - 1024px and above
+   
+   WHY: Desktop screens have abundant space for sidebars, larger text, and
+   complex layouts. We can show everything at once without compromises.
+   
+   HOW: Media query with min-width: 1024px applies these styles only on
+   laptops, monitors, and larger displays.
+   
+   RESULT: Full-featured, rich experience that takes advantage of large screens.
+   ============================================================================ */
+
+@media (min-width: 1024px) {
+  /* WHY: On desktop, we have enough space for the sidebar to be permanently visible
+     on the right side without taking too much room from the content.
+     
+     HOW: We reset all the mobile hiding transforms and make it fully visible.
+     
+     RESULT: Always-accessible utility navigation that enhances the UX. */
+  .utility-sidebar {
+    transform: translateY(-50%);
+    opacity: 1;
+    pointer-events: auto;
+    /* WHY: Full desktop width of 280px provides comfortable space for descriptive
+       link text without cramping.
+       
+       HOW: Restoring the original design width.
+       
+       RESULT: Generous, easy-to-read sidebar navigation. */
+    width: 280px;
+  }
+  
+  /* WHY: With the sidebar permanently visible, we don't need the toggle button.
+     
+     HOW: display: none hides it completely.
+     
+     RESULT: Cleaner interface without unnecessary controls. */
+  .sidebar-toggle {
+    display: none;
+  }
+  
+  /* WHY: Desktop can show full-size typography for maximum impact and readability.
+     
+     HOW: Using the original design values from variables.
+     
+     RESULT: Dramatic, attention-grabbing hero section. */
+  .hero-title {
+    font-size: var(--font-size-2xl); /* Full 48px */
+    letter-spacing: 0.05em;
+  }
+  
+  .hero-tagline {
+    font-size: var(--font-size-md);
+  }
+  
+  .hero-cta {
+    font-size: var(--font-size-md);
+    padding: var(--spacing-md) var(--spacing-xl);
+  }
+  
+  /* WHY: On very large screens, we want to prevent the main content from becoming
+     too wide (readability drops at 100+ characters per line).
+     
+     HOW: The container max-width (1200px) ensures comfortable reading width.
+     
+     RESULT: Content remains readable even on 4K monitors. */
+  .container {
+    max-width: 1200px;
+  }
+  
+  /* WHY: Desktop users expect hover effects since they have precise mouse control.
+     We can add more sophisticated hover animations that wouldn't work on touch.
+     
+     HOW: Enhanced transitions and transforms on hover.
+     
+     RESULT: Rich, interactive experience that feels polished and professional. */
+}
+
+/* ============================================================================
+   LARGE DESKTOP STYLES - 1440px and above
+   
+   WHY: Extra-large screens (like 27" monitors and 4K displays) have so much
+   space that default styles can look small and lonely.
+   
+   HOW: Media query with min-width: 1440px applies enhanced spacing and sizing.
+   
+   RESULT: Design scales gracefully to fill large displays without looking lost.
+   ============================================================================ */
+
+@media (min-width: 1440px) {
+  /* WHY: On huge screens, we can afford slightly larger fonts without sacrificing
+     readability, and it helps fill the space.
+     
+     HOW: We increase the hero title to an even larger size.
+     
+     RESULT: Impactful typography that commands attention on large displays. */
+  .hero-title {
+    font-size: calc(var(--font-size-2xl) * 1.2); /* ~57px */
+  }
+  
+  /* WHY: Container max-width can increase slightly on ultra-wide screens to take
+     better advantage of available space.
+     
+     HOW: Increasing from 1200px to 1400px.
+     
+     RESULT: Better use of screen real estate while maintaining readability. */
+  .container {
+    max-width: 1400px;
+  }
+  
+  /* WHY: The sidebar can be slightly wider on huge screens without impacting layout.
+     
+     HOW: Increasing from 280px to 320px.
+     
+     RESULT: More comfortable, spacious sidebar navigation. */
+  .utility-sidebar {
+    width: 320px;
+  }
+}
+
+/* ============================================================================
+   PRINT STYLES
+   
+   WHY: If users print the page, we need to hide interactive elements (navigation,
+   buttons) and optimize for paper/PDF.
+   
+   HOW: @media print applies styles only when printing.
+   
+   RESULT: Clean, printer-friendly output. */
+
+@media print {
+  /* WHY: Navigation, sidebars, and buttons are useless in print. We hide them
+     to save ink and paper.
+     
+     HOW: display: none removes them from print layout entirely.
+     
+     RESULT: Clean printed page with only content. */
+  .main-header,
+  .utility-sidebar,
+  .sidebar-toggle,
+  .hero-cta,
+  .scroll-indicator {
+    display: none;
+  }
+  
+  /* WHY: The hero section doesn't need to be full-screen in print - it should
+     just be tall enough to contain its content.
+     
+     HOW: Changing from 100vh to auto allows natural content height.
+     
+     RESULT: Efficient use of printed pages. */
+  .hero {
+    height: auto;
+    min-height: 300px;
+    page-break-inside: avoid;
+  }
+  
+  /* WHY: Background images consume lots of ink and often print poorly. We remove
+     them for cost and quality reasons.
+     
+     HOW: background-image: none strips the image.
+     
+     RESULT: Clean, ink-efficient printed pages. */
+  .hero {
+    background-image: none;
+  }
+  
+  /* WHY: Print needs black text on white paper for maximum readability and
+     minimum ink usage.
+     
+     HOW: We override all color styles with print-friendly values.
+     
+     RESULT: Readable, ink-efficient printed output. */
+  body {
+    background: white;
+    color: black;
+  }
+}
+
+/* ============================================================================
+   ACCESSIBILITY - Reduced Motion
+   
+   WHY: Some users experience motion sickness from animations. We must respect
+   the "prefers-reduced-motion" accessibility setting.
+   
+   HOW: Media query detects the OS setting and disables animations.
+   
+   RESULT: Accessible experience for users with vestibular disorders.
+   ============================================================================ */
+
+@media (prefers-reduced-motion: reduce) {
+  /* WHY: For users who've enabled reduced motion in their OS settings, we disable
+     all animations and transitions that could cause discomfort.
+     
+     HOW: Setting transitions and animations to none or very short durations.
+     
+     RESULT: Accessible experience that respects user preferences. */
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+  
+  /* WHY: The bounce animation on the scroll indicator can be particularly
+     problematic for motion-sensitive users.
+     
+     HOW: We completely disable the animation.
+     
+     RESULT: Static scroll indicator that doesn't trigger motion sickness. */
+  .scroll-indicator {
+    animation: none;
+  }
+}
+
