@@ -1,0 +1,608 @@
+/* ============================================================================
+   GUIDE.CSS - Festival Guide Page Components
+   
+   WHY: The festival guide page needs specialized components (card grids, price
+   cards, sold-out banners, FAQ accordions) that aren't used on other pages.
+   Keeping these styles separate maintains modularity.
+   
+   HOW: We create reusable card and grid systems using CSS Grid and Flexbox,
+   styled with our existing design token variables for consistency.
+   
+   RESULT: A cohesive, professional-looking guide page that feels like part of
+   the same site while having its own unique components.
+   ============================================================================ */
+
+/* ========================================================================
+   GRID SYSTEM
+   WHY: A flexible grid system allows cards to adapt to different screen sizes
+   ======================================================================== */
+
+/* WHY: The guide-grid creates a responsive 3-column layout that automatically
+   adjusts based on available space. This is more flexible than fixed columns.
+   
+   HOW: CSS Grid with repeat(auto-fit, minmax(300px, 1fr)) creates columns that
+   are at least 300px wide. When there isn't space for 3 columns, it wraps to 2
+   or 1 column automatically.
+   
+   RESULT: Perfectly responsive grid without media queries for basic responsiveness. */
+.guide-grid {
+  display: grid;
+  /* WHY: minmax(300px, 1fr) means each column is minimum 300px, maximum 1fr (equal fraction).
+     auto-fit automatically calculates how many columns fit.
+     
+     HOW: If viewport is 1200px wide, we get 3 columns (~400px each). If 800px, we get
+     2 columns (~400px each). If 400px, we get 1 column (full width).
+     
+     RESULT: Grid adapts intelligently to screen size without breakpoints. */
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: var(--spacing-lg);
+  margin-top: var(--spacing-xl);
+}
+
+/* WHY: Journey cards need to be slightly narrower since they contain less content.
+   
+   HOW: Reduce minimum width to 280px to allow 3 columns on slightly smaller screens.
+   
+   RESULT: More compact journey cards that still look balanced. */
+.guide-grid-journey {
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+}
+
+/* ========================================================================
+   CARD COMPONENTS
+   WHY: Cards provide visual containers for related information
+   ======================================================================== */
+
+/* WHY: Each guide card is a self-contained unit of information with consistent
+   styling (background, padding, shadow) that groups related content.
+   
+   HOW: We use our secondary background color, rounded corners, and a subtle shadow
+   to create depth and separation from the main background.
+   
+   RESULT: Professional, modern cards that clearly separate different content sections. */
+.guide-card {
+  background-color: var(--color-bg-secondary);
+  border-radius: 12px;
+  padding: var(--spacing-xl);
+  /* WHY: Box shadow creates the illusion that cards are floating above the page,
+     adding depth to the otherwise flat design.
+     
+     HOW: 0 8px 24px creates a shadow below the card, rgba(0,0,0,0.2) makes it
+     subtle (20% opacity).
+     
+     RESULT: Cards have dimensionality and visual interest. */
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+  /* WHY: Transitions allow smooth animations when cards are hovered or modified.
+     
+     HOW: We animate transform and box-shadow over 300ms.
+     
+     RESULT: Smooth, polished hover effects. */
+  transition: transform var(--transition-normal) var(--easing-default),
+              box-shadow var(--transition-normal) var(--easing-default);
+  
+  /* WHY: display: flex with column direction stacks card content vertically and
+     allows us to push the last element (usually a button or features list) to
+     the bottom with margin-top: auto.
+     
+     HOW: Flexbox in column mode creates a vertical stack.
+     
+     RESULT: Consistent card heights with bottom elements aligned. */
+  display: flex;
+  flex-direction: column;
+}
+
+/* WHY: On hover, cards lift up slightly and their shadow becomes more pronounced,
+   providing tactile feedback that the card is interactive.
+   
+   HOW: translateY(-8px) moves the card up 8 pixels. Increasing shadow size/intensity
+   enhances the lifting effect.
+   
+   RESULT: Cards feel responsive and interactive, encouraging engagement. */
+.guide-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 16px 48px rgba(0, 0, 0, 0.3);
+}
+
+/* WHY: The card icon is a large visual anchor at the top of each card, providing
+   quick visual identification of card type.
+   
+   HOW: Large font size (3rem = 48px) with centered text creates a prominent icon.
+   
+   RESULT: Cards are instantly recognizable by their icon. */
+.card-icon {
+  font-size: var(--font-size-2xl);
+  text-align: center;
+  margin-bottom: var(--spacing-md);
+  /* WHY: Linear gradient gives the icon a special golden glow effect, connecting
+     to the Planaxis golden seahorse theme.
+     
+     HOW: Gradient from cyan to gold creates a magical, bioluminescent appearance.
+     background-clip and -webkit-background-clip make the gradient fill the text.
+     
+     RESULT: Icons have a unique, theme-appropriate appearance. */
+  background: linear-gradient(135deg, var(--color-accent-cyan), var(--color-accent-gold));
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* WHY: Card titles need to stand out and be easily scannable.
+   
+   HOW: Large, bold font with gold color draws the eye.
+   
+   RESULT: Clear hierarchy with titles as the primary focal point. */
+.card-title {
+  font-size: var(--font-size-lg);
+  font-weight: var(--font-weight-bold);
+  color: var(--color-accent-gold);
+  margin-bottom: var(--spacing-sm);
+  text-align: center;
+}
+
+/* WHY: Descriptions provide context and details in easily readable paragraph form.
+   
+   HOW: Slightly larger than base font (18px vs 16px) with muted color for hierarchy.
+   
+   RESULT: Readable, inviting text that doesn't overpower the title. */
+.card-description {
+  font-size: var(--font-size-md);
+  color: var(--color-text-muted);
+  line-height: 1.6;
+  margin-bottom: var(--spacing-md);
+}
+
+/* WHY: Feature lists present key facts/benefits in scannable bullet points.
+   
+   HOW: Unordered list with custom styling, muted color, and comfortable spacing.
+   
+   RESULT: Information that's easy to scan and digest quickly. */
+.card-features {
+  list-style: none;
+  padding: 0;
+  margin-top: auto;
+  color: var(--color-text-muted);
+}
+
+.card-features li {
+  padding: var(--spacing-xs) 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.card-features li:last-child {
+  border-bottom: none;
+}
+
+/* ========================================================================
+   PRICE CARDS
+   WHY: DreamVille camping packages need special pricing display
+   ======================================================================== */
+
+/* WHY: Price badges prominently display the cost at the top of the card, allowing
+   users to quickly compare options.
+   
+   HOW: Large, bold text in a circular badge with gradient background.
+   
+   RESULT: Prices are immediately visible and comparable across cards. */
+.price-badge {
+  display: inline-block;
+  font-size: var(--font-size-xl);
+  font-weight: var(--font-weight-bold);
+  color: var(--color-bg-primary);
+  background: linear-gradient(135deg, var(--color-accent-gold), var(--color-accent-cyan));
+  padding: var(--spacing-sm) var(--spacing-lg);
+  border-radius: 50px;
+  margin-bottom: var(--spacing-md);
+  /* WHY: position: absolute allows us to position the badge at the top-right corner.
+     
+     HOW: We use negative top value to make it overlap the card edge.
+     
+     RESULT: Eye-catching badge that stands out. */
+}
+
+/* WHY: The "featured" card (most popular option) gets special treatment with extra
+   visual emphasis to guide user choice.
+   
+   HOW: Thicker golden border and a "Popular" badge.
+   
+   RESULT: Clear recommendation for users who are unsure which option to choose. */
+.guide-card-price.featured {
+  border: 2px solid var(--color-accent-gold);
+  position: relative;
+}
+
+/* WHY: Featured badge labels the recommended option explicitly.
+   
+   HOW: Small badge positioned at top-right with gradient background.
+   
+   RESULT: Clear visual indicator of the most popular choice. */
+.featured-badge {
+  position: absolute;
+  top: -12px;
+  right: var(--spacing-lg);
+  background: linear-gradient(135deg, var(--color-accent-cyan), var(--color-accent-gold));
+  color: var(--color-bg-primary);
+  padding: var(--spacing-xs) var(--spacing-md);
+  border-radius: 20px;
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-bold);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+/* ========================================================================
+   SOLD OUT BANNER
+   WHY: Critical status message needs maximum visibility
+   ======================================================================== */
+
+/* WHY: The sold-out banner is the most important element on the tickets page,
+   so it needs to command attention with large size and central positioning.
+   
+   HOW: Large padding, center alignment, and dramatic styling.
+   
+   RESULT: Impossible-to-miss status message that prevents confusion. */
+.sold-out-banner {
+  background-color: var(--color-bg-secondary);
+  border-radius: 16px;
+  padding: var(--spacing-2xl);
+  text-align: center;
+  margin-top: var(--spacing-xl);
+  box-shadow: 0 12px 48px rgba(0, 0, 0, 0.3);
+  /* WHY: Double border creates a striking visual frame.
+     
+     HOW: Inner border is solid gold, outer border (via box-shadow) is cyan.
+     
+     RESULT: Eye-catching, premium appearance. */
+  border: 3px solid var(--color-accent-gold);
+}
+
+.banner-icon {
+  font-size: 4rem;
+  margin-bottom: var(--spacing-md);
+  filter: grayscale(100%);
+  opacity: 0.5;
+}
+
+.banner-title {
+  font-size: var(--font-size-xl);
+  font-weight: var(--font-weight-bold);
+  color: var(--color-text-muted);
+  margin-bottom: var(--spacing-sm);
+  letter-spacing: 4px;
+}
+
+/* WHY: The "SOLD OUT" status needs maximum emphasis as the key information.
+   
+   HOW: Extra large text, bold weight, red color (departure from normal palette
+   for emphasis), and dramatic text shadow.
+   
+   RESULT: Unmistakable sold-out status. */
+.banner-status {
+  font-size: 3.5rem;
+  font-weight: var(--font-weight-bold);
+  color: #ff4444;
+  margin: var(--spacing-lg) 0;
+  text-transform: uppercase;
+  letter-spacing: 8px;
+  text-shadow: 0 4px 12px rgba(255, 68, 68, 0.5);
+}
+
+.banner-subtitle {
+  font-size: var(--font-size-md);
+  color: var(--color-text-muted);
+  margin: var(--spacing-lg) auto;
+  max-width: 600px;
+  line-height: 1.6;
+}
+
+/* WHY: Action buttons give users clear next steps despite sold-out status.
+   
+   HOW: Flexbox centers the buttons with gap for spacing.
+   
+   RESULT: Clear calls-to-action that guide users forward. */
+.banner-actions {
+  display: flex;
+  justify-content: center;
+  gap: var(--spacing-md);
+  margin: var(--spacing-xl) 0;
+  flex-wrap: wrap;
+}
+
+/* WHY: Primary button gets gold background for maximum visibility.
+   
+   HOW: Gold background with dark text, comfortable padding, no border.
+   
+   RESULT: Clear primary action. */
+.banner-btn {
+  display: inline-block;
+  padding: var(--spacing-md) var(--spacing-xl);
+  border-radius: 50px;
+  font-weight: var(--font-weight-bold);
+  text-decoration: none;
+  transition: all var(--transition-fast) var(--easing-default);
+  cursor: pointer;
+}
+
+.banner-btn-primary {
+  background-color: var(--color-accent-gold);
+  color: var(--color-bg-primary);
+}
+
+.banner-btn-primary:hover {
+  background-color: var(--color-accent-cyan);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(0, 188, 212, 0.4);
+}
+
+/* WHY: Secondary button is more subtle, for less critical actions.
+   
+   HOW: Transparent background with border instead of solid fill.
+   
+   RESULT: Clear hierarchy between primary and secondary actions. */
+.banner-btn-secondary {
+  background-color: transparent;
+  color: var(--color-accent-gold);
+  border: 2px solid var(--color-accent-gold);
+}
+
+.banner-btn-secondary:hover {
+  background-color: var(--color-accent-gold);
+  color: var(--color-bg-primary);
+}
+
+.banner-footnote {
+  font-size: var(--font-size-sm);
+  color: var(--color-text-muted);
+  margin-top: var(--spacing-lg);
+  font-style: italic;
+}
+
+/* ========================================================================
+   JOURNEY CARDS
+   WHY: Global Journey travel packages have unique visual requirements
+   ======================================================================== */
+
+.guide-card-journey {
+  text-align: center;
+}
+
+/* WHY: Journey icons are extra large to make travel method immediately recognizable.
+   
+   HOW: 4rem (64px) font size creates prominent visual anchors.
+   
+   RESULT: Instant visual communication of travel type. */
+.journey-icon {
+  font-size: 4rem;
+  margin-bottom: var(--spacing-md);
+}
+
+/* WHY: Journey details section groups price and city count together.
+   
+   HOW: Flexbox with column direction and gap for spacing.
+   
+   RESULT: Clear, organized presentation of key facts. */
+.journey-details {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-xs);
+  margin-top: auto;
+  padding-top: var(--spacing-md);
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.journey-badge {
+  font-size: var(--font-size-lg);
+  font-weight: var(--font-weight-bold);
+  color: var(--color-accent-gold);
+}
+
+.journey-cities {
+  font-size: var(--font-size-sm);
+  color: var(--color-text-muted);
+}
+
+/* ========================================================================
+   INFO CALLOUT
+   WHY: Important notices need visual distinction from regular content
+   ======================================================================== */
+
+/* WHY: Info callouts highlight critical information without being as dramatic
+   as the sold-out banner.
+   
+   HOW: Subtle background, left border accent, and icon.
+   
+   RESULT: Notices that stand out but don't overwhelm. */
+.info-callout {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--spacing-md);
+  background-color: rgba(0, 188, 212, 0.1);
+  border-left: 4px solid var(--color-accent-cyan);
+  padding: var(--spacing-lg);
+  border-radius: 8px;
+  margin-top: var(--spacing-xl);
+}
+
+.callout-icon {
+  font-size: var(--font-size-xl);
+  flex-shrink: 0;
+}
+
+.callout-content {
+  color: var(--color-text-muted);
+  line-height: 1.6;
+}
+
+.callout-content strong {
+  color: var(--color-accent-cyan);
+  font-weight: var(--font-weight-bold);
+}
+
+/* ========================================================================
+   FAQ ACCORDION
+   WHY: HTML5 details/summary provides native accordion functionality
+   ======================================================================== */
+
+/* WHY: FAQ container groups all accordion items with consistent spacing.
+   
+   HOW: Flexbox column with gap between items.
+   
+   RESULT: Organized, scannable list of questions. */
+.faq-container {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-md);
+  margin-top: var(--spacing-xl);
+  max-width: 900px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* WHY: Each FAQ item is a card-like container that expands/collapses.
+   
+   HOW: Browser native details element styled to match our design system.
+   
+   RESULT: Accessible, functional accordions without JavaScript. */
+.faq-item {
+  background-color: var(--color-bg-secondary);
+  border-radius: 8px;
+  padding: var(--spacing-lg);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  transition: box-shadow var(--transition-fast) var(--easing-default);
+}
+
+.faq-item:hover {
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+}
+
+/* WHY: The summary (question) acts as a button to expand the answer.
+   
+   HOW: Remove default marker, add custom styling, cursor pointer.
+   
+   RESULT: Questions look like interactive buttons. */
+.faq-question {
+  font-size: var(--font-size-md);
+  font-weight: var(--font-weight-bold);
+  color: var(--color-accent-gold);
+  cursor: pointer;
+  /* WHY: Remove default triangle marker for cross-browser consistency.
+     
+     HOW: list-style: none removes the marker.
+     
+     RESULT: Clean question text without browser-default markers. */
+  list-style: none;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  user-select: none;
+  transition: color var(--transition-fast) var(--easing-default);
+}
+
+/* WHY: Remove Firefox's default summary marker.
+   
+   HOW: display: none on ::marker pseudo-element.
+   
+   RESULT: Consistent appearance across browsers. */
+.faq-question::-webkit-details-marker {
+  display: none;
+}
+
+/* WHY: Custom expand/collapse indicator is more consistent than browser defaults.
+   
+   HOW: ::after pseudo-element with content "+" that rotates to "×" when open.
+   
+   RESULT: Clear visual indicator of accordion state. */
+.faq-question::after {
+  content: '+';
+  font-size: var(--font-size-xl);
+  color: var(--color-accent-cyan);
+  transition: transform var(--transition-fast) var(--easing-default);
+}
+
+/* WHY: When details is open, rotate the + to become an × (45 degrees).
+   
+   HOW: Rotate transform on the ::after pseudo-element.
+   
+   RESULT: Animated indicator that shows open/closed state. */
+.faq-item[open] .faq-question::after {
+  transform: rotate(45deg);
+}
+
+.faq-question:hover {
+  color: var(--color-accent-cyan);
+}
+
+/* WHY: Answer content needs padding and spacing when expanded.
+   
+   HOW: Margin-top separates from question, comfortable line-height for reading.
+   
+   RESULT: Readable, well-spaced answer content. */
+.faq-answer {
+  margin-top: var(--spacing-lg);
+  padding-top: var(--spacing-lg);
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  color: var(--color-text-muted);
+  line-height: 1.7;
+}
+
+.faq-answer p {
+  margin-bottom: var(--spacing-md);
+}
+
+.faq-answer ul, .faq-answer ol {
+  margin: var(--spacing-md) 0;
+  padding-left: var(--spacing-xl);
+}
+
+.faq-answer li {
+  margin-bottom: var(--spacing-xs);
+}
+
+.faq-answer strong {
+  color: var(--color-accent-gold);
+  font-weight: var(--font-weight-bold);
+}
+
+/* ========================================================================
+   RESPONSIVE ADJUSTMENTS
+   WHY: Components need refinement on smaller screens
+   ======================================================================== */
+
+@media (max-width: 768px) {
+  /* WHY: On mobile, cards should stack into a single column for readability.
+     
+     HOW: Force grid to 1 column with grid-template-columns: 1fr.
+     
+     RESULT: Mobile-optimized layout. */
+  .guide-grid {
+    grid-template-columns: 1fr;
+    gap: var(--spacing-md);
+  }
+  
+  /* WHY: Reduce banner padding on mobile to maximize content space.
+     
+     HOW: Smaller padding values.
+     
+     RESULT: Better space utilization on small screens. */
+  .sold-out-banner {
+    padding: var(--spacing-xl);
+  }
+  
+  .banner-status {
+    font-size: 2.5rem;
+    letter-spacing: 4px;
+  }
+  
+  /* WHY: Stack action buttons vertically on mobile for easier tapping.
+     
+     HOW: flex-direction: column.
+     
+     RESULT: Full-width buttons that are easy to tap. */
+  .banner-actions {
+    flex-direction: column;
+  }
+  
+  .banner-btn {
+    width: 100%;
+  }
+}
+
