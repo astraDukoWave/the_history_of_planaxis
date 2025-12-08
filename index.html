@@ -176,7 +176,7 @@
            HOW: We wrap the logo text in an <a> tag with href pointing to the root.
            
            RESULT: Intuitive navigation that matches user expectations. -->
-      <a href="/" class="logo" aria-label="Tomorrowland Planaxis Home">
+      <a href="/" class="logo" aria-label="Tomorrowland Planaxis Home" data-i18n="nav.logo">
         <!-- WHY: The logo text is wrapped in a span for styling flexibility. We might
              want to style "Planaxis" differently from "Tomorrowland" later.
              
@@ -222,11 +222,18 @@
                HOW: Add aria-current="page" to the active/current page link.
                
                RESULT: Screen readers announce "current page" for better navigation. -->
-          <a href="#festival" class="active" aria-current="page">Festival</a>
+          <a href="#festival" class="active" aria-current="page" data-i18n="nav.festival">Festival</a>
         </li>
-        <li><a href="#brand-activation">Brand Activation</a></li>
-        <li><a href="#cultural-events">Cultural Events</a></li>
-        <li><a href="#contact">Contact</a></li>
+        <li><a href="#brand-activation" data-i18n="nav.brand">Brand Activation</a></li>
+        <li><a href="#cultural-events" data-i18n="nav.cultural">Cultural Events</a></li>
+        <li><a href="contact.html" data-i18n="nav.contact">Contact</a></li>
+        
+        <!-- Language Selector -->
+        <li class="language-selector">
+          <a href="#" data-lang="en" class="lang-link active">EN</a>
+          <span class="lang-separator">|</span>
+          <a href="#" data-lang="es" class="lang-link">ES</a>
+        </li>
       </ul>
     </nav>
   </header>
@@ -260,7 +267,7 @@
            HOW: h1 with descriptive text that includes key terms (Tomorrowland, Planaxis).
            
            RESULT: Better SEO and clear page hierarchy for screen readers. -->
-      <h1 class="hero-title">The Story of Planaxis</h1>
+      <h1 class="hero-title" data-i18n="hero.title">The Story of Planaxis</h1>
       
       <!-- WHY: The <p> tag represents a paragraph of text. Using it (instead of a div)
            adds semantic meaning - this is a text paragraph, not just a container.
@@ -268,7 +275,7 @@
            HOW: Simple paragraph with class for styling.
            
            RESULT: Semantic HTML that communicates intent. -->
-      <p class="hero-tagline">
+      <p class="hero-tagline" data-i18n="hero.tagline">
         Dive deep into the mystical underwater kingdom where golden seahorses guard ancient secrets
         and bioluminescent creatures light the way through forgotten coral palaces.
       </p>
@@ -281,7 +288,7 @@
            
            RESULT: Proper semantics that work correctly with browser navigation and
            accessibility tools. -->
-      <a href="#discover" class="hero-cta">Discover the Legend</a>
+      <a href="#discover" class="hero-cta" data-i18n="hero.cta">Discover the Legend</a>
     </div>
     
     <!-- WHY: The scroll indicator is a decorative element that hints at more content
@@ -291,7 +298,7 @@
          HOW: aria-hidden removes the element from the accessibility tree.
          
          RESULT: Screen readers don't announce the decorative icon, reducing clutter. -->
-    <div class="scroll-indicator" aria-hidden="true">
+    <div class="scroll-indicator" aria-hidden="true" data-i18n="hero.scroll">
       <!-- WHY: We use a simple Unicode character (↓) for the scroll arrow rather than
            an image or icon font. This loads instantly with no HTTP request.
            
@@ -309,7 +316,7 @@
        HOW: Aside with class for styling.
        
        RESULT: Semantic structure that helps assistive technology navigate the page. -->
-  <aside class="utility-sidebar" aria-label="Quick navigation">
+  <aside class="utility-sidebar" aria-label="Quick navigation" data-i18n-aria="sidebar.label">
     <!-- WHY: The aria-label describes the purpose of this navigation section for screen
          reader users, since there are multiple navigation areas on the page (header
          and sidebar).
@@ -329,31 +336,31 @@
                  
                  RESULT: Flexible icon container that works with any icon system. -->
             <span class="icon" aria-hidden="true">🎵</span>
-            Line-Up
+            <span data-i18n="sidebar.lineup">Line-Up</span>
           </a>
         </li>
         <li>
           <a href="festival-guide.html#dreamville">
             <span class="icon" aria-hidden="true">🏕️</span>
-            DreamVille
+            <span data-i18n="sidebar.dreamville">DreamVille</span>
           </a>
         </li>
         <li>
           <a href="festival-guide.html#tickets">
             <span class="icon" aria-hidden="true">🎫</span>
-            Ticket Sale
+            <span data-i18n="sidebar.tickets">Ticket Sale</span>
           </a>
         </li>
         <li>
           <a href="festival-guide.html#global-journey">
             <span class="icon" aria-hidden="true">✈️</span>
-            Global Journey
+            <span data-i18n="sidebar.journey">Global Journey</span>
           </a>
         </li>
         <li>
           <a href="festival-guide.html#faq">
             <span class="icon" aria-hidden="true">❓</span>
-            FAQ
+            <span data-i18n="sidebar.faq">FAQ</span>
           </a>
         </li>
       </ul>
@@ -366,7 +373,7 @@
        HOW: Button with aria-label for accessibility and aria-expanded to indicate state.
        
        RESULT: Mobile-friendly sidebar access that's accessible to all users. -->
-  <button class="sidebar-toggle" aria-label="Toggle sidebar" aria-expanded="false">
+  <button class="sidebar-toggle" aria-label="Toggle sidebar" aria-expanded="false" data-i18n-aria="sidebar.toggle">
     <!-- WHY: A simple "+" icon (or equivalent) indicates the button will reveal something.
          We could use "☰" (hamburger) or a custom SVG here.
          
@@ -399,9 +406,9 @@
            HOW: h2 for section headings, h3 for subsections, etc.
            
            RESULT: Logical document outline that's easy to navigate with assistive technology. -->
-      <h2 class="text-center">Discover the Kingdom</h2>
+      <h2 class="text-center" data-i18n="section.discover.title">Discover the Kingdom</h2>
       
-      <p class="text-center text-muted" style="margin-top: var(--spacing-lg);">
+      <p class="text-center text-muted" style="margin-top: var(--spacing-lg);" data-i18n="section.discover.text">
         <!-- WHY: We include placeholder text to demonstrate layout and typography, making
              it easier to visualize how real content will look.
              
@@ -420,24 +427,24 @@
          
          RESULT: Scannable, well-organized content that's easy to navigate. -->
     <section id="festival" class="section-spacing container">
-      <h2 class="text-center">Festival Experience</h2>
-      <p class="text-center text-muted" style="margin-top: var(--spacing-lg);">
+      <h2 class="text-center" data-i18n="section.festival.title">Festival Experience</h2>
+      <p class="text-center text-muted" style="margin-top: var(--spacing-lg);" data-i18n="section.festival.text">
         Immerse yourself in the magic of Tomorrowland 2018, where the story of Planaxis
         comes alive through spectacular stages, world-class performances, and unforgettable moments.
       </p>
     </section>
     
     <section id="brand-activation" class="section-spacing container">
-      <h2 class="text-center">Brand Activation</h2>
-      <p class="text-center text-muted" style="margin-top: var(--spacing-lg);">
+      <h2 class="text-center" data-i18n="section.brand.title">Brand Activation</h2>
+      <p class="text-center text-muted" style="margin-top: var(--spacing-lg);" data-i18n="section.brand.text">
         Experience innovative brand partnerships that enhance the Planaxis story through
         interactive installations and immersive experiences.
       </p>
     </section>
     
     <section id="cultural-events" class="section-spacing container">
-      <h2 class="text-center">Cultural Events</h2>
-      <p class="text-center text-muted" style="margin-top: var(--spacing-lg);">
+      <h2 class="text-center" data-i18n="section.cultural.title">Cultural Events</h2>
+      <p class="text-center text-muted" style="margin-top: var(--spacing-lg);" data-i18n="section.cultural.text">
         Beyond the music, discover art installations, theatrical performances, and cultural
         celebrations that bring the underwater kingdom to life.
       </p>
@@ -458,7 +465,7 @@
          HOW: HTML entity &copy; renders as ©.
          
          RESULT: Proper copyright notice with the correct symbol. -->
-    <p class="text-muted">
+    <p class="text-muted" data-i18n="footer.copyright">
       &copy; 2024 Tomorrowland - The Story of Planaxis. All rights reserved.
     </p>
     
@@ -468,12 +475,12 @@
          HOW: Simple unordered list of links with inline styling for horizontal layout.
          
          RESULT: Convenient access to secondary pages. -->
-    <nav aria-label="Footer navigation" style="margin-top: var(--spacing-md);">
+    <nav aria-label="Footer navigation" data-i18n-aria="footer.nav.label" style="margin-top: var(--spacing-md);">
       <ul style="display: flex; justify-content: center; gap: var(--spacing-lg); flex-wrap: wrap;">
-        <li><a href="#privacy" class="text-muted">Privacy Policy</a></li>
-        <li><a href="#terms" class="text-muted">Terms of Service</a></li>
-        <li><a href="#contact" class="text-muted">Contact Us</a></li>
-        <li><a href="#press" class="text-muted">Press Kit</a></li>
+        <li><a href="#privacy" class="text-muted" data-i18n="footer.privacy">Privacy Policy</a></li>
+        <li><a href="#terms" class="text-muted" data-i18n="footer.terms">Terms of Service</a></li>
+        <li><a href="contact.html" class="text-muted" data-i18n="footer.contact">Contact Us</a></li>
+        <li><a href="#press" class="text-muted" data-i18n="footer.press">Press Kit</a></li>
       </ul>
     </nav>
   </footer>
@@ -482,129 +489,12 @@
        HTML structure loads and renders before scripts execute. This improves perceived
        performance - users see content faster.
        
-       HOW: Script tags just before the closing </body> tag.
+       HOW: We now use a modular JavaScript approach with ES6 modules. The main.js
+       file handles all interactive functionality including i18n and the old inline
+       functionality.
        
-       RESULT: Faster initial page render and better user experience. -->
-  <script>
-    // WHY: We need JavaScript to handle mobile menu toggling and sidebar toggling on
-    // small screens. Pure CSS can't detect clicks and add/remove classes dynamically.
-    //
-    // HOW: Event listeners detect clicks on toggle buttons and add/remove the "show"
-    // class, which is styled in responsive.css to show/hide elements.
-    //
-    // RESULT: Interactive mobile menu and sidebar that work smoothly on all devices.
-    
-    // WHY: We use addEventListener instead of inline onclick attributes because it
-    // separates behavior (JavaScript) from structure (HTML), following best practices
-    // and making code more maintainable.
-    //
-    // HOW: Select elements with querySelector and attach event listeners.
-    //
-    // RESULT: Clean, maintainable event handling.
-    
-    // Mobile menu toggle
-    const mobileMenuToggle = document.querySelector('.mobile-menu-toggle');
-    const navLinks = document.querySelector('.nav-links');
-    
-    // WHY: We check if elements exist before adding listeners to prevent errors if
-    // the HTML structure changes or elements are missing.
-    //
-    // HOW: Simple if statement checks for element existence.
-    //
-    // RESULT: Robust code that doesn't break if elements are missing.
-    if (mobileMenuToggle && navLinks) {
-      mobileMenuToggle.addEventListener('click', function() {
-        // WHY: toggle() adds the class if it's not there, removes it if it is. This
-        // is cleaner than checking the current state and using add/remove separately.
-        //
-        // HOW: classList.toggle('show') handles the class management.
-        //
-        // RESULT: Simple, reliable toggle behavior.
-        navLinks.classList.toggle('show');
-        
-        // WHY: aria-expanded tells screen readers whether the menu is open or closed.
-        // We must keep this in sync with the visual state for accessibility.
-        //
-        // HOW: Check if the menu has the 'show' class and set aria-expanded accordingly.
-        //
-        // RESULT: Screen readers announce the correct menu state.
-        const isExpanded = navLinks.classList.contains('show');
-        mobileMenuToggle.setAttribute('aria-expanded', isExpanded);
-      });
-    }
-    
-    // Sidebar toggle
-    const sidebarToggle = document.querySelector('.sidebar-toggle');
-    const sidebar = document.querySelector('.utility-sidebar');
-    
-    if (sidebarToggle && sidebar) {
-      sidebarToggle.addEventListener('click', function() {
-        sidebar.classList.toggle('show');
-        
-        const isExpanded = sidebar.classList.contains('show');
-        sidebarToggle.setAttribute('aria-expanded', isExpanded);
-      });
-    }
-    
-    // WHY: On scroll, we add a "scrolled" class to the header so it can change
-    // appearance (add background, shadow) for better readability over content.
-    //
-    // HOW: window scroll event listener checks scroll position and adds/removes class.
-    //
-    // RESULT: Header that adapts to scrolling for optimal readability.
-    window.addEventListener('scroll', function() {
-      const header = document.querySelector('.main-header');
-      
-      // WHY: 50px is a threshold - after scrolling 50 pixels down, we consider the
-      // user to have "scrolled" and trigger the header style change.
-      //
-      // HOW: window.scrollY gives current vertical scroll position in pixels.
-      //
-      // RESULT: Header changes style after minimal scrolling, not instantly.
-      if (window.scrollY > 50) {
-        header.classList.add('scrolled');
-      } else {
-        header.classList.remove('scrolled');
-      }
-    });
-    
-    // WHY: Smooth scrolling for anchor links creates a polished, modern experience
-    // instead of jarring instant jumps to page sections.
-    //
-    // HOW: Intercept clicks on anchor links (href starting with #) and use
-    // scrollIntoView with smooth behavior.
-    //
-    // RESULT: Smooth, animated scrolling to page sections.
-    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-      anchor.addEventListener('click', function(e) {
-        // WHY: We only want to smooth-scroll for same-page anchors that point to
-        // existing elements, not external links or empty hash links.
-        //
-        // HOW: Check if the target element exists before scrolling.
-        //
-        // RESULT: Smooth scrolling only where appropriate.
-        const targetId = this.getAttribute('href').substring(1);
-        const targetElement = document.getElementById(targetId);
-        
-        if (targetElement) {
-          e.preventDefault();
-          targetElement.scrollIntoView({
-            behavior: 'smooth',
-            block: 'start'
-          });
-          
-          // WHY: After scrolling, close the mobile menu if it's open. Users have
-          // selected their destination and don't need the menu anymore.
-          //
-          // HOW: Remove the 'show' class from mobile menu and sidebar.
-          //
-          // RESULT: Clean UX where menus close after selection.
-          if (navLinks) navLinks.classList.remove('show');
-          if (sidebar) sidebar.classList.remove('show');
-        }
-      });
-    });
-  </script>
+       RESULT: Cleaner, more maintainable code with separation of concerns. -->
+  <script src="js/main.js" type="module"></script>
 </body>
 </html>
 

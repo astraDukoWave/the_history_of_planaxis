@@ -1,39 +1,48 @@
 /* ============================================================================
-   HEADER.CSS - Transparent Navigation Overlay
+   HEADER.CSS - Fixed Sticky Navigation with Glassmorphism
    
-   WHY: Modern websites often feature transparent navigation that overlays the
-   hero image, creating an immersive, edge-to-edge design. This eliminates the
-   traditional white bar at the top and makes the hero section more impactful.
+   WHY: Modern UX demands that navigation is always accessible. A fixed header
+   follows the user as they scroll, eliminating the need to scroll back to the top
+   to access the menu. This improves usability and reduces friction.
    
-   HOW: We use position: absolute to remove the header from the normal document
-   flow and layer it on top of the hero section with z-index.
+   HOW: We use position: fixed instead of absolute to keep the header in the
+   viewport at all times. Combined with scroll-triggered styles, it becomes a
+   smart navigation system that adapts to user behavior.
    
-   RESULT: A floating navigation bar that blends seamlessly with the hero image
-   while remaining visible and functional.
+   RESULT: A persistent navigation bar that's transparent at the top but gains
+   a frosted glass backdrop as you scroll, ensuring readability without blocking
+   content unnecessarily.
    ============================================================================ */
 
-/* WHY: The main-header class defines our primary navigation bar. position: absolute
-   is crucial because it allows the header to overlay the hero section instead of
-   pushing it down.
+/* WHY: The main-header class defines our primary navigation bar. position: fixed
+   is crucial because it removes the header from the document flow AND keeps it
+   in the same position relative to the viewport, even when scrolling.
    
-   HOW: top: 0 positions it at the very top of the page, and width: 100% makes it
-   span the entire viewport. left: 0 ensures it starts from the leftmost edge.
+   PERFORMANCE NOTE: Fixed positioning is GPU-accelerated in modern browsers,
+   making scroll animations smooth. The browser creates a separate layer for the
+   header, avoiding expensive repaints of the entire page on scroll.
    
-   RESULT: The header floats above the hero image, starting from the top edge with
-   no gap. */
+   HOW: top: 0 positions it at the very top of the viewport (not the page), and
+   width: 100% makes it span the entire screen. left: 0 ensures it starts from
+   the leftmost edge. The header now "floats" above all content, always visible.
+   
+   RESULT: The header stays with the user as they scroll, providing constant
+   access to navigation without requiring them to scroll back to the top. */
 .main-header {
-  position: absolute;
+  position: fixed; /* Changed from absolute to fixed for sticky behavior */
   top: 0;
   left: 0;
   width: 100%;
-  /* WHY: z-index: 1000 ensures the header stays on top of all other content. Without
-     this, the hero image or other sections might overlap and hide the navigation.
+  /* WHY: z-index: 1000 ensures the header stays on top of ALL content on the page.
+     This is critical for fixed headers - without proper z-index, scrolling content
+     would appear over the navigation, making it unusable.
      
-     HOW: We use the value from our variables (--z-header) to maintain consistency
-     across the entire stacking context system.
+     HOW: We use a high value (1000) that's unlikely to conflict with other elements.
+     Most content uses z-index values below 100, so 1000 provides a safe buffer.
      
-     RESULT: Navigation is always clickable and visible, never hidden behind content. */
-  z-index: var(--z-header);
+     RESULT: Navigation is always clickable and visible, never hidden behind content,
+     regardless of what the user scrolls past. */
+  z-index: 1000; /* Explicit high value for fixed positioning */
   
   /* WHY: Adding vertical padding creates space above and below the navigation links,
      making them easier to click (larger touch target) and visually balanced.
@@ -46,35 +55,66 @@
   padding-bottom: var(--spacing-md);
   
   /* WHY: Transitions make the header smoothly adapt when we add effects on scroll
-     (like changing background color or adding shadow when the user scrolls down).
+     (like changing background color, adding shadow, or applying backdrop-filter).
+     Without transitions, these changes would be jarring and unprofessional.
      
-     HOW: We're setting up the transition here even though the scroll effect isn't
-     implemented yet. This is forward-thinking design.
+     HOW: We transition multiple properties (background-color, box-shadow, and the
+     crucial backdrop-filter) with smooth easing. The 0.3s duration is fast enough
+     to feel responsive but slow enough to be perceived as smooth.
      
-     RESULT: When scroll effects are added later, they'll animate smoothly instead
-     of jumping abruptly. */
+     RESULT: When the user scrolls past 50px, the header elegantly transforms from
+     transparent to having a frosted glass effect, providing clear visual feedback. */
   transition: background-color var(--transition-normal) var(--easing-default),
-              box-shadow var(--transition-normal) var(--easing-default);
+              box-shadow var(--transition-normal) var(--easing-default),
+              backdrop-filter var(--transition-normal) var(--easing-default);
 }
 
-/* WHY: When users scroll down, we want the header to gain a background color for
-   readability. The .scrolled class (added via JavaScript) triggers this change.
+/* WHY: When users scroll down past 50px (threshold defined in JS), we want the
+   header to gain a frosted glass background for readability. The .scrolled class
+   (added via JavaScript scroll event listener) triggers this transformation.
    
-   HOW: The background uses our secondary blue with 95% opacity (rgba alpha channel),
-   creating a semi-transparent backdrop that hints at content behind it.
+   GLASSMORPHISM EFFECT: This creates the modern "frosted glass" aesthetic by
+   combining a semi-transparent background with backdrop-filter blur, making
+   content behind the header appear blurred and slightly saturated.
    
-   RESULT: The header becomes more visible against varied content while maintaining
-   a subtle transparency effect. */
+   HOW: The background uses a very dark blue-black with 90% opacity, providing
+   solid readability while maintaining some translucency. backdrop-filter: blur(10px)
+   is the magic - it blurs whatever content is BEHIND this element (unlike regular
+   filter which would blur the header itself).
+   
+   RESULT: The header becomes highly visible and readable against any content while
+   maintaining the elegant glassmorphism aesthetic. Users can subtly see content
+   scrolling behind the header, providing nice visual feedback. */
 .main-header.scrolled {
-  background-color: rgba(10, 30, 60, 0.95);
-  /* WHY: A subtle shadow helps separate the header from content below it, adding
-     depth to the design.
+  background-color: rgba(5, 10, 20, 0.9); /* Dark ocean color with 90% opacity */
+  
+  /* WHY: backdrop-filter is the key to glassmorphism. It applies a blur effect to
+     the area BEHIND the element, creating that frosted glass window effect.
      
-     HOW: box-shadow creates a soft black shadow (rgba 0,0,0) with 10% opacity
+     BROWSER SUPPORT: backdrop-filter is supported in all modern browsers (Chrome 76+,
+     Firefox 103+, Safari 9+). We include the -webkit- prefix for older Safari versions.
+     
+     PERFORMANCE: backdrop-filter is GPU-accelerated and performs well, but can be
+     expensive on low-end devices. That's why we only apply it on scroll (when the
+     user has shown engagement) rather than always having it active.
+     
+     HOW: blur(10px) creates a 10-pixel radius blur of background content. This is
+     strong enough to create the effect but not so strong that it's distracting.
+     
+     RESULT: Content behind the header appears elegantly blurred, like looking through
+     textured glass, while the header content remains perfectly sharp. */
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px); /* Safari support */
+  
+  /* WHY: A subtle shadow helps separate the header from content below it, adding
+     depth to the design and reinforcing the "floating" glass panel aesthetic.
+     
+     HOW: box-shadow creates a soft black shadow (rgba 0,0,0) with 20% opacity
      that extends 10px down and blurs over 30px for a gradual fade.
      
-     RESULT: The header appears to "float" above the page content. */
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+     RESULT: The header appears to "float" above the page content like a pane of
+     glass suspended over the page. */
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
 }
 
 /* WHY: The nav element contains all navigation links. We need to distribute space
@@ -287,5 +327,69 @@
      
      RESULT: Polished animation when opening/closing the mobile menu. */
   transition: transform var(--transition-fast) var(--easing-default);
+}
+
+/* ============================================================================
+   LANGUAGE SELECTOR
+   ============================================================================
+   
+   WHY: The language selector needs to be visually distinct from regular nav
+   links while still fitting cohesively into the navigation design.
+   
+   HOW: Special styling for language links with active state indicators.
+   
+   RESULT: Clear, accessible language switching interface. */
+
+.language-selector {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-xs);
+  margin-left: var(--spacing-md);
+}
+
+.lang-link {
+  padding: var(--spacing-xs) var(--spacing-sm);
+  font-size: var(--font-size-sm);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  transition: all 0.3s ease;
+  border-radius: var(--radius-sm);
+  border-bottom: none !important;
+}
+
+.lang-link::after {
+  display: none !important;
+}
+
+/* WHY: Active language should be clearly highlighted so users know which
+   language is currently selected.
+   
+   HOW: Golden background with contrasting text color.
+   
+   RESULT: Obvious visual indicator of current language. */
+.lang-link.active {
+  background: var(--color-gold);
+  color: var(--color-bg-primary);
+}
+
+/* WHY: Non-active languages should be subdued but still accessible.
+   
+   HOW: Muted color that brightens on hover.
+   
+   RESULT: Clear hierarchy between active and inactive languages. */
+.lang-link:not(.active) {
+  color: var(--color-text-muted);
+}
+
+.lang-link:not(.active):hover {
+  color: var(--color-text-primary);
+  background: rgba(255, 255, 255, 0.1);
+  transform: none;
+}
+
+.lang-separator {
+  color: var(--color-text-muted);
+  font-size: var(--font-size-sm);
 }
 

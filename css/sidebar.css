@@ -1,371 +1,557 @@
 /* ============================================================================
-   SIDEBAR.CSS - Fixed Utility Navigation
+   SIDEBAR.CSS - Floating Glass Dock Navigation
    
-   WHY: The sidebar provides quick access to important sections (Line-Up, Ticket Sale,
-   etc.) without cluttering the main header. By fixing it to the side, it's always
-   available as users scroll through long content.
+   WHY: Traditional fixed sidebars (full-height, full-opacity) obstruct valuable
+   content and create a poor reading experience. This "Floating Glass Dock" design
+   solves that by being minimal, non-intrusive, and expanding only on intent.
    
-   HOW: We use position: fixed to keep it in place during scrolling, and place it
-   on the right side with vertical stacking.
+   DESIGN PATTERN: "Hover to Reveal" Dock - Inspired by macOS Dock and modern UI
+   patterns where navigation hovers elegantly over content without blocking it.
    
-   RESULT: Persistent, convenient access to key sections from anywhere on the page.
+   HOW: We create a floating, pill-shaped dock that:
+   - Sits 20px from the right edge (not flush)
+   - Vertically centered on the viewport
+   - 60px wide by default (icon-only)
+   - Expands to 260px on hover (revealing text)
+   - Uses glassmorphism (backdrop-blur + semi-transparency)
+   
+   RESULT: A futuristic, non-intrusive navigation tool that feels like it's from
+   tomorrow - present but not demanding attention until the user needs it.
    ============================================================================ */
 
-/* WHY: The utility-sidebar must stay in a fixed position on the right side of the
-   screen, always visible even when the user scrolls. This differs from position: absolute
-   which scrolls with the content.
+/* WHY: The floating dock must be positioned independently of page scroll, always
+   accessible in the same visual position. Unlike the old full-height sidebar,
+   this is a compact, capsule-shaped element that floats elegantly over content.
    
-   HOW: position: fixed removes the element from normal document flow and positions
-   it relative to the viewport. top: 50% and right: 0 place it on the right edge,
-   centered vertically.
+   UX IMPROVEMENT: Traditional sidebars occupy 20-30% of screen width permanently.
+   This dock occupies only 60px (5% on 1200px screens) and floats over white space
+   thanks to the safe zone we created in layout.css.
    
-   RESULT: A sidebar that follows the user down the page, always accessible. */
+   HOW: position: fixed keeps it in place during scroll. right: 20px creates
+   breathing room from the edge (not flush). top: 50% + translateY(-50%) centers
+   it vertically regardless of its height.
+   
+   RESULT: A floating navigation capsule that feels like a tool, not a page element. */
 .utility-sidebar {
   position: fixed;
+  right: 20px; /* Floats away from edge, not flush */
   top: 50%;
-  right: 0;
-  /* WHY: transform: translateY(-50%) centers the sidebar vertically. Since top: 50%
-     positions its top edge at the vertical center, we need to shift it up by half
-     its own height to truly center it.
+  
+  /* WHY: translateY(-50%) perfectly centers the dock vertically. Since top: 50%
+     positions the top edge at viewport center, we shift it up by half its own
+     height to achieve true centering.
      
-     HOW: translateY with a negative percentage moves the element up by that percentage
-     of its own height.
+     HOW: Percentage transforms are relative to the element's own dimensions.
+     -50% means "move up by half your height."
      
-     RESULT: The sidebar is perfectly centered vertically regardless of its height. */
+     RESULT: Perfectly centered dock regardless of how many links it contains. */
   transform: translateY(-50%);
   
-  /* WHY: z-index: 900 ensures the sidebar stays above content but below the main
-     header (z-index: 1000). This creates proper layering hierarchy.
+  /* WHY: z-index: 1000 ensures the dock floats above all content. We use the
+     highest value in our z-index system (matching header) because this is a
+     primary navigation element that should never be obscured.
      
-     HOW: We use the value from our variables (--z-sidebar) for consistency.
+     HOW: Higher z-index values stack above lower values.
      
-     RESULT: The sidebar is always visible but doesn't interfere with the header. */
-  z-index: var(--z-sidebar);
+     RESULT: The dock is always visible and interactive, never hidden behind content. */
+  z-index: 1000;
   
-  /* WHY: The sidebar needs a defined width to create a column for the links. 280px
-     provides enough space for descriptive link text without taking too much screen area.
+  /* WHY: COMPACT STATE - 60px width shows only icons, creating minimal visual
+     footprint. This is just wide enough for icons (24-32px) plus comfortable
+     padding (15px × 2 = 30px), totaling ~54-62px.
      
-     HOW: Fixed width ensures consistent layout and prevents content reflow.
+     CRITICAL: This narrow width is key to the non-intrusive nature. Users see
+     subtle icon hints without losing screen real estate.
      
-     RESULT: A stable, predictable sidebar width that works well with our overall layout. */
-  width: 280px;
+     HOW: Fixed width ensures consistent collapsed state. We'll animate this to
+     260px on hover for the expanded state.
+     
+     RESULT: Minimal visual presence - the dock is there but doesn't demand attention. */
+  width: 60px;
   
-  /* WHY: The semi-transparent background (95% opaque) allows subtle hints of content
-     behind it, creating depth while maintaining readability.
+  /* WHY: height: auto allows the dock to size naturally based on content (number
+     of links). Unlike the old 100vh sidebar, this creates a compact capsule that
+     only takes the space it needs.
      
-     HOW: rgba with 0.95 alpha gives us 95% opacity, letting 5% of background show through.
+     HOW: Auto height with padding creates a capsule that grows/shrinks based on
+     the number of navigation items.
      
-     RESULT: A modern, layered look that feels sophisticated rather than flat. */
-  background-color: rgba(10, 30, 60, 0.95);
+     RESULT: An elegant, appropriately-sized dock - not a dominating column. */
+  height: auto;
   
-  /* WHY: Padding creates inner spacing so links don't touch the edges of the sidebar.
-     This improves readability and creates a more comfortable click area.
+  /* WHY: GLASSMORPHISM FOUNDATION - Semi-transparent dark background (40% opacity)
+     creates the "glass" effect. This is subtle enough to see through but dark
+     enough to provide contrast for white icons.
      
-     HOW: --spacing-lg gives us 32px of padding on all sides.
+     UX PRINCIPLE: Collapsed UI should be "ghost-like" - present but unobtrusive.
+     Higher opacity is reserved for the expanded (engaged) state.
      
-     RESULT: Links have breathing room, making the sidebar feel spacious and easy to use. */
-  padding: var(--spacing-lg);
+     HOW: rgba(5, 10, 20, 0.4) gives us 40% opacity (60% transparent), making the
+     dock feel like frosted glass floating over content.
+     
+     RESULT: You can see content behind the dock, reinforcing that it's a floating
+     layer, not a blocking column. */
+  background: rgba(5, 10, 20, 0.4);
   
-  /* WHY: border-radius on the left side only (topLeft and bottomLeft) creates a
-     softened edge where the sidebar meets the content, but keeps the right edge
-     flush with the screen edge.
+  /* WHY: backdrop-filter is THE DEFINING FEATURE of glassmorphism. It blurs
+     content BEHIND the dock, creating the frosted glass effect that's both
+     beautiful and functional.
      
-     HOW: We specify individual corner radii - top-left and bottom-left get 8px
-     rounding, top-right and bottom-right stay sharp (0px).
+     HOW: blur(12px) diffuses background content into soft, muted colors. This
+     provides a calm, uniform canvas for our white icons/text while still allowing
+     you to perceive what's behind (colors, shapes, movement).
      
-     RESULT: A polished, modern appearance that feels intentional and refined. */
-  border-radius: 8px 0 0 8px;
+     BROWSER SUPPORT: Modern browsers (Chrome 76+, Firefox 103+, Safari 9+). We
+     include -webkit- prefix for maximum compatibility.
+     
+     RESULT: The dock appears as a sheet of frosted glass - you see through it but
+     it's distinct enough for clear icon visibility. Pure magic. */
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px); /* Safari/Webkit support */
   
-  /* WHY: A subtle shadow helps separate the sidebar from the content behind it,
-     adding depth to the design.
+  /* WHY: CAPSULE SHAPE - Large border-radius (20px) creates the modern "pill"
+     or "capsule" shape characteristic of floating docks. This distinguishes it
+     from traditional rectangular sidebars.
      
-     HOW: box-shadow with -5px offset casts the shadow to the left (negative x),
-     0px vertical offset, 15px blur, and 20% opacity for subtlety.
+     HOW: 20px radius is significant enough to create pronounced rounding without
+     becoming perfectly circular.
      
-     RESULT: The sidebar appears to float above the content, enhancing the layered effect. */
-  box-shadow: -5px 0 15px rgba(0, 0, 0, 0.2);
+     RESULT: A modern, friendly, futuristic appearance - like a floating UI element
+     from a sci-fi interface. */
+  border-radius: 20px;
   
-  /* WHY: If the sidebar content exceeds the viewport height, we need scrolling to
-     access all links without breaking the layout.
+  /* WHY: REFINED GLASS BORDER - A subtle white border (10% opacity) creates a
+     delicate edge highlight, enhancing the glass material appearance. This is a
+     signature glassmorphism technique.
      
-     HOW: overflow-y: auto adds a vertical scrollbar only when needed.
+     HOW: 1px solid border is thin enough to be elegant, not chunky. The low
+     opacity (0.1 = 10%) makes it a subtle accent, not a hard outline.
      
-     RESULT: The sidebar gracefully handles any amount of content without breaking. */
-  overflow-y: auto;
+     RESULT: The dock has a refined, premium appearance with a delicate edge glow. */
+  border: 1px solid rgba(255, 255, 255, 0.1);
   
-  /* WHY: max-height: 80vh prevents the sidebar from becoming too tall on large
-     screens, maintaining proportion with the viewport.
+  /* WHY: ELEVATION SHADOW - A strong shadow (0 8px 32px) creates depth, making
+     the dock appear to float well above the page surface. The large blur radius
+     (32px) creates a soft, diffused shadow (not harsh).
      
-     HOW: 80vh = 80% of viewport height, leaving space above and below.
+     HOW: 0 horizontal offset, 8px downward offset, 32px blur, 30% opacity black.
+     This mimics natural lighting from above.
      
-     RESULT: Balanced proportions on all screen sizes. */
-  max-height: 80vh;
+     RESULT: The dock casts a realistic shadow, reinforcing its "floating" nature
+     and separating it from background content. */
+  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
   
-  /* WHY: Transitions enable smooth animations when the sidebar appears/disappears
-     on different screen sizes (handled by responsive.css).
+  /* WHY: Compact vertical padding (15px top/bottom) keeps the dock tight. We use
+     0 horizontal padding because we'll add padding to individual links instead
+     for better control over icon centering.
      
-     HOW: We transition transform and opacity for smooth slide-in/fade effects.
+     HOW: padding: 15px 0 applies vertical padding only.
      
-     RESULT: Polished animations when toggling the sidebar on mobile/tablet. */
-  transition: transform var(--transition-normal) var(--easing-default),
-              opacity var(--transition-normal) var(--easing-default);
+     RESULT: A compact capsule with comfortable icon spacing. */
+  padding: 15px 0;
+  
+  /* WHY: CRITICAL - overflow: hidden prevents link text from spilling out when
+     the dock is collapsed. Without this, full text would be visible outside the
+     60px width, breaking the collapsed illusion.
+     
+     HOW: Any content extending beyond the dock's boundaries is clipped and hidden.
+     
+     RESULT: In collapsed state, text is completely hidden - only icons visible. */
+  overflow: hidden;
+  
+  /* WHY: CRITICAL - white-space: nowrap prevents text from wrapping to multiple
+     lines. This ensures text stays on one line and gets clipped by overflow: hidden,
+     rather than breaking into multiple lines within the 60px width.
+     
+     HOW: nowrap forces all text to remain on a single line regardless of container width.
+     
+     RESULT: Text remains on one line, making the collapsed state clean (icons only).
+     When expanded, full text appears on one line elegantly. */
+  white-space: nowrap;
+  
+  /* WHY: SMOOTH EXPANSION - We use a custom cubic-bezier for a "spring-like" feel.
+     The curve (0.25, 0.8, 0.25, 1) creates initial acceleration then smooth easing,
+     mimicking natural motion with slight elasticity.
+     
+     ANIMATION THEORY: This curve is more dynamic than standard ease-in-out. The
+     0.8 peak creates a subtle overshoot feeling (though not actual overshoot),
+     making the animation feel alive and responsive.
+     
+     HOW: We transition width and background over 0.4s with the custom easing.
+     
+     RESULT: The dock expansion feels organic and premium, not mechanical. It has
+     personality and fluidity that standard easing lacks. */
+  transition: width 0.4s cubic-bezier(0.25, 0.8, 0.25, 1),
+              background 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
 }
 
-/* WHY: The sidebar links need to be stacked vertically (like a traditional sidebar menu)
-   rather than horizontally.
+/* WHY: EXPANDED STATE (on hover) - When the user shows interest by hovering, we
+   expand the dock to full width (260px) and increase opacity for better text
+   readability. This is the "reveal" part of "hover to reveal."
    
-   HOW: display: flex with flex-direction: column stacks children vertically.
+   UX PATTERN: Hover is an explicit signal of intent without requiring a click.
+   It's faster and more intuitive - the user gets information immediately.
    
-   RESULT: Links appear one below the other in a clean, organized list. */
+   HOW: :hover pseudo-class detects mouse proximity and triggers transformations.
+   
+   RESULT: Dock smoothly expands, revealing full navigation text in a satisfying,
+   fluid animation that feels responsive and intentional. */
+.utility-sidebar:hover {
+  /* WHY: EXPANDED WIDTH - 260px provides generous space for comfortable text
+     reading without becoming so wide that it blocks too much content. This is
+     about 22% of a 1200px screen - noticeable but not dominating.
+     
+     HOW: Width animates from 60px to 260px over 0.4s with our spring curve.
+     
+     RESULT: Dock grows smoothly to reveal full link text, creating a satisfying
+     expansion effect that feels intentional and polished. */
+  width: 260px;
+  
+  /* WHY: EXPANDED BACKGROUND - When expanded, we increase opacity to 85% for
+     maximum text contrast and readability. The darker, more opaque background
+     signals "this is now active and interactive."
+     
+     UX PRINCIPLE: Active UI elements should be more prominent. The opacity jump
+     from 40% to 85% clearly indicates state change.
+     
+     HOW: rgba(5, 10, 20, 0.85) gives us 85% opacity (only 15% transparent), making
+     the background very prominent while maintaining a hint of glassmorphism.
+     
+     RESULT: Expanded dock has excellent text contrast while still feeling like
+     glass thanks to the backdrop-blur and subtle transparency. */
+  background: rgba(5, 10, 20, 0.85);
+}
+
+/* WHY: The dock links need to stack vertically (traditional navigation menu layout)
+   rather than horizontally. Each link should be a distinct, clickable row.
+   
+   HOW: display: flex with flex-direction: column arranges children top-to-bottom.
+   
+   RESULT: Links appear one below the other in a clean, organized vertical list. */
 .sidebar-links {
   display: flex;
   flex-direction: column;
-  /* WHY: gap: 12px creates consistent spacing between each link without manually
-     adding margins to each item.
+  
+  /* WHY: gap: 8px creates consistent, comfortable spacing between links without
+     manually adding margins to each item. This is cleaner than margin-bottom
+     on each link.
      
-     HOW: Flexbox gap applies spacing between children automatically.
+     HOW: Flexbox gap automatically applies spacing between children (not on edges).
      
-     RESULT: Even, predictable spacing throughout the list. */
-  gap: calc(var(--spacing-sm) * 0.75); /* 12px */
+     RESULT: Even, predictable 8px gaps between all navigation links. */
+  gap: 8px;
+  
+  /* WHY: Remove default list styling (bullets, margins, padding) that browsers
+     add to <ul> elements. We're creating a custom navigation dock, not a text list.
+     
+     HOW: Zeroing these properties removes all browser defaults.
+     
+     RESULT: Clean slate for custom link styling without interference. */
+  list-style: none;
+  padding: 0;
+  margin: 0;
 }
 
-/* WHY: Each sidebar link needs to be a comfortable click target with clear visual
-   hierarchy and interactive feedback.
+/* WHY: In collapsed state, we need to hide text while showing only icons. We
+   target text spans (not icon spans) and make them invisible with opacity: 0.
    
-   HOW: We style each link with padding, transitions, and hover effects.
+   HOW: :not(.icon) selector excludes elements with the "icon" class, targeting
+   only text spans.
    
-   RESULT: Professional, usable navigation links that feel responsive and polished. */
+   RESULT: In collapsed state, text is invisible but ready to fade in on hover. */
+.sidebar-links li a span:not(.icon),
+.nav-text {
+  /* WHY: opacity: 0 makes text completely transparent while maintaining its
+     space in layout. This is crucial for smooth transitions - if we used
+     display: none, text would pop in/out instead of fading smoothly.
+     
+     HOW: opacity: 0 renders the element invisible but it still occupies space
+     and can transition.
+     
+     RESULT: Text is hidden in collapsed state but ready for smooth fade-in. */
+  opacity: 0;
+  
+  /* WHY: FAST fade transition - 0.2s makes text disappear/appear quickly but
+     smoothly. This is faster than the dock expansion (0.4s) to create a
+     sequential reveal effect.
+     
+     HOW: Short duration creates snappy, responsive feeling.
+     
+     RESULT: Text fades quickly, feeling responsive and intentional. */
+  transition: opacity 0.2s ease;
+}
+
+/* WHY: When dock is hovered (expanded), we reveal text by fading it to full
+   opacity. We add a 0.15s delay so text starts appearing AFTER dock width begins
+   expanding, creating a polished sequential reveal.
+   
+   SEQUENTIAL ANIMATION THEORY: When multiple properties animate simultaneously,
+   it can feel chaotic. Staggering animations (width first, then text) creates
+   intentional, elegant choreography.
+   
+   TIMING BREAKDOWN:
+   - 0-0.4s: Dock width expands from 60px to 260px
+   - 0.15-0.35s: Text fades from 0 to 1 opacity
+   Result: Text appears as dock is expanding, but not before there's space for it.
+   
+   HOW: transition-delay shifts the start of opacity transition by 0.15 seconds.
+   
+   RESULT: Text smoothly fades in as dock expands, creating a sophisticated,
+   choreographed reveal that feels intentional and premium. */
+.utility-sidebar:hover .sidebar-links li a span:not(.icon),
+.utility-sidebar:hover .nav-text {
+  /* WHY: opacity: 1 makes text fully visible and readable.
+     
+     RESULT: Text is crisp and clear when dock is expanded. */
+  opacity: 1;
+  
+  /* WHY: The 0.15s delay creates the sequential reveal choreography. Text starts
+     fading in 150ms after hover begins, allowing dock to establish its expansion
+     first.
+     
+     RESULT: Polished, intentional animation sequence that feels professional. */
+  transition-delay: 0.15s;
+}
+
+/* WHY: Each dock link needs to be a comfortable click target with clear visual
+   hierarchy, hover feedback, and accessibility compliance.
+   
+   HOW: We style with proper padding, colors, and interactive states.
+   
+   RESULT: Professional, usable navigation links that feel responsive. */
 .sidebar-links li a {
-  /* WHY: display: block makes the entire link area clickable, not just the text.
-     This is crucial for usability - users shouldn't have to precisely click the text.
+  /* WHY: display: flex allows us to align icons and text horizontally with
+     precise control using flexbox properties.
      
-     HOW: Block elements fill their container's width, making the full area interactive.
+     HOW: Flex container with align-items: center vertically centers children.
      
-     RESULT: Larger, easier-to-click links that improve user experience. */
-  display: block;
+     RESULT: Icons and text align perfectly on the same baseline. */
+  display: flex;
+  align-items: center;
   
-  /* WHY: Padding increases the clickable area and creates visual weight. 12px vertical
-     and 16px horizontal provides comfortable spacing.
+  /* WHY: Generous padding (12px vertical, 16px horizontal) increases the clickable
+     area beyond just text/icon bounds, improving usability especially on touch devices.
      
-     HOW: Padding expands the clickable area beyond just the text bounds.
+     ACCESSIBILITY: Larger click targets (minimum 44x44px per WCAG) accommodate
+     users with limited dexterity or motor control issues.
      
-     RESULT: Links that are easy to click/tap even for users with limited dexterity. */
-  padding: calc(var(--spacing-sm) * 0.75) var(--spacing-sm);
+     HOW: Padding expands the interactive area without increasing visual size.
+     
+     RESULT: Links are easy to click/tap even for users with accessibility needs. */
+  padding: 12px 16px;
   
-  color: var(--color-text-main);
-  font-size: var(--font-size-base);
-  font-weight: var(--font-weight-medium);
+  /* WHY: Pure white (#ffffff) on dark background ensures maximum contrast and
+     readability, meeting WCAG AAA standards (contrast ratio > 7:1).
+     
+     ACCESSIBILITY: High contrast is critical for users with visual impairments,
+     color blindness, or those viewing in bright sunlight.
+     
+     HOW: Pure white (255, 255, 255) on dark blue-black (5, 10, 20) provides
+     excellent contrast.
+     
+     RESULT: Text is sharp, easily readable, and accessible to all users. */
+  color: #ffffff;
+  font-size: 1rem; /* 16px - comfortable reading size */
+  font-weight: 500; /* Medium weight for clarity without being heavy */
   
-  /* WHY: position: relative allows us to add a left border pseudo-element that
-     animates on hover.
+  /* WHY: border-radius: 8px softens link corners, creating a modern, friendly
+     appearance that matches the dock's rounded capsule shape.
      
-     HOW: Child pseudo-elements with position: absolute will be positioned relative
-     to this link.
+     HOW: 8px is less rounded than the dock (20px) but still noticeable.
      
-     RESULT: We can create a animated left-border hover effect. */
-  position: relative;
+     RESULT: Links feel cohesive with the dock's rounded aesthetic. */
+  border-radius: 8px;
   
-  /* WHY: border-radius: 4px softens the link corners slightly for a modern look.
+  /* WHY: Smooth transitions for hover effects prevent jarring color jumps and
+     create a polished, professional feel.
      
-     HOW: 4px provides subtle rounding without looking overly rounded or cartoonish.
+     HOW: We transition background-color, color, and transform properties.
      
-     RESULT: Contemporary, polished link styling. */
-  border-radius: 4px;
-  
-  /* WHY: Transitions smooth out color changes and background effects on hover.
-     
-     HOW: We transition background-color, color, and padding-left for comprehensive
-     hover animations.
-     
-     RESULT: Smooth, professional hover effects. */
-  transition: background-color var(--transition-fast) var(--easing-default),
-              color var(--transition-fast) var(--easing-default),
-              padding-left var(--transition-fast) var(--easing-default);
+     RESULT: Buttery-smooth hover effects that feel premium. */
+  transition: background-color 0.2s ease,
+              color 0.2s ease,
+              transform 0.2s ease;
 }
 
-/* WHY: The ::before pseudo-element creates a colored left border that grows on hover,
-   providing visual feedback.
+/* WHY: Hover effects provide immediate visual feedback that links are interactive
+   and will respond to clicks. Multi-layered hover effects feel more premium than
+   simple color changes.
    
-   HOW: We create a 3px wide bar on the left edge that starts transparent and becomes
-   gold on hover.
+   HOW: We change background, text color, and add a subtle scale transform.
    
-   RESULT: An elegant accent that indicates interactivity. */
-.sidebar-links li a::before {
-  content: '';
-  position: absolute;
-  left: 0;
-  top: 0;
-  bottom: 0;
-  width: 3px;
-  background-color: var(--color-accent-gold);
-  /* WHY: scaleY(0) makes the border invisible initially. We'll animate to scaleY(1)
-     on hover, creating a growing effect.
-     
-     HOW: Scale transform with 0 collapses the element to invisible. Transform-origin
-     top means it grows from the top downward.
-     
-     RESULT: The gold border appears to "draw itself" from top to bottom on hover. */
-  transform: scaleY(0);
-  transform-origin: top;
-  transition: transform var(--transition-normal) var(--easing-default);
-  border-radius: 4px 0 0 4px;
-}
-
-/* WHY: Hover effects provide immediate visual feedback that the link is interactive
-   and will respond to clicks.
-   
-   HOW: We change the background to a lighter blue, the text to gold, shift the link
-   slightly right, and animate the left border.
-   
-   RESULT: Multi-layered hover effect that feels polished and responsive. */
+   RESULT: Engaging, polished hover interaction that encourages exploration. */
 .sidebar-links li a:hover {
-  /* WHY: A slightly lighter background (our secondary color) creates depth by
-     suggesting the link is "lighting up" or activating.
+  /* WHY: Lighter background (secondary color) creates depth by making the link
+     appear to "light up" or "activate" on hover.
      
-     HOW: We use our secondary background variable for consistency.
+     HOW: Using our secondary background variable for consistency.
      
-     RESULT: Clear visual indication that the link is being hovered. */
+     RESULT: Clear visual indication of interactivity. */
   background-color: var(--color-bg-secondary);
+  
+  /* WHY: Gold color (Tomorrowland's signature accent) makes hovered links feel
+     special and important, drawing attention.
+     
+     HOW: We use our accent color variable for brand consistency.
+     
+     RESULT: Hovered links feel premium and magical, fitting the theme. */
   color: var(--color-accent-gold);
   
-  /* WHY: padding-left increase from 16px to 24px creates a subtle slide-right effect,
-     making the link feel like it's "stepping forward."
+  /* WHY: Subtle scale increase (105%) makes the link feel like it's "coming forward"
+     toward the user, creating a tactile, responsive feeling.
      
-     HOW: Increasing left padding shifts the text to the right while maintaining
-     overall link size.
+     HOW: transform: scale(1.05) enlarges the element by 5%.
      
-     RESULT: Dynamic, engaging hover interaction. */
-  padding-left: calc(var(--spacing-md) * 1.5);
+     RESULT: Dynamic, engaging hover that feels alive and responsive. */
+  transform: scale(1.05);
 }
 
-/* WHY: On hover, the left border "grows" from invisible to full height, creating
-   a drawing animation.
+/* WHY: Active links (current page) should be visually distinct so users always
+   know their location in the site hierarchy. This prevents disorientation.
    
-   HOW: scaleY(1) expands the border to full height (100% of link height).
+   HOW: We apply hover styles permanently to active links.
    
-   RESULT: The gold accent bar appears to draw itself from top to bottom. */
-.sidebar-links li a:hover::before {
-  transform: scaleY(1);
-}
-
-/* WHY: Active links (current page) should be visually distinct so users know where
-   they are in the site hierarchy.
-   
-   HOW: We apply the same styles as hover, but permanently, so they're always visible.
-   
-   RESULT: Clear indication of the current page in the sidebar navigation. */
+   RESULT: Clear "you are here" indicator in the navigation. */
 .sidebar-links li a.active {
   background-color: var(--color-bg-secondary);
   color: var(--color-accent-gold);
-  padding-left: calc(var(--spacing-md) * 1.5);
 }
 
-.sidebar-links li a.active::before {
-  transform: scaleY(1);
-}
-
-/* WHY: Icons next to link text provide quick visual recognition, making it easier
-   to scan and find specific links.
+/* WHY: Icons provide quick visual recognition, making navigation scannable. Users
+   can identify sections by icon alone, speeding up navigation.
    
-   HOW: We use inline-flex to align the icon with the text and add margin for spacing.
+   HOW: We size icons consistently and add cyan color for visual interest.
    
-   RESULT: Professional-looking links with icons that enhance usability. */
+   RESULT: Scannable, icon-driven navigation that's fast to use. */
 .sidebar-links li a .icon {
+  /* WHY: display: inline-flex with centering ensures icon content (emojis, SVGs)
+     is perfectly centered within its bounds.
+     
+     HOW: inline-flex allows the icon to flow with text while using flex centering.
+     
+     RESULT: Icons are perfectly centered and aligned with text. */
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  /* WHY: margin-right creates space between the icon and text, preventing them
-     from being cramped together.
+  
+  /* WHY: margin-right creates space between icon and text, preventing cramping.
+     8px provides comfortable separation without excessive space.
      
-     HOW: 8px provides comfortable separation without excessive space.
+     HOW: Right margin pushes text away from the icon.
      
      RESULT: Clear visual separation between icon and text. */
-  margin-right: var(--spacing-xs);
-  /* WHY: Fixed width and height ensure all icons are the same size, creating
-     visual consistency even if the icon designs vary.
+  margin-right: 8px;
+  
+  /* WHY: Fixed dimensions (24x24px) ensure all icons are uniform size, creating
+     visual consistency even if icon designs vary.
      
-     HOW: 20x20px is large enough to be visible but small enough to not overpower text.
+     HOW: Equal width and height create perfect squares for icons.
      
-     RESULT: Uniform icon sizing throughout the sidebar. */
-  width: 20px;
-  height: 20px;
-  /* WHY: Cyan color for icons creates visual hierarchy - gold text, cyan icons.
-     This adds variety while staying within our color system.
+     RESULT: Uniform, professional icon sizing throughout the dock. */
+  width: 24px;
+  height: 24px;
+  
+  /* WHY: Cyan color creates visual hierarchy - gold for hovered text, cyan for
+     default icons. This adds variety while staying within our color system.
      
-     HOW: We use our bioluminescent accent color for a thematic connection.
+     HOW: We use our bioluminescent cyan accent for thematic connection.
      
-     RESULT: Icons that complement the text without competing for attention. */
+     RESULT: Icons that complement text without competing for attention. */
   color: var(--color-accent-cyan);
-  transition: color var(--transition-fast) var(--easing-default);
+  
+  /* WHY: Smooth color transition makes icon color changes feel polished.
+     
+     HOW: 0.2s transition on color property.
+     
+     RESULT: Icons smoothly shift to gold on hover, maintaining cohesion. */
+  transition: color 0.2s ease;
 }
 
-/* WHY: On hover, icons should also change color to maintain cohesion with the
-   text color change.
+/* WHY: On hover, icons should match the text color change (gold) to maintain
+   visual cohesion and reinforce the interactive state.
    
-   HOW: We transition from cyan to gold, matching the text.
+   HOW: Icon color transitions to gold matching the text.
    
-   RESULT: Unified hover effect where both icon and text change together. */
-.sidebar-links li a:hover .icon {
+   RESULT: Unified hover effect where icon and text change together harmoniously. */
+.sidebar-links li a:hover .icon,
+.sidebar-links li a.active .icon {
   color: var(--color-accent-gold);
 }
 
-/* WHY: Mobile and tablet devices don't have space for a fixed sidebar. We hide it
-   by default and it will be shown via a toggle button (handled in responsive.css).
+/* WHY: Mobile and tablet devices don't have space for a floating dock, and hover
+   interactions don't work well on touch devices. We hide it by default and show
+   alternative navigation (hamburger menu).
    
-   HOW: This class will be added by JavaScript or media queries to hide the sidebar.
+   HOW: This class can be added via JavaScript or media queries to hide the dock.
    
-   RESULT: The sidebar gracefully disappears on small screens without breaking layout. */
+   RESULT: The dock gracefully disappears on small screens without breaking layout. */
 .utility-sidebar.hidden {
-  /* WHY: transform: translateX(100%) moves the sidebar completely off-screen to
-     the right (100% of its own width = 280px).
+  /* WHY: transform: translateX(100%) slides the dock completely off-screen to
+     the right (100% of its own width). Combined with the existing translateY,
+     we need to preserve vertical centering.
      
-     HOW: Positive translateX moves right, negative moves left.
+     HOW: Multiple transforms in one declaration: horizontal slide + vertical center.
      
-     RESULT: The sidebar slides off-screen smoothly (thanks to our transition). */
+     RESULT: Dock slides off-screen smoothly to the right while staying centered. */
   transform: translateX(100%) translateY(-50%);
+  
+  /* WHY: opacity: 0 fades the dock out, making the exit more graceful than just
+     sliding away.
+     
+     HOW: Combined with transform for a slide-and-fade exit.
+     
+     RESULT: Elegant disappearance that doesn't feel abrupt. */
   opacity: 0;
-  /* WHY: pointer-events: none prevents the hidden sidebar from intercepting clicks
-     meant for content behind it.
+  
+  /* WHY: pointer-events: none prevents the hidden dock from intercepting clicks
+     meant for content behind it. Even though it's off-screen, being thorough
+     prevents edge case bugs.
      
-     HOW: This CSS property disables all mouse/touch interaction with the element.
+     HOW: This CSS property completely disables mouse/touch interaction.
      
-     RESULT: Hidden sidebar doesn't interfere with the rest of the page. */
+     RESULT: Hidden dock doesn't interfere with page interaction at all. */
   pointer-events: none;
 }
 
-/* WHY: On smaller screens, we need a toggle button to show/hide the sidebar since
-   it takes up too much space to be always visible.
+/* WHY: On smaller screens (< 768px), we need a toggle button to show/hide the
+   dock since it takes up too much space to be always visible, even collapsed.
    
    HOW: This button is hidden by default (display: none) and shown on mobile/tablet
    via media queries in responsive.css.
    
-   RESULT: Clean mobile experience with toggle-able sidebar access. */
+   RESULT: Clean mobile experience with toggle-able dock access. */
 .sidebar-toggle {
-  display: none;
+  display: none; /* Hidden by default, shown on mobile via media queries */
   position: fixed;
-  bottom: var(--spacing-lg);
-  right: var(--spacing-lg);
-  z-index: 950;
+  bottom: 32px;
+  right: 32px;
+  z-index: 1001; /* Above the dock */
   
-  /* WHY: Circular button (50x50px with border-radius: 50%) is a common pattern
-     for floating action buttons, instantly recognizable.
+  /* WHY: Circular button (56x56px with border-radius: 50%) is the standard size
+     for mobile floating action buttons (FABs), instantly recognizable.
      
-     HOW: Equal width and height with 50% border-radius creates a perfect circle.
+     HOW: Equal width and height with 50% border-radius creates perfect circle.
      
-     RESULT: Modern, mobile-friendly toggle button. */
-  width: 50px;
-  height: 50px;
+     RESULT: Modern, mobile-friendly toggle button following FAB conventions. */
+  width: 56px;
+  height: 56px;
   border-radius: 50%;
   
+  /* WHY: Gold background makes the button prominent and on-brand with Tomorrowland's
+     signature accent color.
+     
+     HOW: Using our accent color variable for consistency.
+     
+     RESULT: Eye-catching, branded button that's easy to find. */
   background-color: var(--color-accent-gold);
   color: var(--color-bg-primary);
   
-  /* WHY: Flexbox centering ensures the icon/text inside is perfectly centered
-     within the circular button.
+  /* WHY: Flexbox centering ensures the icon inside is perfectly centered within
+     the circular button.
      
      HOW: justify-content and align-items: center work together for perfect centering.
      
-     RESULT: Centered content regardless of button size or content. */
+     RESULT: Icon is perfectly centered regardless of size. */
   display: flex;
   justify-content: center;
   align-items: center;
@@ -373,36 +559,53 @@
   border: none;
   cursor: pointer;
   
-  /* WHY: A shadow makes the floating button stand out from the page content,
-     suggesting it's interactive and layered above.
+  /* WHY: Strong shadow makes the FAB clearly float above content, emphasizing
+     its interactive nature.
      
-     HOW: 0 4px 12px creates a drop shadow that extends downward.
+     HOW: 0 4px 12px creates a noticeable drop shadow extending downward.
      
-     RESULT: The button appears to float above the page. */
+     RESULT: Button appears to float above the page, drawing attention. */
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
   
-  transition: transform var(--transition-fast) var(--easing-default),
-              box-shadow var(--transition-fast) var(--easing-default),
-              background-color var(--transition-fast) var(--easing-default);
+  /* WHY: Smooth transitions for hover effects make the button feel responsive.
+     
+     HOW: We transition transform, shadow, and background-color.
+     
+     RESULT: Polished, premium hover interaction. */
+  transition: transform 0.2s ease,
+              box-shadow 0.2s ease,
+              background-color 0.2s ease;
 }
 
-/* WHY: Hover effect on the toggle button provides feedback that it's interactive.
+/* WHY: Hover effect on toggle button provides feedback that it's interactive and
+   encourages interaction.
    
    HOW: We slightly enlarge it and change to cyan for visual interest.
    
-   RESULT: Engaging hover effect that encourages interaction. */
+   RESULT: Engaging hover effect that invites interaction. */
 .sidebar-toggle:hover {
+  /* WHY: Scale(1.1) enlarges button by 10%, creating a subtle "come forward" effect.
+     
+     RESULT: Button feels responsive and alive. */
   transform: scale(1.1);
+  
+  /* WHY: Cyan represents the bioluminescent theme and provides color variety.
+     
+     RESULT: Magical color shift that fits the underwater theme. */
   background-color: var(--color-accent-cyan);
+  
+  /* WHY: Stronger, colored shadow enhances the glow effect.
+     
+     RESULT: Button appears to glow on hover, very sci-fi. */
   box-shadow: 0 6px 20px rgba(0, 188, 212, 0.4);
 }
 
-/* WHY: Active state (button being clicked) provides tactile feedback.
+/* WHY: Active state (button being clicked) provides tactile feedback, mimicking
+   a physical button press.
    
-   HOW: Slightly shrinking the button mimics a physical button press.
+   HOW: Scale(0.95) shrinks button slightly (pressed down).
    
-   RESULT: Satisfying, realistic button interaction. */
+   RESULT: Satisfying, realistic button press feeling. */
 .sidebar-toggle:active {
   transform: scale(0.95);
 }
-

@@ -60,24 +60,58 @@ main {
    HOW: We create container classes that constrain content width and center it.
    ============================================================================ */
 
-/* WHY: A max-width of 1200px ensures content doesn't become too wide on large
-   monitors, while margin: 0 auto centers the container horizontally.
+/* WHY: PERFECT CENTERING with Floating Dock Awareness - The container must be
+   centered while also creating a safe zone for the Floating Glass Dock on the right.
    
-   HOW: margin: 0 auto applies 0 margin top/bottom and "auto" left/right. When
-   left and right margins are both auto, they split the available space equally,
-   centering the element.
+   DESIGN STRATEGY: Instead of asymmetric padding (which breaks centering), we use
+   a narrower max-width (1100px instead of 1200px) and perfect centering. This
+   creates natural breathing room on both sides, ensuring the dock floats over
+   white space without obstructing content.
    
-   RESULT: Content is centered and never exceeds 1200px width, maintaining
-   readability on all screen sizes. */
+   HOW: margin-inline: auto (modern CSS) centers the container perfectly. max-width
+   constrains content width. Width 90% ensures mobile spacing.
+   
+   RESULT: Symmetrically centered content with equal spacing on both sides, and
+   enough right-side space for the Floating Glass Dock to hover comfortably. */
 .container {
-  max-width: 1200px;
-  margin: 0 auto;
-  /* WHY: Padding prevents content from touching screen edges on smaller devices.
-     Without this, text would slam against the edges of phones/tablets.
+  /* WHY: width: 90% ensures content doesn't touch screen edges on mobile devices
+     while being responsive to different viewport sizes.
      
-     HOW: var(--spacing-md) applies our 24px padding on left/right sides.
+     HOW: 90% width leaves 5% breathing room on each side on small screens.
      
-     RESULT: Content has breathing room on all devices. */
+     RESULT: Content has comfortable spacing on all devices. */
+  width: 90%;
+  
+  /* WHY: max-width: 1100px (reduced from 1200px) ensures content stays within
+     a readable width while creating natural space for the Floating Glass Dock.
+     
+     STRATEGIC CALCULATION: 1100px content + dock (60px collapsed / 280px expanded)
+     + spacing = perfect balance on typical screens (1366px, 1440px, 1920px).
+     
+     HOW: Max-width prevents content from exceeding this value even if viewport
+     is wider.
+     
+     RESULT: Content never becomes uncomfortably wide, and the dock always has
+     space to float without obstruction. */
+  max-width: 1100px;
+  
+  /* WHY: margin-inline: auto is THE CRITICAL PROPERTY for horizontal centering.
+     It's the modern CSS way to center block elements (equivalent to margin: 0 auto).
+     
+     HOW: "inline" refers to the horizontal axis. "auto" on both sides distributes
+     remaining space equally, achieving perfect centering.
+     
+     RESULT: The container is perfectly centered with equal spacing on left and
+     right, creating visual balance and harmony. */
+  margin-inline: auto;
+  
+  /* WHY: Minimal uniform padding prevents content from touching edges while
+     maintaining centering. We use small padding instead of large asymmetric
+     padding to preserve balance.
+     
+     HOW: var(--spacing-md) applies 24px padding on both sides equally.
+     
+     RESULT: Content has breathing room without breaking the centered layout. */
   padding-left: var(--spacing-md);
   padding-right: var(--spacing-md);
 }
@@ -92,6 +126,14 @@ main {
   width: 100%;
   padding-left: var(--spacing-md);
   padding-right: var(--spacing-md);
+  
+  /* WHY: Even fluid containers benefit from centered content when they contain
+     text or structural elements.
+     
+     HOW: margin-inline: auto with width: 100% centers any constrained children.
+     
+     RESULT: Fluid width sections with properly centered internal content. */
+  margin-inline: auto;
 }
 
 /* ============================================================================

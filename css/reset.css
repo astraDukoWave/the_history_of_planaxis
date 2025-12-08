@@ -122,3 +122,46 @@ button {
   cursor: pointer;
 }
 
+/* WHY: OPTIMAL LINE LENGTH + PERFECT CENTERING - Typography research shows that
+   the ideal line length for comfortable reading is 65-75 characters. We also
+   center the paragraph block within its container for visual balance.
+   
+   UX PRINCIPLE: Readers lose their place on lines longer than 75 characters.
+   Additionally, centered text blocks create visual harmony and draw the eye
+   naturally to the content.
+   
+   HOW: max-width: 70ch (reduced from 75ch for slightly tighter, more comfortable
+   reading). margin-inline: auto centers the paragraph block horizontally within
+   its parent container.
+   
+   RESULT: Perfectly centered, comfortable paragraphs with optimal line length
+   that create natural white space on both sides, preventing text from stretching
+   and ensuring the Floating Dock never obstructs content. */
+p {
+  max-width: 70ch; /* Optimal reading width: 65-70 characters */
+  margin-inline: auto; /* CRITICAL: Centers the paragraph block horizontally */
+}
+
+/* WHY: HEADING CENTERING - Section headings (h2, h3) should also be centered
+   within their containers and constrained to reasonable widths for visual balance.
+   
+   UX PRINCIPLE: Centered headings create clear visual hierarchy and guide the
+   eye through the content structure. They also prevent headings from becoming
+   uncomfortably wide on large screens.
+   
+   HOW: max-width constrains heading width. margin-inline: auto centers them
+   horizontally. We use slightly different max-widths based on typical heading
+   lengths (headings are usually shorter than paragraphs).
+   
+   RESULT: Perfectly centered, balanced headings that create visual hierarchy
+   and maintain readability across all screen sizes. */
+h2 {
+  max-width: 50ch; /* Headings are typically shorter than body text */
+  margin-inline: auto;
+}
+
+h3 {
+  max-width: 45ch; /* Subheadings even more concise */
+  margin-inline: auto;
+}
+

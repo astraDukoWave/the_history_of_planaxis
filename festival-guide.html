@@ -27,7 +27,7 @@
   <!-- WHY: Same header as index.html for consistent navigation across the site -->
   <header class="main-header">
     <nav>
-      <a href="index.html" class="logo" aria-label="Tomorrowland Planaxis Home">
+      <a href="index.html" class="logo" aria-label="Tomorrowland Planaxis Home" data-i18n="nav.logo">
         Planaxis
       </a>
       
@@ -39,11 +39,18 @@
       
       <ul class="nav-links">
         <li>
-          <a href="index.html#festival" class="active" aria-current="page">Festival</a>
+          <a href="index.html#festival" class="active" aria-current="page" data-i18n="nav.festival">Festival</a>
         </li>
-        <li><a href="index.html#brand-activation">Brand Activation</a></li>
-        <li><a href="index.html#cultural-events">Cultural Events</a></li>
-        <li><a href="index.html#contact">Contact</a></li>
+        <li><a href="index.html#brand-activation" data-i18n="nav.brand">Brand Activation</a></li>
+        <li><a href="index.html#cultural-events" data-i18n="nav.cultural">Cultural Events</a></li>
+        <li><a href="contact.html" data-i18n="nav.contact">Contact</a></li>
+        
+        <!-- Language Selector -->
+        <li class="language-selector">
+          <a href="#" data-lang="en" class="lang-link active">EN</a>
+          <span class="lang-separator">|</span>
+          <a href="#" data-lang="es" class="lang-link">ES</a>
+        </li>
       </ul>
     </nav>
   </header>
@@ -62,44 +69,44 @@
   </section>
   
   <!-- WHY: Same sidebar structure, but links point to sections within THIS page (href="#section") -->
-  <aside class="utility-sidebar" aria-label="Quick navigation">
+  <aside class="utility-sidebar" aria-label="Quick navigation" data-i18n-aria="sidebar.label">
     <nav aria-label="Utility navigation">
       <ul class="sidebar-links">
         <li>
           <a href="#lineup">
             <span class="icon" aria-hidden="true">🎵</span>
-            Line-Up
+            <span data-i18n="sidebar.lineup">Line-Up</span>
           </a>
         </li>
         <li>
           <a href="#dreamville">
             <span class="icon" aria-hidden="true">🏕️</span>
-            DreamVille
+            <span data-i18n="sidebar.dreamville">DreamVille</span>
           </a>
         </li>
         <li>
           <a href="#tickets">
             <span class="icon" aria-hidden="true">🎫</span>
-            Ticket Sale
+            <span data-i18n="sidebar.tickets">Ticket Sale</span>
           </a>
         </li>
         <li>
           <a href="#global-journey">
             <span class="icon" aria-hidden="true">✈️</span>
-            Global Journey
+            <span data-i18n="sidebar.journey">Global Journey</span>
           </a>
         </li>
         <li>
           <a href="#faq">
             <span class="icon" aria-hidden="true">❓</span>
-            FAQ
+            <span data-i18n="sidebar.faq">FAQ</span>
           </a>
         </li>
       </ul>
     </nav>
   </aside>
   
-  <button class="sidebar-toggle" aria-label="Toggle sidebar" aria-expanded="false">
+  <button class="sidebar-toggle" aria-label="Toggle sidebar" aria-expanded="false" data-i18n-aria="sidebar.toggle">
     ☰
   </button>
   
@@ -109,8 +116,8 @@
          WHY: Showcases the 3 main stages with description cards
          ======================================================================== -->
     <section id="lineup" class="section-spacing container">
-      <h2 class="text-center">Line-Up 2018</h2>
-      <p class="text-center text-muted" style="margin-top: var(--spacing-lg); margin-bottom: var(--spacing-xl);">
+      <h2 class="text-center" data-i18n="lineup_title">Line-Up 2018</h2>
+      <p class="text-center text-muted" style="margin-top: var(--spacing-lg); margin-bottom: var(--spacing-xl);" data-i18n="lineup_subtitle">
         Three legendary stages, hundreds of world-class artists, one unforgettable experience.
       </p>
       
@@ -118,43 +125,43 @@
       <div class="guide-grid">
         <article class="guide-card">
           <div class="card-icon">🎪</div>
-          <h3 class="card-title">Mainstage</h3>
-          <p class="card-description">
+          <h3 class="card-title" data-i18n="stage_mainstage">Mainstage</h3>
+          <p class="card-description" data-i18n="mainstage_desc">
             The heart of Tomorrowland. Experience the most spectacular production in festival history
             with the world's biggest DJs performing on our legendary underwater kingdom stage design.
           </p>
           <ul class="card-features">
-            <li>Capacity: 80,000 attendees</li>
-            <li>Artists: Martin Garrix, Armin van Buuren, David Guetta</li>
-            <li>Hours: 4:00 PM - 12:00 AM</li>
+            <li data-i18n="mainstage_capacity">Capacity: 80,000 attendees</li>
+            <li data-i18n="mainstage_artists">Artists: Martin Garrix, Armin van Buuren, David Guetta</li>
+            <li data-i18n="mainstage_hours">Hours: 4:00 PM - 12:00 AM</li>
           </ul>
         </article>
         
         <article class="guide-card">
           <div class="card-icon">🌊</div>
-          <h3 class="card-title">Atmosphere</h3>
-          <p class="card-description">
+          <h3 class="card-title" data-i18n="stage_atmosphere">Atmosphere</h3>
+          <p class="card-description" data-i18n="atmosphere_desc">
             Dive deeper into electronic sounds. This intimate stage brings you closer to underground
             house and techno legends in an immersive bioluminescent coral reef setting.
           </p>
           <ul class="card-features">
-            <li>Capacity: 15,000 attendees</li>
-            <li>Artists: Tale Of Us, Solomun, Maceo Plex</li>
-            <li>Hours: 2:00 PM - 1:00 AM</li>
+            <li data-i18n="atmosphere_capacity">Capacity: 15,000 attendees</li>
+            <li data-i18n="atmosphere_artists">Artists: Tale Of Us, Solomun, Maceo Plex</li>
+            <li data-i18n="atmosphere_hours">Hours: 2:00 PM - 1:00 AM</li>
           </ul>
         </article>
         
         <article class="guide-card">
           <div class="card-icon">⚡</div>
-          <h3 class="card-title">Core</h3>
-          <p class="card-description">
+          <h3 class="card-title" data-i18n="stage_core">Core</h3>
+          <p class="card-description" data-i18n="core_desc">
             Hard-hitting bass and electrifying energy. The Core stage delivers raw power with
             hardstyle and bass music acts in an electric deep-sea trench atmosphere.
           </p>
           <ul class="card-features">
-            <li>Capacity: 25,000 attendees</li>
-            <li>Artists: Dimitri Vegas & Like Mike, Hardwell, Excision</li>
-            <li>Hours: 3:00 PM - 12:00 AM</li>
+            <li data-i18n="core_capacity">Capacity: 25,000 attendees</li>
+            <li data-i18n="core_artists">Artists: Dimitri Vegas & Like Mike, Hardwell, Excision</li>
+            <li data-i18n="core_hours">Hours: 3:00 PM - 12:00 AM</li>
           </ul>
         </article>
       </div>
@@ -165,55 +172,55 @@
          WHY: Camping package options with pricing tiers
          ======================================================================== -->
     <section id="dreamville" class="section-spacing container">
-      <h2 class="text-center">DreamVille Camping</h2>
-      <p class="text-center text-muted" style="margin-top: var(--spacing-lg); margin-bottom: var(--spacing-xl);">
+      <h2 class="text-center" data-i18n="camping_title">DreamVille Camping</h2>
+      <p class="text-center text-muted" style="margin-top: var(--spacing-lg); margin-bottom: var(--spacing-xl);" data-i18n="camping_subtitle">
         Stay at the most magical campground in the world. Choose your accommodation level.
       </p>
       
       <div class="guide-grid">
         <article class="guide-card guide-card-price">
           <div class="price-badge">€295</div>
-          <h3 class="card-title">Magnificent Greens</h3>
-          <p class="card-description">
+          <h3 class="card-title" data-i18n="camping_mag_greens">Magnificent Greens</h3>
+          <p class="card-description" data-i18n="mag_greens_desc">
             Bring your own tent and camp under the stars. Access to showers, toilets, and all
             DreamVille activities including pool parties, yoga sessions, and cinema.
           </p>
           <ul class="card-features">
-            <li>✓ Bring your own tent</li>
-            <li>✓ Shared facilities</li>
-            <li>✓ All DreamVille activities</li>
-            <li>✓ Weekend festival pass included</li>
+            <li data-i18n="feature_bring_tent">✓ Bring your own tent</li>
+            <li data-i18n="feature_shared_facilities">✓ Shared facilities</li>
+            <li data-i18n="feature_all_activities">✓ All DreamVille activities</li>
+            <li data-i18n="feature_festival_pass">✓ Weekend festival pass included</li>
           </ul>
         </article>
         
         <article class="guide-card guide-card-price featured">
           <div class="price-badge">€695</div>
-          <div class="featured-badge">Popular</div>
-          <h3 class="card-title">Easy Tent</h3>
-          <p class="card-description">
+          <div class="featured-badge" data-i18n="badge_popular">Popular</div>
+          <h3 class="card-title" data-i18n="camping_easy_tent">Easy Tent</h3>
+          <p class="card-description" data-i18n="easy_tent_desc">
             Pre-pitched 2-person tent with sleeping bags, mattresses, and camping chairs.
             Just arrive and relax. Perfect for hassle-free festival camping.
           </p>
           <ul class="card-features">
-            <li>✓ Pre-pitched tent for 2</li>
-            <li>✓ Sleeping bags & mattresses included</li>
-            <li>✓ Camping chairs & lights</li>
-            <li>✓ Weekend festival pass included</li>
+            <li data-i18n="feature_pre_pitched">✓ Pre-pitched tent for 2</li>
+            <li data-i18n="feature_sleeping_bags">✓ Sleeping bags & mattresses included</li>
+            <li data-i18n="feature_chairs_lights">✓ Camping chairs & lights</li>
+            <li data-i18n="feature_festival_pass">✓ Weekend festival pass included</li>
           </ul>
         </article>
         
         <article class="guide-card guide-card-price">
           <div class="price-badge">€1,850</div>
-          <h3 class="card-title">DreamLodge</h3>
-          <p class="card-description">
+          <h3 class="card-title" data-i18n="camping_dreamlodge">DreamLodge</h3>
+          <p class="card-description" data-i18n="dreamlodge_desc">
             Luxury camping at its finest. Spacious lodges with real beds, electricity, private
             bathrooms, and dedicated lounge areas. VIP festival access included.
           </p>
           <ul class="card-features">
-            <li>✓ Luxury lodge for 2-4 people</li>
-            <li>✓ Real beds & private bathroom</li>
-            <li>✓ Electricity & air conditioning</li>
-            <li>✓ VIP festival pass included</li>
+            <li data-i18n="feature_luxury">✓ Luxury lodge for 2-4 people</li>
+            <li data-i18n="feature_real_beds">✓ Real beds & private bathroom</li>
+            <li data-i18n="feature_electricity">✓ Electricity & air conditioning</li>
+            <li data-i18n="feature_vip_pass">✓ VIP festival pass included</li>
           </ul>
         </article>
       </div>
@@ -224,22 +231,22 @@
          WHY: Important status message for ticket availability
          ======================================================================== -->
     <section id="tickets" class="section-spacing container">
-      <h2 class="text-center">Ticket Sale</h2>
+      <h2 class="text-center" data-i18n="tickets_title">Ticket Sale</h2>
       
       <!-- WHY: Large, attention-grabbing banner communicates sold-out status -->
       <div class="sold-out-banner">
         <div class="banner-icon">🎫</div>
-        <h3 class="banner-title">2018 EDITION</h3>
-        <div class="banner-status">SOLD OUT</div>
-        <p class="banner-subtitle">
+        <h3 class="banner-title" data-i18n="tickets_edition">2018 EDITION</h3>
+        <div class="banner-status" data-i18n="sold_out_title">SOLD OUT</div>
+        <p class="banner-subtitle" data-i18n="sold_out_desc">
           All tickets for Tomorrowland 2018 have been sold. Join our waiting list for 2019
           or explore the resale platform for verified ticket exchanges.
         </p>
         <div class="banner-actions">
-          <a href="#waitlist" class="banner-btn banner-btn-primary">Join 2019 Waiting List</a>
-          <a href="#exchange" class="banner-btn banner-btn-secondary">Ticket Exchange Platform</a>
+          <a href="#waitlist" class="banner-btn banner-btn-primary" data-i18n="btn_waiting_list">Join 2019 Waiting List</a>
+          <a href="#exchange" class="banner-btn banner-btn-secondary" data-i18n="btn_exchange">Ticket Exchange Platform</a>
         </div>
-        <p class="banner-footnote">
+        <p class="banner-footnote" data-i18n="warning_scams">
           ⚠️ Beware of scams. Only use the official Tomorrowland exchange platform.
         </p>
       </div>
@@ -250,8 +257,8 @@
          WHY: Travel package information for international attendees
          ======================================================================== -->
     <section id="global-journey" class="section-spacing container">
-      <h2 class="text-center">Global Journey</h2>
-      <p class="text-center text-muted" style="margin-top: var(--spacing-lg); margin-bottom: var(--spacing-xl);">
+      <h2 class="text-center" data-i18n="gj_title">Global Journey</h2>
+      <p class="text-center text-muted" style="margin-top: var(--spacing-lg); margin-bottom: var(--spacing-xl);" data-i18n="gj_subtitle">
         Travel packages from over 300 cities worldwide. Festival ticket, transportation, and accommodation in one package.
       </p>
       
@@ -259,47 +266,47 @@
       <div class="guide-grid guide-grid-journey">
         <article class="guide-card guide-card-journey">
           <div class="journey-icon">✈️</div>
-          <h3 class="card-title">Flight Packages</h3>
-          <p class="card-description">
+          <h3 class="card-title" data-i18n="gj_flight_title">Flight Packages</h3>
+          <p class="card-description" data-i18n="gj_flight_desc">
             Direct flights from major cities worldwide. Includes airport transfers, hotel accommodation
             near the festival grounds, and full weekend pass.
           </p>
           <div class="journey-details">
-            <span class="journey-badge">From €1,200</span>
-            <span class="journey-cities">150+ departure cities</span>
+            <span class="journey-badge" data-i18n="gj_flight_price">From €1,200</span>
+            <span class="journey-cities" data-i18n="gj_flight_cities">150+ departure cities</span>
           </div>
         </article>
         
         <article class="guide-card guide-card-journey">
           <div class="journey-icon">🚆</div>
-          <h3 class="card-title">Train Packages</h3>
-          <p class="card-description">
+          <h3 class="card-title" data-i18n="gj_train_title">Train Packages</h3>
+          <p class="card-description" data-i18n="gj_train_desc">
             Eco-friendly train journeys from European cities. Enjoy scenic routes to Belgium with
             hotel accommodation and festival pass included in your package.
           </p>
           <div class="journey-details">
-            <span class="journey-badge">From €750</span>
-            <span class="journey-cities">50+ European cities</span>
+            <span class="journey-badge" data-i18n="gj_train_price">From €750</span>
+            <span class="journey-cities" data-i18n="gj_train_cities">50+ European cities</span>
           </div>
         </article>
         
         <article class="guide-card guide-card-journey">
           <div class="journey-icon">🚌</div>
-          <h3 class="card-title">Bus Packages</h3>
-          <p class="card-description">
+          <h3 class="card-title" data-i18n="gj_bus_title">Bus Packages</h3>
+          <p class="card-description" data-i18n="gj_bus_desc">
             Budget-friendly bus travel from neighboring countries. Meet fellow festival-goers on the
             journey. Includes accommodation and festival pass.
           </p>
           <div class="journey-details">
-            <span class="journey-badge">From €550</span>
-            <span class="journey-cities">100+ European cities</span>
+            <span class="journey-badge" data-i18n="gj_bus_price">From €550</span>
+            <span class="journey-cities" data-i18n="gj_bus_cities">100+ European cities</span>
           </div>
         </article>
       </div>
       
       <div class="info-callout">
         <div class="callout-icon">ℹ️</div>
-        <div class="callout-content">
+        <div class="callout-content" data-i18n="gj_important">
           <strong>Important:</strong> All Global Journey packages include guaranteed festival access,
           even if regular tickets are sold out. Packages typically sell out within hours of release.
         </div>
@@ -319,107 +326,58 @@
       <!-- WHY: HTML5 details/summary provides native accordion without JavaScript -->
       <div class="faq-container">
         <details class="faq-item">
-          <summary class="faq-question">What can I bring to the festival?</summary>
+          <summary class="faq-question" data-i18n="faq_q1">What can I bring to the festival?</summary>
           <div class="faq-answer">
-            <p>You can bring:</p>
-            <ul>
-              <li>Personal items (phone, wallet, keys)</li>
-              <li>Sunscreen and medication</li>
-              <li>Empty refillable water bottle (max 500ml)</li>
-              <li>Small backpack or bag (max 40x30x15cm)</li>
-              <li>Portable phone charger</li>
-            </ul>
-            <p><strong>NOT allowed:</strong> Glass bottles, weapons, illegal substances, professional cameras, drones, or outside food/drinks.</p>
+            <p data-i18n="faq_a1">You can bring: Personal items (phone, wallet, keys), sunscreen and medication, empty refillable water bottle (max 500ml), small backpack or bag (max 40x30x15cm), portable phone charger. NOT allowed: Glass bottles, weapons, illegal substances, professional cameras, drones, or outside food/drinks.</p>
           </div>
         </details>
         
         <details class="faq-item">
-          <summary class="faq-question">What payment methods are accepted?</summary>
+          <summary class="faq-question" data-i18n="faq_q2">What payment methods are accepted?</summary>
           <div class="faq-answer">
-            <p>Tomorrowland 2018 uses a cashless payment system with Pearls (festival currency).</p>
-            <ul>
-              <li>Load money onto your Tomorrowland bracelet via the app or top-up stations</li>
-              <li>Pay with your bracelet at all bars, food stands, and merchandise shops</li>
-              <li>Accepted methods: Credit card, debit card, PayPal</li>
-              <li>Unused Pearls will be refunded after the festival</li>
-            </ul>
+            <p data-i18n="faq_a2">Tomorrowland 2018 uses a cashless payment system with Pearls (festival currency). Load money onto your Tomorrowland bracelet via the app or top-up stations. Pay with your bracelet at all bars, food stands, and merchandise shops. Accepted methods: Credit card, debit card, PayPal. Unused Pearls will be refunded after the festival.</p>
           </div>
         </details>
         
         <details class="faq-item">
-          <summary class="faq-question">Is there an age limit?</summary>
+          <summary class="faq-question" data-i18n="faq_q3">Is there an age limit?</summary>
           <div class="faq-answer">
-            <p>Yes, Tomorrowland is an 18+ event. You must be born on or before July 21, 2000 to attend the 2018 edition.</p>
-            <p>Valid government-issued photo ID is required for entry. Acceptable IDs include:</p>
-            <ul>
-              <li>Passport</li>
-              <li>National ID card</li>
-              <li>Driver's license (with photo)</li>
-            </ul>
-            <p>ID checks are conducted at entry. Attendees without valid ID will be denied entry with no refund.</p>
+            <p data-i18n="faq_a3">Yes, Tomorrowland is an 18+ event. You must be born on or before July 21, 2000 to attend the 2018 edition. Valid government-issued photo ID is required for entry. Acceptable IDs include: Passport, National ID card, Driver's license (with photo). ID checks are conducted at entry. Attendees without valid ID will be denied entry with no refund.</p>
           </div>
         </details>
         
         <details class="faq-item">
-          <summary class="faq-question">Can I leave and re-enter the festival?</summary>
+          <summary class="faq-question" data-i18n="faq_q4">Can I leave and re-enter the festival?</summary>
           <div class="faq-answer">
-            <p><strong>Full Madness Pass (Weekend):</strong> Yes, you can leave and re-enter as many times as you want each day. Your bracelet is scanned at entry/exit.</p>
-            <p><strong>Day Passes:</strong> No re-entry. Once you leave, you cannot return the same day.</p>
-            <p><strong>DreamVille Camping:</strong> Separate from festival grounds. You can freely move between DreamVille and the festival all weekend.</p>
+            <p data-i18n="faq_a4">Full Madness Pass (Weekend): Yes, you can leave and re-enter as many times as you want each day. Your bracelet is scanned at entry/exit. Day Passes: No re-entry. Once you leave, you cannot return the same day. DreamVille Camping: Separate from festival grounds. You can freely move between DreamVille and the festival all weekend.</p>
           </div>
         </details>
         
         <details class="faq-item">
-          <summary class="faq-question">What about lockers and phone charging?</summary>
+          <summary class="faq-question" data-i18n="faq_q5">What about lockers and phone charging?</summary>
           <div class="faq-answer">
-            <p><strong>Lockers:</strong> Available for rent at various locations throughout the festival grounds. Reserve in advance via the Tomorrowland app or book on-site (subject to availability).</p>
-            <ul>
-              <li>Small locker: €10/day</li>
-              <li>Medium locker: €15/day</li>
-              <li>Large locker: €20/day</li>
-            </ul>
-            <p><strong>Phone Charging:</strong> Charging stations are available at dedicated areas. Bring your own cable. Charging is free but expect queues during peak times.</p>
+            <p data-i18n="faq_a5">Lockers: Available for rent at various locations throughout the festival grounds. Reserve in advance via the Tomorrowland app or book on-site (subject to availability). Small locker: €10/day, Medium locker: €15/day, Large locker: €20/day. Phone Charging: Charging stations are available at dedicated areas. Bring your own cable. Charging is free but expect queues during peak times.</p>
           </div>
         </details>
         
         <details class="faq-item">
-          <summary class="faq-question">What if it rains?</summary>
+          <summary class="faq-question" data-i18n="faq_q6">What if it rains?</summary>
           <div class="faq-answer">
-            <p>Tomorrowland happens rain or shine! The festival is not canceled or refunded due to weather.</p>
-            <p><strong>Recommendations:</strong></p>
-            <ul>
-              <li>Bring a lightweight rain poncho (available at merchandise stands)</li>
-              <li>Wear waterproof shoes or rain boots</li>
-              <li>Protect your phone with a waterproof case or bag</li>
-              <li>Most stages have covered areas for shelter</li>
-              <li>DreamVille has covered communal areas and indoor spaces</li>
-            </ul>
+            <p data-i18n="faq_a6">Tomorrowland happens rain or shine! The festival is not canceled or refunded due to weather. Recommendations: Bring a lightweight rain poncho (available at merchandise stands), wear waterproof shoes or rain boots, protect your phone with a waterproof case or bag. Most stages have covered areas for shelter. DreamVille has covered communal areas and indoor spaces.</p>
           </div>
         </details>
         
         <details class="faq-item">
-          <summary class="faq-question">How do I get to the festival from Brussels?</summary>
+          <summary class="faq-question" data-i18n="faq_q7">How do I get to the festival from Brussels?</summary>
           <div class="faq-answer">
-            <p><strong>Official Shuttle Buses:</strong> Book via the Tomorrowland website. Buses run continuously between Brussels city center and the festival from 12:00 PM to 2:00 AM.</p>
-            <p><strong>Train:</strong> Take a train to Boom station (20 minutes from Brussels Central). Then walk 20 minutes or take a shuttle bus to the festival entrance.</p>
-            <p><strong>Taxi/Uber:</strong> Direct ride costs €50-70. Drop-off zone is 1km from the entrance (security reasons).</p>
-            <p><strong>Organized Bus Tours:</strong> Many companies offer round-trip packages. Check the official Tomorrowland website for verified partners.</p>
+            <p data-i18n="faq_a7">Official Shuttle Buses: Book via the Tomorrowland website. Buses run continuously between Brussels city center and the festival from 12:00 PM to 2:00 AM. Train: Take a train to Boom station (20 minutes from Brussels Central). Then walk 20 minutes or take a shuttle bus to the festival entrance. Taxi/Uber: Direct ride costs €50-70. Drop-off zone is 1km from the entrance (security reasons). Organized Bus Tours: Many companies offer round-trip packages. Check the official Tomorrowland website for verified partners.</p>
           </div>
         </details>
         
         <details class="faq-item">
-          <summary class="faq-question">Can I transfer my ticket to someone else?</summary>
+          <summary class="faq-question" data-i18n="faq_q8">Can I transfer my ticket to someone else?</summary>
           <div class="faq-answer">
-            <p>Yes, but only through the official Tomorrowland Ticket Exchange Platform (opens 4 weeks before the festival).</p>
-            <p><strong>Process:</strong></p>
-            <ol>
-              <li>List your ticket on the official exchange platform</li>
-              <li>Set your price (cannot exceed original price + service fees)</li>
-              <li>Wait for someone to purchase it</li>
-              <li>Tomorrowland transfers the ticket to the new owner</li>
-              <li>You receive your refund within 14 days</li>
-            </ol>
-            <p>⚠️ <strong>Warning:</strong> Tickets sold outside the official platform are invalid and will not grant entry.</p>
+            <p data-i18n="faq_a8">Yes, but only through the official Tomorrowland Ticket Exchange Platform (opens 4 weeks before the festival). Process: List your ticket on the official exchange platform, set your price (cannot exceed original price + service fees), wait for someone to purchase it, Tomorrowland transfers the ticket to the new owner, you receive your refund within 14 days. ⚠️ Warning: Tickets sold outside the official platform are invalid and will not grant entry.</p>
           </div>
         </details>
       </div>
@@ -428,74 +386,23 @@
   
   <!-- WHY: Same footer as index.html for consistency -->
   <footer style="background-color: var(--color-bg-secondary); padding: var(--spacing-2xl); text-align: center;">
-    <p class="text-muted">
+    <p class="text-muted" data-i18n="footer.copyright">
       &copy; 2024 Tomorrowland - The Story of Planaxis. All rights reserved.
     </p>
-    <nav aria-label="Footer navigation" style="margin-top: var(--spacing-md);">
+    <nav aria-label="Footer navigation" data-i18n-aria="footer.nav.label" style="margin-top: var(--spacing-md);">
       <ul style="display: flex; justify-content: center; gap: var(--spacing-lg); flex-wrap: wrap;">
-        <li><a href="#privacy" class="text-muted">Privacy Policy</a></li>
-        <li><a href="#terms" class="text-muted">Terms of Service</a></li>
-        <li><a href="#contact" class="text-muted">Contact Us</a></li>
-        <li><a href="#press" class="text-muted">Press Kit</a></li>
+        <li><a href="#privacy" class="text-muted" data-i18n="footer.privacy">Privacy Policy</a></li>
+        <li><a href="#terms" class="text-muted" data-i18n="footer.terms">Terms of Service</a></li>
+        <li><a href="contact.html" class="text-muted" data-i18n="footer.contact">Contact Us</a></li>
+        <li><a href="#press" class="text-muted" data-i18n="footer.press">Press Kit</a></li>
       </ul>
     </nav>
   </footer>
   
-  <!-- WHY: Same JavaScript for mobile menu and smooth scrolling -->
-  <script>
-    // Mobile menu toggle
-    const mobileMenuToggle = document.querySelector('.mobile-menu-toggle');
-    const navLinks = document.querySelector('.nav-links');
-    
-    if (mobileMenuToggle && navLinks) {
-      mobileMenuToggle.addEventListener('click', function() {
-        navLinks.classList.toggle('show');
-        const isExpanded = navLinks.classList.contains('show');
-        mobileMenuToggle.setAttribute('aria-expanded', isExpanded);
-      });
-    }
-    
-    // Sidebar toggle
-    const sidebarToggle = document.querySelector('.sidebar-toggle');
-    const sidebar = document.querySelector('.utility-sidebar');
-    
-    if (sidebarToggle && sidebar) {
-      sidebarToggle.addEventListener('click', function() {
-        sidebar.classList.toggle('show');
-        const isExpanded = sidebar.classList.contains('show');
-        sidebarToggle.setAttribute('aria-expanded', isExpanded);
-      });
-    }
-    
-    // Header scroll effect
-    window.addEventListener('scroll', function() {
-      const header = document.querySelector('.main-header');
-      if (window.scrollY > 50) {
-        header.classList.add('scrolled');
-      } else {
-        header.classList.remove('scrolled');
-      }
-    });
-    
-    // Smooth scrolling for anchor links
-    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-      anchor.addEventListener('click', function(e) {
-        const targetId = this.getAttribute('href').substring(1);
-        const targetElement = document.getElementById(targetId);
-        
-        if (targetElement) {
-          e.preventDefault();
-          targetElement.scrollIntoView({
-            behavior: 'smooth',
-            block: 'start'
-          });
-          
-          if (navLinks) navLinks.classList.remove('show');
-          if (sidebar) sidebar.classList.remove('show');
-        }
-      });
-    });
-  </script>
+  <!-- WHY: We now use a modular JavaScript approach with ES6 modules. The main.js
+       file handles all interactive functionality including i18n and the old inline
+       functionality. -->
+  <script src="js/main.js" type="module"></script>
 </body>
 </html>
 

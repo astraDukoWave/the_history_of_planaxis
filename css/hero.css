@@ -98,15 +98,23 @@
   position: relative;
   z-index: 10;
   text-align: center;
-  /* WHY: We constrain the content width so that on ultra-wide screens, the text
-     doesn't stretch too wide, which hurts readability.
+  
+  /* WHY: PERFECT CENTERING - We use a combination of width constraints and
+     margin-inline: auto to ensure the content is perfectly centered horizontally
+     on all screen sizes.
      
-     HOW: max-width: 800px limits the content area, while width: 100% allows it
-     to shrink on smaller screens.
+     UX PRINCIPLE: Centered hero content creates visual balance and draws the eye
+     to the most important message on the page.
      
-     RESULT: Optimal reading width (50-75 characters per line) on all screen sizes. */
+     HOW: width: 90% ensures content doesn't touch edges on mobile. max-width: 800px
+     prevents it from becoming too wide on desktop (optimal reading width). 
+     margin-inline: auto is the CRITICAL property that centers the block horizontally.
+     
+     RESULT: Perfectly centered hero content with equal spacing on both sides,
+     creating visual harmony and balance. */
+  width: 90%;
   max-width: 800px;
-  width: 100%;
+  margin-inline: auto; /* CRITICAL: Centers the content block horizontally */
 }
 
 /* WHY: A dark overlay between the background image and text ensures text remains

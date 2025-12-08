@@ -17,14 +17,21 @@ The design uses an ocean-inspired color palette representing the deep sea kingdo
 
 ```
 the_history_of_planaxis/
-├── index.html              # Main HTML file with semantic structure
+├── index.html              # Main landing page with semantic structure
+├── contact.html            # Contact form page with glassmorphism design
+├── festival-guide.html     # Festival information and guide
+├── js/
+│   ├── main.js            # Main JavaScript (i18n, form handling, UI)
+│   └── translations.js    # Translation strings (EN/ES)
 ├── css/
 │   ├── reset.css          # Browser normalization
 │   ├── variables.css      # CSS custom properties (colors, spacing, fonts)
 │   ├── layout.css         # Grid/Flexbox foundation and utilities
-│   ├── header.css         # Transparent navigation overlay
+│   ├── header.css         # Transparent navigation overlay + language selector
 │   ├── hero.css           # Full-screen hero section
 │   ├── sidebar.css        # Fixed utility navigation
+│   ├── contact.css        # Contact form glassmorphism styles
+│   ├── guide.css          # Festival guide page styles
 │   └── responsive.css     # Mobile-first media queries
 ├── assets/
 │   ├── images/            # Image assets (hero backgrounds, etc.)
@@ -40,6 +47,14 @@ the_history_of_planaxis/
 - **Fixed sidebar navigation** with animated hover effects
 - **Smooth scroll behavior** for anchor links
 - **Responsive design** with mobile-first approach (320px - 4K screens)
+- **Glassmorphism contact form** with frosted glass effect and underwater aesthetic
+- **Language selector (EN/ES)** with localStorage persistence
+
+### Functionality Features
+- **Internationalization (i18n)** - Full English and Spanish translations
+- **Contact form** with simulated submission and feedback
+- **Language preference persistence** using localStorage
+- **Modular JavaScript architecture** with ES6 modules
 
 ### Accessibility Features
 - Semantic HTML5 structure (`<header>`, `<nav>`, `<main>`, `<aside>`, `<footer>`)
@@ -147,9 +162,42 @@ Test the site across different:
 ## 🔧 Technology Stack
 
 - **HTML5** - Semantic markup
-- **CSS3** - Custom properties, Flexbox, Grid, Media Queries
-- **Vanilla JavaScript** - No frameworks or libraries
+- **CSS3** - Custom properties, Flexbox, Grid, Media Queries, Backdrop-filter (glassmorphism)
+- **Vanilla JavaScript (ES6 Modules)** - No frameworks or libraries
+- **localStorage API** - For language preference persistence
 - **No build process required** - Works directly in browser
+
+## 🌐 Internationalization (i18n)
+
+The site supports English and Spanish with a simple language switcher in the navigation:
+
+- Click **EN** or **ES** in the header to switch languages
+- Language preference is saved in localStorage
+- All text content is translated dynamically
+- Translations are centralized in `js/translations.js`
+
+### Adding a New Language
+
+1. Open `js/translations.js`
+2. Add a new language object (e.g., `fr` for French)
+3. Copy the structure from `en` or `es`
+4. Translate all keys
+5. Update the language selector in HTML files
+
+## 📬 Contact Form
+
+The contact form (`contact.html`) features:
+
+- **Glassmorphism design** with backdrop blur effect
+- **Form validation** for required fields
+- **Simulated submission** with 2-second delay
+- **Visual feedback** (loading state, success message)
+- **Fully translatable** with i18n support
+
+Note: The form currently simulates submission. To connect to a real backend:
+1. Replace the `setTimeout` in `main.js` with a `fetch()` call
+2. Send data to your API endpoint
+3. Handle real success/error responses
 
 ## 📝 License
 

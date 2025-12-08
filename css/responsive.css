@@ -211,13 +211,20 @@
   padding: var(--spacing-sm) var(--spacing-lg);
 }
 
-/* WHY: Container padding should be smaller on mobile to maximize content space
-   while still preventing edge-touching.
+/* WHY: MOBILE SYMMETRY - On mobile, we need perfectly symmetric padding since
+   the Floating Glass Dock is hidden. We also maximize content space while
+   preventing edge-touching.
    
-   HOW: We reduce from 24px to 16px padding.
+   HOW: Smaller, uniform padding on both sides. width: 95% (instead of 90%)
+   uses more of the available mobile screen space.
    
-   RESULT: More usable space on small screens without sacrificing readability. */
-.container,
+   RESULT: Maximum usable space on small screens with perfect balance. */
+.container {
+  width: 95%; /* Use more screen space on mobile */
+  padding-left: var(--spacing-sm);
+  padding-right: var(--spacing-sm);
+}
+
 .container-fluid {
   padding-left: var(--spacing-sm);
   padding-right: var(--spacing-sm);
@@ -293,20 +300,19 @@
     padding: var(--spacing-md) var(--spacing-xl);
   }
   
-  /* WHY: On tablets, the sidebar still takes too much space to be always visible,
-     but we want it to work differently than mobile - as an overlay that can be toggled.
+  /* WHY: On tablets, the Floating Glass Dock still takes space that could be
+     better used for content. We keep it hidden and accessible via toggle button.
      
-     HOW: We keep it hidden by default but allow the toggle button to show it as
-     an overlay.
+     HOW: We maintain the mobile behavior - hidden by default, shown via .show class.
      
-     RESULT: Tablet users can access the sidebar without sacrificing content space. */
+     RESULT: Tablet users can access the dock without sacrificing precious screen space. */
   .utility-sidebar {
-    /* WHY: On tablet, when the sidebar is shown, it should overlay content with
-       a narrower width than desktop.
+    /* WHY: When toggled open on tablet, the dock should be slightly narrower
+       than desktop to better fit medium-width screens.
        
-       HOW: Reducing width from 280px to 240px for better proportions.
+       HOW: When shown, it displays at 240px width (expanded state).
        
-       RESULT: Sidebar fits better on medium-width screens. */
+       RESULT: Dock fits better on tablet screens without blocking too much content. */
     width: 240px;
   }
   
@@ -320,13 +326,20 @@
     display: flex;
   }
   
-  /* WHY: Container padding can increase on tablets, taking advantage of the extra
-     screen width while maintaining comfortable margins.
+  /* WHY: TABLET BALANCE - On tablets, we restore standard padding and width
+     proportions for better use of the medium-sized screen space.
      
-     HOW: Increasing from 16px back to 24px.
+     HOW: width: 90% provides comfortable margins. Standard padding (24px) creates
+     breathing room without wasting space.
      
-     RESULT: Better use of available space with comfortable breathing room. */
-  .container,
+     RESULT: Well-proportioned layout that takes advantage of tablet screen size
+     while maintaining perfect centering. */
+  .container {
+    width: 90%;
+    padding-left: var(--spacing-md);
+    padding-right: var(--spacing-md);
+  }
+  
   .container-fluid {
     padding-left: var(--spacing-md);
     padding-right: var(--spacing-md);
@@ -366,23 +379,25 @@
    ============================================================================ */
 
 @media (min-width: 1024px) {
-  /* WHY: On desktop, we have enough space for the sidebar to be permanently visible
-     on the right side without taking too much room from the content.
+  /* WHY: On desktop, we have enough space for the Floating Glass Dock to be
+     permanently visible on the right side. It starts collapsed (60px, icons only)
+     and expands on hover (260px) to reveal full text.
      
      HOW: We reset all the mobile hiding transforms and make it fully visible.
      
-     RESULT: Always-accessible utility navigation that enhances the UX. */
+     RESULT: Always-accessible utility navigation that doesn't obstruct content. */
   .utility-sidebar {
     transform: translateY(-50%);
     opacity: 1;
     pointer-events: auto;
-    /* WHY: Full desktop width of 280px provides comfortable space for descriptive
-       link text without cramping.
+    /* WHY: COLLAPSED WIDTH - 60px shows only icons in the default state. This
+       minimal footprint ensures the dock is present but unobtrusive. The dock
+       will expand to 260px on hover (defined in sidebar.css).
        
-       HOW: Restoring the original design width.
+       HOW: We restore the collapsed width from sidebar.css.
        
-       RESULT: Generous, easy-to-read sidebar navigation. */
-    width: 280px;
+       RESULT: Minimal floating dock that expands on demand, never blocking content. */
+    width: 60px;
   }
   
   /* WHY: With the sidebar permanently visible, we don't need the toggle button.
@@ -413,14 +428,35 @@
     padding: var(--spacing-md) var(--spacing-xl);
   }
   
-  /* WHY: On very large screens, we want to prevent the main content from becoming
-     too wide (readability drops at 100+ characters per line).
+  /* WHY: DESKTOP SAFE ZONE - On desktop, the Floating Glass Dock is visible,
+     so we need to ensure content stays centered while avoiding collision with
+     the dock (positioned 20px from right edge).
      
-     HOW: The container max-width (1200px) ensures comfortable reading width.
+     STRATEGIC LAYOUT: The container max-width of 1100px combined with 90% width
+     and margin-inline: auto creates perfect centering with natural space for the
+     dock to float without obstruction.
      
-     RESULT: Content remains readable even on 4K monitors. */
+     HOW: We maintain the max-width set in layout.css (1100px) and ensure proper
+     centering with margin-inline: auto.
+     
+     RESULT: Perfectly centered content that never collides with the Floating
+     Glass Dock, with equal spacing on both sides creating visual harmony. */
   .container {
-    max-width: 1200px;
+    width: 90%;
+    max-width: 1100px;
+    margin-inline: auto;
+    padding-left: var(--spacing-md);
+    padding-right: var(--spacing-md);
+  }
+  
+  /* WHY: Hero content on desktop gets slightly more width since it's designed
+     to be impactful and the text is larger, but still constrained for readability.
+     
+     HOW: max-width: 850px provides a bit more room than the original 800px.
+     
+     RESULT: Balanced hero section that looks great on large screens. */
+  .hero-content {
+    max-width: 850px;
   }
   
   /* WHY: Desktop users expect hover effects since they have precise mouse control.
@@ -453,23 +489,53 @@
     font-size: calc(var(--font-size-2xl) * 1.2); /* ~57px */
   }
   
-  /* WHY: Container max-width can increase slightly on ultra-wide screens to take
-     better advantage of available space.
+  /* WHY: LARGE DESKTOP OPTIMIZATION - On ultra-wide screens (1440px+), we can
+     afford to increase max-width slightly while still maintaining perfect centering
+     and safe distance from the Floating Glass Dock.
      
-     HOW: Increasing from 1200px to 1400px.
+     CALCULATION: On a 1920px screen with max-width: 1250px:
+     - Content: 1250px (centered)
+     - Left space: ~335px
+     - Right space: ~335px (plenty of room for 60-280px dock + margins)
      
-     RESULT: Better use of screen real estate while maintaining readability. */
+     HOW: Slightly increased max-width (1250px) takes advantage of large screens
+     while maintaining the centering strategy.
+     
+     RESULT: Content uses screen space efficiently on large monitors while
+     remaining perfectly centered with ample room for the Floating Glass Dock. */
   .container {
-    max-width: 1400px;
+    max-width: 1250px;
   }
   
-  /* WHY: The sidebar can be slightly wider on huge screens without impacting layout.
+  /* WHY: Hero content can also expand slightly on large screens for more
+     dramatic impact without losing readability.
      
-     HOW: Increasing from 280px to 320px.
+     HOW: Increased max-width to 900px (from 850px).
      
-     RESULT: More comfortable, spacious sidebar navigation. */
+     RESULT: More impactful hero section on large displays. */
+  .hero-content {
+    max-width: 900px;
+  }
+  
+  /* WHY: On ultra-large screens, the Floating Glass Dock maintains its collapsed
+     state (60px) by default. We don't need to increase its size - the hover
+     expansion to 260px is already generous.
+     
+     HOW: We keep the collapsed width consistent across all desktop sizes.
+     
+     RESULT: Consistent, minimal dock presence that works perfectly on all screens. */
   .utility-sidebar {
-    width: 320px;
+    width: 60px;
+  }
+  
+  /* WHY: On huge screens, the hover-expanded state can be slightly wider for
+     more comfortable reading without blocking content.
+     
+     HOW: We increase the hover width from 260px to 280px on extra-large displays.
+     
+     RESULT: More spacious expanded dock on large monitors. */
+  .utility-sidebar:hover {
+    width: 280px;
   }
 }
 

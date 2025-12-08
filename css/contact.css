@@ -1,0 +1,472 @@
+/* ============================================================================
+   CONTACT PAGE STYLES
+   ============================================================================
+   
+   WHY: This stylesheet contains all styles specific to the contact page,
+   particularly the glassmorphism contact form. By keeping these styles
+   separate, we maintain modularity and only load what's needed.
+   
+   HOW: We use CSS custom properties (variables) for consistency, and modern
+   CSS features like backdrop-filter for the glassmorphism effect.
+   
+   RESULT: Beautiful, modern contact form with underwater/glass aesthetic. */
+
+/* WHY: The contact section needs space from the FIXED header and proper centering
+   to make the form the focal point of the page. Since we changed the header to
+   position: fixed, it no longer takes up space in the document flow, so content
+   can scroll underneath it.
+   
+   CRITICAL FIX: We must add padding-top to prevent the fixed header from covering
+   the page title. Without this, the header would overlap the "Contact Us" heading,
+   making it unreadable and creating a poor user experience.
+   
+   HOW: Flexbox for centering, min-height ensures it fills the viewport. We add
+   extra padding-top (120px) to account for the fixed header height (~80px) plus
+   some breathing room. Regular padding provides spacing on other sides.
+   
+   RESULT: Form is prominently displayed, perfectly centered, and the title is
+   fully visible below the fixed header. */
+.contact-section {
+  min-height: 100vh; /* Full viewport height */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  /* WHY: padding-top: 120px creates space for the fixed header (80px) plus extra
+     breathing room (40px) so the title doesn't feel cramped against the header.
+     
+     CALCULATION: Header height (~80px) + comfortable spacing (40px) = 120px
+     
+     RESULT: Content starts below the fixed header with pleasant spacing. */
+  padding-top: 120px;
+  padding-bottom: var(--spacing-3xl);
+  padding-left: var(--spacing-lg);
+  padding-right: var(--spacing-lg);
+  background: linear-gradient(135deg, #0a1e3c 0%, #050a14 100%);
+  position: relative;
+  overflow: hidden;
+}
+
+/* WHY: Subtle animated background elements create depth and the underwater
+   feeling without distracting from the form.
+   
+   HOW: Pseudo-elements with gradients that pulse and shift using CSS animations.
+   
+   RESULT: Dynamic, immersive background that enhances the theme. */
+.contact-section::before,
+.contact-section::after {
+  content: '';
+  position: absolute;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(212, 175, 55, 0.1) 0%, transparent 70%);
+  filter: blur(60px);
+  animation: float 20s ease-in-out infinite;
+  z-index: 0;
+}
+
+.contact-section::before {
+  width: 500px;
+  height: 500px;
+  top: -100px;
+  left: -100px;
+  animation-delay: 0s;
+}
+
+.contact-section::after {
+  width: 400px;
+  height: 400px;
+  bottom: -100px;
+  right: -150px;
+  animation-delay: 10s;
+}
+
+@keyframes float {
+  0%, 100% {
+    transform: translate(0, 0) scale(1);
+    opacity: 0.3;
+  }
+  50% {
+    transform: translate(50px, 50px) scale(1.1);
+    opacity: 0.5;
+  }
+}
+
+/* WHY: The contact container needs to sit above the animated background
+   and have a reasonable max-width for readability.
+   
+   HOW: z-index brings it forward, max-width prevents the form from getting
+   too wide on large screens.
+   
+   RESULT: Form remains legible and properly sized on all screens. */
+.contact-container {
+  width: 100%;
+  max-width: 600px;
+  position: relative;
+  z-index: 1;
+}
+
+/* WHY: The contact card is the hero of this page - it needs to stand out
+   with the glassmorphism effect (semi-transparent background with backdrop blur).
+   
+   HOW: backdrop-filter creates the blur effect, semi-transparent background
+   provides the "frosted glass" look, borders and shadows add depth.
+   
+   RESULT: Beautiful glass-like card that's both modern and on-theme. */
+.contact-card {
+  /* WHY: Glassmorphism requires a semi-transparent background so we can see
+     the blurred content behind it. The rgba values create a dark glass effect. */
+  background: rgba(15, 25, 45, 0.7);
+  
+  /* WHY: backdrop-filter is the key to glassmorphism - it blurs and saturates
+     whatever is behind the element, creating that frosted glass effect.
+     
+     FEYNMAN EXPLANATION:
+     Imagine looking through a bathroom window with frosted glass. You can see
+     shapes and colors behind it, but they're blurry. That's backdrop-filter!
+     It takes everything behind this card and blurs it, making it look like
+     we're looking through textured glass. */
+  backdrop-filter: blur(20px) saturate(150%);
+  -webkit-backdrop-filter: blur(20px) saturate(150%); /* Safari support */
+  
+  /* WHY: Borders with semi-transparent colors enhance the glass effect by
+     creating highlights that catch the "light". */
+  border: 1px solid rgba(212, 175, 55, 0.2);
+  border-radius: var(--radius-lg);
+  
+  padding: var(--spacing-2xl);
+  
+  /* WHY: Multiple box-shadows create depth. The first creates a subtle glow,
+     the second creates elevation, making the card appear to float. */
+  box-shadow: 
+    0 0 40px rgba(212, 175, 55, 0.1),
+    0 8px 32px rgba(0, 0, 0, 0.3);
+  
+  /* WHY: Smooth transition for hover effects. */
+  transition: all 0.3s ease;
+}
+
+/* WHY: On hover, intensify the glow and lift the card slightly to provide
+   interactive feedback and enhance the "floating" effect.
+   
+   HOW: Increase box-shadow intensity and add a subtle upward transform.
+   
+   RESULT: Card feels alive and responsive to user interaction. */
+.contact-card:hover {
+  box-shadow: 
+    0 0 60px rgba(212, 175, 55, 0.2),
+    0 12px 40px rgba(0, 0, 0, 0.4);
+  transform: translateY(-2px);
+  border-color: rgba(212, 175, 55, 0.3);
+}
+
+/* WHY: The contact header introduces the form and should be visually distinct
+   with proper spacing and hierarchy.
+   
+   HOW: Center text, add bottom margin, use golden color for accent.
+   
+   RESULT: Clear, inviting introduction to the contact form. */
+.contact-header {
+  text-align: center;
+  margin-bottom: var(--spacing-2xl);
+}
+
+.contact-header h1 {
+  font-size: clamp(2rem, 5vw, 2.5rem);
+  font-weight: 700;
+  color: var(--color-gold);
+  margin-bottom: var(--spacing-sm);
+  text-shadow: 0 0 20px rgba(212, 175, 55, 0.3);
+}
+
+.contact-header p {
+  color: var(--color-text-muted);
+  font-size: var(--font-size-md);
+  line-height: 1.6;
+}
+
+/* WHY: Form groups need spacing to separate fields visually, making the
+   form easier to scan and fill out.
+   
+   HOW: margin-bottom creates consistent spacing between fields.
+   
+   RESULT: Clean, organized form layout. */
+.form-group {
+  margin-bottom: var(--spacing-lg);
+}
+
+/* WHY: Labels should be clearly associated with their inputs and styled
+   consistently with the site's typography.
+   
+   HOW: Display as block so they sit above inputs, add subtle color and spacing.
+   
+   RESULT: Accessible, readable form labels. */
+.form-group label {
+  display: block;
+  margin-bottom: var(--spacing-xs);
+  color: var(--color-text-secondary);
+  font-size: var(--font-size-sm);
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+/* WHY: Form inputs need to match the glassmorphism aesthetic while remaining
+   highly functional and accessible.
+   
+   HOW: Semi-transparent backgrounds, golden borders on focus, proper padding
+   for comfortable interaction.
+   
+   RESULT: Beautiful inputs that are also highly usable. */
+.form-group input,
+.form-group select,
+.form-group textarea {
+  width: 100%;
+  padding: var(--spacing-md);
+  
+  /* WHY: Transparent/semi-transparent background maintains the glass aesthetic
+     and lets the underlying design show through. */
+  background: rgba(255, 255, 255, 0.05);
+  
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: var(--radius-sm);
+  
+  color: var(--color-text-primary);
+  font-size: var(--font-size-md);
+  font-family: inherit;
+  
+  /* WHY: Smooth transitions make state changes feel polished. */
+  transition: all 0.3s ease;
+}
+
+/* WHY: Textarea needs more height to accommodate longer messages. */
+.form-group textarea {
+  min-height: 150px;
+  resize: vertical; /* Allow users to resize vertically only */
+}
+
+/* WHY: Focus state is critical for accessibility and UX. The golden border
+   provides clear visual feedback showing which field is active.
+   
+   HOW: :focus pseudo-class targets the active input, outline: none removes
+   the default browser outline (replaced with our custom border).
+   
+   RESULT: Clear, beautiful focus state that guides users through the form. */
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+  outline: none;
+  border-color: var(--color-gold);
+  background: rgba(255, 255, 255, 0.08);
+  box-shadow: 0 0 20px rgba(212, 175, 55, 0.2);
+}
+
+/* WHY: Placeholder text should be visible but subtle, guiding without distracting. */
+.form-group input::placeholder,
+.form-group textarea::placeholder {
+  color: rgba(255, 255, 255, 0.4);
+}
+
+/* WHY: The submit button is the call-to-action and needs to stand out with
+   a vibrant, bioluminescent glow effect that matches our underwater theme.
+   Instead of a flat golden button, we create an eye-catching button with a
+   cyan/turquoise glow that evokes deep-sea bioluminescence.
+   
+   UX IMPROVEMENT: The previous button had dark shadows that made it look "apagado"
+   (dull/turned off). We now use bright, glowing shadows that make the button
+   feel alive and inviting - like a glowing creature in the deep ocean.
+   
+   HOW: Gradient background from cyan to blue, with a bright cyan glow effect
+   using box-shadow. Full width for mobile-friendly tapping.
+   
+   RESULT: Prominent, inviting submit button that feels like an interactive
+   bioluminescent element in our underwater kingdom. */
+.submit-button {
+  width: 100%;
+  padding: var(--spacing-md) var(--spacing-xl);
+  
+  /* WHY: Gradient from bright cyan to deeper blue creates depth and visual interest.
+     The colors evoke bioluminescent sea creatures - bright, alive, and captivating.
+     
+     HOW: linear-gradient from #00bcd4 (bright cyan) to #0097a7 (deeper teal).
+     
+     RESULT: Button has dimensional color that draws the eye. */
+  background: linear-gradient(135deg, #00bcd4 0%, #0097a7 100%);
+  border: none;
+  border-radius: var(--radius-sm);
+  
+  color: #ffffff;
+  font-size: var(--font-size-md);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  
+  cursor: pointer;
+  transition: all 0.3s ease;
+  
+  /* WHY: The glow effect (box-shadow) is the star of the show. Multiple shadows
+     create a realistic bioluminescent glow that makes the button feel alive.
+     
+     BIOLUMINESCENCE EFFECT: We layer multiple shadows:
+     - Close shadow (0 0 15px) creates the immediate glow
+     - Medium shadow (0 0 30px) extends the glow outward
+     - Far shadow (0 4px 40px) creates depth and elevation
+     
+     HOW: Three box-shadows with increasing blur radius and decreasing opacity,
+     all using cyan/turquoise color (rgba(0, 188, 212, ...)).
+     
+     RESULT: Button appears to glow like a bioluminescent jellyfish or deep-sea
+     creature, creating an enchanting, interactive feel. */
+  box-shadow: 
+    0 0 15px rgba(0, 188, 212, 0.6),
+    0 0 30px rgba(0, 188, 212, 0.4),
+    0 4px 40px rgba(0, 188, 212, 0.3);
+}
+
+/* WHY: Hover state intensifies the bioluminescent glow, making the button feel
+   like it's "lighting up" in response to user interaction. This creates a magical,
+   responsive feel that's both beautiful and functional.
+   
+   HOW: Increase glow intensity, brighten the gradient, and add a subtle lift.
+   The glow becomes stronger and more vibrant on hover.
+   
+   RESULT: Button feels alive and responsive, like a sea creature reacting to
+   your presence. The enhanced glow provides clear feedback that it's interactive. */
+.submit-button:hover {
+  /* WHY: Brightening the gradient makes the button feel more energized on hover.
+     
+     HOW: filter: brightness(1.15) increases luminosity by 15%.
+     
+     RESULT: Button appears more vibrant and "charged up" when hovered. */
+  filter: brightness(1.15);
+  
+  /* WHY: Intensified glow on hover creates a "powering up" effect that's both
+     beautiful and provides clear interactive feedback.
+     
+     HOW: Increase opacity and blur radius of all shadow layers, making the glow
+     stronger and more expansive.
+     
+     RESULT: Button glows brighter, like a bioluminescent creature responding
+     to stimulation. The effect is mesmerizing and clearly indicates interactivity. */
+  box-shadow: 
+    0 0 20px rgba(0, 188, 212, 0.8),
+    0 0 40px rgba(0, 188, 212, 0.6),
+    0 6px 50px rgba(0, 188, 212, 0.5);
+  
+  /* WHY: Subtle upward movement enhances the "floating" feeling and provides
+     tactile feedback.
+     
+     HOW: translateY(-2px) moves the button up by 2 pixels.
+     
+     RESULT: Button feels like it's rising toward your cursor, creating a
+     satisfying sense of depth and interactivity. */
+  transform: translateY(-2px);
+}
+
+/* WHY: Active state (when button is being clicked) should provide immediate
+   feedback with a "pressed down" feeling.
+   
+   HOW: Reverse the transform to move the button down slightly.
+   
+   RESULT: Satisfying click feedback. */
+.submit-button:active {
+  transform: translateY(0);
+}
+
+/* WHY: Disabled state (while form is submitting) should clearly indicate
+   the button can't be clicked and prevent accidental double submissions.
+   
+   HOW: Reduce opacity, change cursor, disable pointer events.
+   
+   RESULT: Clear visual feedback during submission. */
+.submit-button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+/* WHY: Success message needs to be hidden by default and stand out when shown
+   to clearly communicate that the form was submitted successfully.
+   
+   HOW: display: none by default, green color scheme, icon for visual appeal.
+   
+   RESULT: Clear, positive feedback after form submission. */
+.success-message {
+  display: none; /* Hidden by default, shown by JavaScript */
+  text-align: center;
+  padding: var(--spacing-xl);
+  
+  background: rgba(46, 204, 113, 0.1);
+  border: 1px solid rgba(46, 204, 113, 0.3);
+  border-radius: var(--radius-lg);
+  
+  backdrop-filter: blur(10px);
+}
+
+.success-message h2 {
+  color: #2ecc71;
+  font-size: var(--font-size-xl);
+  margin-bottom: var(--spacing-md);
+}
+
+.success-message p {
+  color: var(--color-text-secondary);
+  font-size: var(--font-size-md);
+}
+
+/* ============================================================================
+   RESPONSIVE DESIGN
+   ============================================================================ */
+
+/* WHY: On smaller screens, reduce padding and font sizes to ensure the form
+   remains comfortable to use without horizontal scrolling.
+   
+   HOW: Media query targets screens below 768px and adjusts spacing.
+   
+   RESULT: Mobile-friendly form that works great on phones. */
+@media (max-width: 768px) {
+  .contact-section {
+    padding: var(--spacing-xl) var(--spacing-md);
+  }
+  
+  .contact-card {
+    padding: var(--spacing-xl);
+  }
+  
+  .contact-header h1 {
+    font-size: 2rem;
+  }
+  
+  .form-group input,
+  .form-group select,
+  .form-group textarea {
+    padding: var(--spacing-sm);
+  }
+  
+  .submit-button {
+    padding: var(--spacing-md);
+  }
+}
+
+/* WHY: On very small screens (phones in portrait), further reduce spacing
+   to maximize usable space.
+   
+   HOW: More aggressive spacing reductions in second breakpoint.
+   
+   RESULT: Optimal mobile experience even on small devices. */
+@media (max-width: 480px) {
+  .contact-section {
+    padding: var(--spacing-lg) var(--spacing-sm);
+  }
+  
+  .contact-card {
+    padding: var(--spacing-lg);
+  }
+  
+  .contact-header {
+    margin-bottom: var(--spacing-lg);
+  }
+  
+  .form-group {
+    margin-bottom: var(--spacing-md);
+  }
+}
+
