@@ -1,68 +1,84 @@
 /* ============================================================================
-   RESET.CSS - Browser Normalization
+   RESET.CSS - Normalización de Navegadores
    
-   WHY: Different browsers apply different default styles (margins, padding, 
-   font sizes) to HTML elements. This creates inconsistencies where a page 
-   looks different in Chrome vs Firefox vs Safari.
+   ¿POR QUÉ? Diferentes navegadores aplican estilos predeterminados diferentes (márgenes,
+   padding, tamaños de fuente) a elementos HTML. Esto crea inconsistencias donde una
+   página se ve diferente en Chrome vs Firefox vs Safari.
    
-   HOW: We explicitly reset all common elements to have zero margin/padding
-   and consistent box-sizing, giving us a clean slate to build upon.
+   ¿CÓMO FUNCIONA? Reseteamos explícitamente todos los elementos comunes para tener cero
+   margin/padding y box-sizing consistente, dándonos una hoja en blanco para construir.
    
-   RESULT: Consistent appearance across all browsers, and we control exactly
-   how much spacing each element has.
+   ANALOGÍA FEYNMAN: Es como cuando vas a pintar una pared. Primero lijas y aplicas
+   imprimación para tener una superficie uniforme. Sin esto, cada pared (navegador)
+   tendría textura diferente y tu pintura se vería distinta en cada una.
+   
+   RESULTADO: Apariencia consistente en todos los navegadores, y controlamos exactamente
+   cuánto espaciado tiene cada elemento.
    ============================================================================ */
 
-/* WHY: We use the universal selector (*) to target every element on the page,
-   including pseudo-elements (::before, ::after). This ensures no element has
-   unexpected default spacing.
+/* ¿POR QUÉ? Usamos el selector universal (*) para apuntar a CADA elemento en la página,
+   incluyendo pseudo-elementos (::before, ::after). Esto asegura que ningún elemento
+   tenga espaciado predeterminado inesperado.
    
-   HOW: The asterisk selector has low specificity, so our specific styles will
-   easily override these defaults.
+   ¿CÓMO FUNCIONA? El selector asterisco tiene baja especificidad, así que nuestros
+   estilos específicos sobrescribirán fácilmente estos defaults.
    
-   RESULT: A truly blank canvas with no margin or padding anywhere. */
+   RESULTADO: Un lienzo verdaderamente en blanco sin margin ni padding en ningún lado. */
 *,
 *::before,
 *::after {
   margin: 0;
   padding: 0;
-  /* WHY: border-box makes width/height calculations intuitive. Without it,
-     padding and borders ADD to the declared width, causing layout surprises.
+  /* ¿POR QUÉ? border-box hace los cálculos de width/height intuitivos. Sin esto,
+     el padding y borders se SUMAN al width declarado, causando sorpresas de layout.
      
-     HOW: With border-box, if we say width: 300px with 20px padding, the total
-     width stays 300px (content shrinks to 260px to accommodate padding).
+     ¿CÓMO FUNCIONA? Con border-box, si decimos width: 300px con 20px de padding, el
+     ancho total permanece 300px (el contenido se encoge a 260px para acomodar el padding).
      
-     RESULT: Predictable sizing where width means total width, not just content. */
+     ANALOGÍA FEYNMAN: Imagina una caja de zapatos. Con el modelo antiguo, si pones
+     papel burbuja (padding) dentro, la caja crece. Con border-box, el papel burbuja
+     va DENTRO del espacio de la caja - el tamaño exterior nunca cambia.
+     
+     RESULTADO: Dimensionamiento predecible donde width significa ancho total, no solo contenido. */
   box-sizing: border-box;
 }
 
-/* WHY: HTML and body are the foundation of our page. Setting their height to 
-   100% allows child elements (like full-screen hero sections) to calculate
-   their own 100vh heights correctly.
+/* ¿POR QUÉ? HTML y body son la base de nuestra página. Establecer su altura a 100%
+   permite que elementos hijos (como secciones hero de pantalla completa) calculen sus
+   propias alturas 100vh correctamente.
    
-   HOW: Percentages in CSS are relative to the parent. By ensuring html and body
-   are full height, children can use percentage-based heights.
+   ¿CÓMO FUNCIONA? Los porcentajes en CSS son relativos al padre. Al asegurar que html
+   y body tengan altura completa, los hijos pueden usar alturas basadas en porcentaje.
    
-   RESULT: Full-screen layouts work properly without weird spacing issues. */
+   RESULTADO: Los layouts de pantalla completa funcionan correctamente sin problemas
+   raros de espaciado. */
 html,
 body {
   height: 100%;
-  /* WHY: We set the line-height to 1.6 instead of the browser default (usually 1.2)
-     because it improves readability by adding more vertical space between lines.
+  /* ¿POR QUÉ? Establecemos line-height a 1.6 en lugar del default del navegador
+     (usualmente 1.2) porque mejora la legibilidad al agregar más espacio vertical
+     entre líneas.
      
-     HOW: Line-height is unitless (no px or %), which means it scales proportionally
-     with font-size. A value of 1.6 means 160% of the font size.
+     ¿CÓMO FUNCIONA? Line-height sin unidades (no px o %) significa que escala
+     proporcionalmente con font-size. Un valor de 1.6 significa 160% del tamaño de fuente.
      
-     RESULT: Text is easier to read, especially in paragraphs and longer content. */
+     ANALOGÍA FEYNMAN: Es como el espaciado entre renglones en un cuaderno. Si las líneas
+     están muy juntas (1.0), es difícil leer. Con más espacio (1.6), tus ojos pueden
+     "descansar" entre líneas y leer más cómodamente.
+     
+     RESULTADO: El texto es más fácil de leer, especialmente en párrafos y contenido largo. */
   line-height: 1.6;
 }
 
-/* WHY: Browsers add bullets and extra left padding to lists by default, which
-   often conflicts with navigation menus and custom list designs.
+/* ¿POR QUÉ? Los navegadores agregan viñetas y padding izquierdo extra a las listas por
+   defecto, lo cual a menudo entra en conflicto con menús de navegación y diseños de
+   listas personalizadas.
    
-   HOW: We remove list-style (bullets/numbers) and set margin/padding to zero.
+   ¿CÓMO FUNCIONA? Removemos list-style (viñetas/números) y establecemos margin/padding
+   a cero.
    
-   RESULT: Lists start as blank slates, perfect for navigation menus where we
-   want full control over styling. */
+   RESULTADO: Las listas empiezan como hojas en blanco, perfectas para menús de
+   navegación donde queremos control total sobre el estilizado. */
 ul,
 ol {
   list-style: none;
@@ -70,38 +86,45 @@ ol {
   padding: 0;
 }
 
-/* WHY: Links have default underlines and colors (usually blue/purple) that
-   rarely match our design. We need to override these.
+/* ¿POR QUÉ? Los enlaces tienen subrayados y colores predeterminados (usualmente
+   azul/morado) que raramente coinciden con nuestro diseño. Necesitamos sobrescribir estos.
    
-   HOW: text-decoration removes underlines, and "inherit" for color makes links
-   use their parent's text color instead of the browser's default blue.
+   ¿CÓMO FUNCIONA? text-decoration remueve subrayados, e "inherit" para color hace que
+   los enlaces usen el color de texto de su padre en lugar del azul predeterminado del navegador.
    
-   RESULT: Links look like normal text until we explicitly style them. */
+   RESULTADO: Los enlaces se ven como texto normal hasta que explícitamente los estilizamos. */
 a {
   text-decoration: none;
   color: inherit;
 }
 
-/* WHY: Images are inline elements by default, which can cause unexpected extra
-   space below them (from line-height). Also, large images can overflow containers.
+/* ¿POR QUÉ? Las imágenes son elementos inline por defecto, lo cual puede causar espacio
+   extra inesperado debajo de ellas (por line-height). Además, imágenes grandes pueden
+   desbordar contenedores.
    
-   HOW: display: block removes inline spacing issues, and max-width: 100% ensures
-   images never exceed their container's width while maintaining aspect ratio.
+   ¿CÓMO FUNCIONA? display: block remueve problemas de espaciado inline, y max-width: 100%
+   asegura que las imágenes nunca excedan el ancho de su contenedor mientras mantienen
+   aspect ratio.
    
-   RESULT: Images behave predictably and responsively, shrinking on small screens. */
+   ANALOGÍA FEYNMAN: Piensa en poner una foto en un marco. Sin estas reglas, la foto
+   podría sobresalir del marco o tener gaps raros. Con estas reglas, la foto siempre
+   se ajusta perfectamente dentro del marco, sin importar cuán grande sea originalmente.
+   
+   RESULTADO: Las imágenes se comportan predeciblemente y responsivamente, encogiéndose
+   en pantallas pequeñas. */
 img {
   display: block;
   max-width: 100%;
   height: auto;
 }
 
-/* WHY: Buttons and inputs inherit font properties inconsistently across browsers.
-   Safari, Chrome, and Firefox all handle form elements differently.
+/* ¿POR QUÉ? Los botones e inputs heredan propiedades de fuente inconsistentemente entre
+   navegadores. Safari, Chrome y Firefox todos manejan elementos de formulario diferente.
    
-   HOW: We explicitly tell form elements to inherit font family and size from
-   their parent, ensuring consistency.
+   ¿CÓMO FUNCIONA? Explícitamente le decimos a los elementos de formulario que hereden
+   familia y tamaño de fuente de su padre, asegurando consistencia.
    
-   RESULT: Form elements look cohesive with the rest of the design. */
+   RESULTADO: Los elementos de formulario se ven cohesivos con el resto del diseño. */
 button,
 input,
 textarea,
@@ -110,58 +133,66 @@ select {
   font-size: inherit;
 }
 
-/* WHY: Buttons have default browser styling (3D bevels, gradients) that look dated.
-   We need to remove these to apply our custom styles.
+/* ¿POR QUÉ? Los botones tienen estilizado predeterminado del navegador (biseles 3D,
+   gradientes) que se ven anticuados. Necesitamos remover estos para aplicar nuestros
+   estilos personalizados.
    
-   HOW: Setting background, border, and cursor resets the button to a neutral state.
+   ¿CÓMO FUNCIONA? Estableciendo background, border y cursor reseteamos el botón a un
+   estado neutral.
    
-   RESULT: Buttons start as blank rectangles that we can style to match our theme. */
+   RESULTADO: Los botones empiezan como rectángulos en blanco que podemos estilizar
+   para que coincidan con nuestro tema. */
 button {
   background: none;
   border: none;
   cursor: pointer;
 }
 
-/* WHY: OPTIMAL LINE LENGTH + PERFECT CENTERING - Typography research shows that
-   the ideal line length for comfortable reading is 65-75 characters. We also
-   center the paragraph block within its container for visual balance.
+/* ¿POR QUÉ? LONGITUD DE LÍNEA ÓPTIMA + CENTRADO PERFECTO - La investigación tipográfica
+   muestra que la longitud de línea ideal para lectura cómoda es 65-75 caracteres.
+   También centramos el bloque de párrafo dentro de su contenedor para balance visual.
    
-   UX PRINCIPLE: Readers lose their place on lines longer than 75 characters.
-   Additionally, centered text blocks create visual harmony and draw the eye
-   naturally to the content.
+   PRINCIPIO UX: Los lectores pierden su lugar en líneas más largas de 75 caracteres.
+   Además, bloques de texto centrados crean armonía visual y dirigen el ojo naturalmente
+   al contenido.
    
-   HOW: max-width: 70ch (reduced from 75ch for slightly tighter, more comfortable
-   reading). margin-inline: auto centers the paragraph block horizontally within
-   its parent container.
+   ¿CÓMO FUNCIONA? max-width: 70ch (reducido de 75ch para lectura ligeramente más
+   ajustada y cómoda). margin-inline: auto centra el bloque de párrafo horizontalmente
+   dentro de su contenedor padre.
    
-   RESULT: Perfectly centered, comfortable paragraphs with optimal line length
-   that create natural white space on both sides, preventing text from stretching
-   and ensuring the Floating Dock never obstructs content. */
+   ANALOGÍA FEYNMAN: Es como leer un periódico. Si las columnas son muy anchas, tus
+   ojos se cansan yendo de un extremo a otro. Si son del ancho correcto (~70 caracteres),
+   puedes leer cómodamente sin mover mucho los ojos. El centrado es como poner el
+   periódico en el centro de tu mesa - equilibrado y fácil de alcanzar.
+   
+   RESULTADO: Párrafos perfectamente centrados y cómodos con longitud de línea óptima
+   que crean espacio en blanco natural en ambos lados, previniendo que el texto se
+   estire y asegurando que el Dock Flotante nunca obstruya contenido. */
 p {
-  max-width: 70ch; /* Optimal reading width: 65-70 characters */
-  margin-inline: auto; /* CRITICAL: Centers the paragraph block horizontally */
+  max-width: 70ch; /* Ancho de lectura óptimo: 65-70 caracteres */
+  margin-inline: auto; /* CRÍTICO: Centra el bloque de párrafo horizontalmente */
 }
 
-/* WHY: HEADING CENTERING - Section headings (h2, h3) should also be centered
-   within their containers and constrained to reasonable widths for visual balance.
+/* ¿POR QUÉ? CENTRADO DE ENCABEZADOS - Los encabezados de sección (h2, h3) también
+   deben estar centrados dentro de sus contenedores y limitados a anchos razonables
+   para balance visual.
    
-   UX PRINCIPLE: Centered headings create clear visual hierarchy and guide the
-   eye through the content structure. They also prevent headings from becoming
-   uncomfortably wide on large screens.
+   PRINCIPIO UX: Los encabezados centrados crean jerarquía visual clara y guían el ojo
+   a través de la estructura del contenido. También previenen que los encabezados se
+   vuelvan incómodamente anchos en pantallas grandes.
    
-   HOW: max-width constrains heading width. margin-inline: auto centers them
-   horizontally. We use slightly different max-widths based on typical heading
-   lengths (headings are usually shorter than paragraphs).
+   ¿CÓMO FUNCIONA? max-width limita el ancho del encabezado. margin-inline: auto los
+   centra horizontalmente. Usamos max-widths ligeramente diferentes basados en longitudes
+   típicas de encabezados (los encabezados usualmente son más cortos que párrafos).
    
-   RESULT: Perfectly centered, balanced headings that create visual hierarchy
-   and maintain readability across all screen sizes. */
+   RESULTADO: Encabezados perfectamente centrados y balanceados que crean jerarquía
+   visual y mantienen legibilidad en todos los tamaños de pantalla. */
 h2 {
-  max-width: 50ch; /* Headings are typically shorter than body text */
+  max-width: 50ch; /* Los encabezados típicamente son más cortos que texto del cuerpo */
   margin-inline: auto;
 }
 
 h3 {
-  max-width: 45ch; /* Subheadings even more concise */
+  max-width: 45ch; /* Los sub-encabezados aún más concisos */
   margin-inline: auto;
 }
-

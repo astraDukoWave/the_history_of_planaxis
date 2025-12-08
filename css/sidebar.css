@@ -1,557 +1,606 @@
 /* ============================================================================
-   SIDEBAR.CSS - Floating Glass Dock Navigation
+   SIDEBAR.CSS - Navegación Dock de Vidrio Flotante
    
-   WHY: Traditional fixed sidebars (full-height, full-opacity) obstruct valuable
-   content and create a poor reading experience. This "Floating Glass Dock" design
-   solves that by being minimal, non-intrusive, and expanding only on intent.
+   ¿POR QUÉ? Los sidebars fijos tradicionales (altura completa, opacidad completa)
+   obstruyen contenido valioso y crean una mala experiencia de lectura. Este diseño
+   de "Dock de Vidrio Flotante" resuelve eso siendo minimal, no intrusivo, y
+   expandiéndose solo en intención.
    
-   DESIGN PATTERN: "Hover to Reveal" Dock - Inspired by macOS Dock and modern UI
-   patterns where navigation hovers elegantly over content without blocking it.
+   PATRÓN DE DISEÑO: Dock "Hover to Reveal" (Hover para Revelar) - Inspirado por
+   el Dock de macOS y patrones de UI modernos donde la navegación flota elegantemente
+   sobre el contenido sin bloquearlo.
    
-   HOW: We create a floating, pill-shaped dock that:
-   - Sits 20px from the right edge (not flush)
-   - Vertically centered on the viewport
-   - 60px wide by default (icon-only)
-   - Expands to 260px on hover (revealing text)
-   - Uses glassmorphism (backdrop-blur + semi-transparency)
+   ¿CÓMO FUNCIONA? Creamos un dock flotante en forma de píldora que:
+   - Se sienta a 20px del borde derecho (no al ras)
+   - Centrado verticalmente en el viewport
+   - 60px de ancho por defecto (solo íconos)
+   - Se expande a 260px en hover (revelando texto)
+   - Usa glassmorphism (backdrop-blur + semi-transparencia)
    
-   RESULT: A futuristic, non-intrusive navigation tool that feels like it's from
-   tomorrow - present but not demanding attention until the user needs it.
+   ANALOGÍA FEYNMAN: Es como tener una barra de herramientas que flota sobre tu
+   escritorio. Cuando no la necesitas, es solo una delgada barra de íconos en el
+   borde. Cuando pasas el mouse sobre ella, se expande mostrando etiquetas completas.
+   No bloquea tu trabajo, está ahí cuando la necesitas.
+   
+   RESULTADO: Una herramienta de navegación futurista y no intrusiva que se siente
+   como si fuera del mañana - presente pero no demandando atención hasta que el
+   usuario la necesite.
    ============================================================================ */
 
-/* WHY: The floating dock must be positioned independently of page scroll, always
-   accessible in the same visual position. Unlike the old full-height sidebar,
-   this is a compact, capsule-shaped element that floats elegantly over content.
+/* ¿POR QUÉ? El dock flotante debe estar posicionado independientemente del scroll
+   de página, siempre accesible en la misma posición visual. A diferencia del viejo
+   sidebar de altura completa, este es un elemento compacto en forma de cápsula que
+   flota elegantemente sobre el contenido.
    
-   UX IMPROVEMENT: Traditional sidebars occupy 20-30% of screen width permanently.
-   This dock occupies only 60px (5% on 1200px screens) and floats over white space
-   thanks to the safe zone we created in layout.css.
+   MEJORA UX: Los sidebars tradicionales ocupan 20-30% del ancho de pantalla permanentemente.
+   Este dock ocupa solo 60px (5% en pantallas de 1200px) y flota sobre espacio blanco
+   gracias a la zona segura que creamos en layout.css.
    
-   HOW: position: fixed keeps it in place during scroll. right: 20px creates
-   breathing room from the edge (not flush). top: 50% + translateY(-50%) centers
-   it vertically regardless of its height.
+   ¿CÓMO FUNCIONA? position: fixed lo mantiene en su lugar durante scroll. right: 20px
+   crea espacio de respiración del borde (no al ras). top: 50% + translateY(-50%)
+   lo centra verticalmente sin importar su altura.
    
-   RESULT: A floating navigation capsule that feels like a tool, not a page element. */
+   ANALOGÍA FEYNMAN: Es como tener un control remoto pegado al lado de tu sofá.
+   Siempre está en el mismo lugar, fácil de alcanzar, pero no está en medio de tu
+   vista mientras miras TV (lees contenido).
+   
+   RESULTADO: Una cápsula de navegación flotante que se siente como una herramienta,
+   no un elemento de página. */
 .utility-sidebar {
   position: fixed;
-  right: 20px; /* Floats away from edge, not flush */
+  right: 20px; /* Flota lejos del borde, no al ras */
   top: 50%;
   
-  /* WHY: translateY(-50%) perfectly centers the dock vertically. Since top: 50%
-     positions the top edge at viewport center, we shift it up by half its own
-     height to achieve true centering.
+  /* ¿POR QUÉ? translateY(-50%) centra perfectamente el dock verticalmente. Como
+     top: 50% posiciona el borde superior en el centro del viewport, lo desplazamos
+     hacia arriba por la mitad de su propia altura para lograr centrado verdadero.
      
-     HOW: Percentage transforms are relative to the element's own dimensions.
-     -50% means "move up by half your height."
+     ¿CÓMO FUNCIONA? Los transforms de porcentaje son relativos a las dimensiones
+     del propio elemento. -50% significa "muévete hacia arriba por la mitad de tu altura".
      
-     RESULT: Perfectly centered dock regardless of how many links it contains. */
+     GLOSARIO: translateY() = mueve un elemento verticalmente. Valores negativos mueven
+     hacia arriba, positivos hacia abajo. El porcentaje es relativo al tamaño del elemento.
+     
+     RESULTADO: Dock perfectamente centrado sin importar cuántos enlaces contenga. */
   transform: translateY(-50%);
   
-  /* WHY: z-index: 1000 ensures the dock floats above all content. We use the
-     highest value in our z-index system (matching header) because this is a
-     primary navigation element that should never be obscured.
+  /* ¿POR QUÉ? z-index: 1000 asegura que el dock flote sobre todo el contenido. Usamos
+     el valor más alto en nuestro sistema z-index (coincidiendo con header) porque
+     este es un elemento de navegación primario que nunca debe ser oscurecido.
      
-     HOW: Higher z-index values stack above lower values.
+     ¿CÓMO FUNCIONA? Valores z-index más altos se apilan sobre valores más bajos.
      
-     RESULT: The dock is always visible and interactive, never hidden behind content. */
+     RESULTADO: El dock es siempre visible e interactivo, nunca oculto detrás del contenido. */
   z-index: 1000;
   
-  /* WHY: COMPACT STATE - 60px width shows only icons, creating minimal visual
-     footprint. This is just wide enough for icons (24-32px) plus comfortable
-     padding (15px × 2 = 30px), totaling ~54-62px.
+  /* ¿POR QUÉ? ESTADO COMPACTO - 60px de ancho muestra solo íconos, creando huella
+     visual mínima. Esto es justo lo suficientemente ancho para íconos (24-32px) más
+     padding cómodo (15px × 2 = 30px), totalizando ~54-62px.
      
-     CRITICAL: This narrow width is key to the non-intrusive nature. Users see
-     subtle icon hints without losing screen real estate.
+     CRÍTICO: Este ancho estrecho es clave para la naturaleza no intrusiva. Los usuarios
+     ven pistas sutiles de íconos sin perder espacio de pantalla.
      
-     HOW: Fixed width ensures consistent collapsed state. We'll animate this to
-     260px on hover for the expanded state.
+     ¿CÓMO FUNCIONA? Ancho fijo asegura estado colapsado consistente. Animaremos esto
+     a 260px en hover para el estado expandido.
      
-     RESULT: Minimal visual presence - the dock is there but doesn't demand attention. */
+     RESULTADO: Presencia visual mínima - el dock está ahí pero no demanda atención. */
   width: 60px;
   
-  /* WHY: height: auto allows the dock to size naturally based on content (number
-     of links). Unlike the old 100vh sidebar, this creates a compact capsule that
-     only takes the space it needs.
+  /* ¿POR QUÉ? height: auto permite que el dock se dimensione naturalmente basado en
+     contenido (número de enlaces). A diferencia del viejo sidebar de 100vh, esto crea
+     una cápsula compacta que solo toma el espacio que necesita.
      
-     HOW: Auto height with padding creates a capsule that grows/shrinks based on
-     the number of navigation items.
+     ¿CÓMO FUNCIONA? Altura auto con padding crea una cápsula que crece/encoge basada
+     en el número de ítems de navegación.
      
-     RESULT: An elegant, appropriately-sized dock - not a dominating column. */
+     RESULTADO: Un dock elegante y apropiadamente dimensionado - no una columna dominante. */
   height: auto;
   
-  /* WHY: GLASSMORPHISM FOUNDATION - Semi-transparent dark background (40% opacity)
-     creates the "glass" effect. This is subtle enough to see through but dark
-     enough to provide contrast for white icons.
+  /* ¿POR QUÉ? BASE DE GLASSMORPHISM - Fondo oscuro semi-transparente (40% opacidad)
+     crea el efecto de "vidrio". Esto es sutil lo suficiente para ver a través pero
+     oscuro lo suficiente para proporcionar contraste para íconos blancos.
      
-     UX PRINCIPLE: Collapsed UI should be "ghost-like" - present but unobtrusive.
-     Higher opacity is reserved for the expanded (engaged) state.
+     PRINCIPIO UX: UI colapsada debe ser "como fantasma" - presente pero no intrusiva.
+     Mayor opacidad se reserva para el estado expandido (engaged).
      
-     HOW: rgba(5, 10, 20, 0.4) gives us 40% opacity (60% transparent), making the
-     dock feel like frosted glass floating over content.
+     ¿CÓMO FUNCIONA? rgba(5, 10, 20, 0.4) nos da 40% de opacidad (60% transparente),
+     haciendo que el dock se sienta como vidrio esmerilado flotando sobre contenido.
      
-     RESULT: You can see content behind the dock, reinforcing that it's a floating
-     layer, not a blocking column. */
+     RESULTADO: Puedes ver contenido detrás del dock, reforzando que es una capa
+     flotante, no una columna que bloquea. */
   background: rgba(5, 10, 20, 0.4);
   
-  /* WHY: backdrop-filter is THE DEFINING FEATURE of glassmorphism. It blurs
-     content BEHIND the dock, creating the frosted glass effect that's both
-     beautiful and functional.
+  /* ¿POR QUÉ? backdrop-filter es LA CARACTERÍSTICA DEFINITORIA del glassmorphism.
+     Difumina contenido DETRÁS del dock, creando el efecto de vidrio esmerilado que
+     es hermoso y funcional.
      
-     HOW: blur(12px) diffuses background content into soft, muted colors. This
-     provides a calm, uniform canvas for our white icons/text while still allowing
-     you to perceive what's behind (colors, shapes, movement).
+     ¿CÓMO FUNCIONA? blur(12px) difumina el contenido de fondo en colores suaves y
+     apagados. Esto proporciona un lienzo tranquilo y uniforme para nuestros íconos/texto
+     blancos mientras aún te permite percibir qué está detrás (colores, formas, movimiento).
      
-     BROWSER SUPPORT: Modern browsers (Chrome 76+, Firefox 103+, Safari 9+). We
-     include -webkit- prefix for maximum compatibility.
+     SOPORTE DE NAVEGADOR: Navegadores modernos (Chrome 76+, Firefox 103+, Safari 9+).
+     Incluimos prefijo -webkit- para máxima compatibilidad.
      
-     RESULT: The dock appears as a sheet of frosted glass - you see through it but
-     it's distinct enough for clear icon visibility. Pure magic. */
+     ANALOGÍA FEYNMAN: Imagina mirar a través de una ventana de ducha con vidrio
+     esmerilado. Ves formas y colores borrosos detrás, pero no detalles nítidos.
+     El vidrio (el dock) está claro pero difumina lo que está detrás para que te
+     enfoques en lo que está escrito en el vidrio (los íconos).
+     
+     RESULTADO: El dock aparece como una hoja de vidrio esmerilado - ves a través
+     pero es lo suficientemente distinto para visibilidad clara de íconos. Pura magia. */
   backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px); /* Safari/Webkit support */
+  -webkit-backdrop-filter: blur(12px); /* Soporte Safari/Webkit */
   
-  /* WHY: CAPSULE SHAPE - Large border-radius (20px) creates the modern "pill"
-     or "capsule" shape characteristic of floating docks. This distinguishes it
-     from traditional rectangular sidebars.
+  /* ¿POR QUÉ? FORMA DE CÁPSULA - Border-radius grande (20px) crea la forma moderna
+     de "píldora" o "cápsula" característica de docks flotantes. Esto lo distingue
+     de sidebars rectangulares tradicionales.
      
-     HOW: 20px radius is significant enough to create pronounced rounding without
-     becoming perfectly circular.
+     ¿CÓMO FUNCIONA? 20px de radius es lo suficientemente significativo para crear
+     redondeado pronunciado sin volverse perfectamente circular.
      
-     RESULT: A modern, friendly, futuristic appearance - like a floating UI element
-     from a sci-fi interface. */
+     RESULTADO: Apariencia moderna, amigable y futurista - como un elemento UI flotante
+     de una interfaz sci-fi. */
   border-radius: 20px;
   
-  /* WHY: REFINED GLASS BORDER - A subtle white border (10% opacity) creates a
-     delicate edge highlight, enhancing the glass material appearance. This is a
-     signature glassmorphism technique.
+  /* ¿POR QUÉ? BORDE DE VIDRIO REFINADO - Un borde blanco sutil (10% opacidad) crea
+     un resaltado de borde delicado, mejorando la apariencia de material de vidrio.
+     Esta es una técnica distintiva de glassmorphism.
      
-     HOW: 1px solid border is thin enough to be elegant, not chunky. The low
-     opacity (0.1 = 10%) makes it a subtle accent, not a hard outline.
+     ¿CÓMO FUNCIONA? Borde sólido de 1px es lo suficientemente delgado para ser elegante,
+     no voluminoso. La baja opacidad (0.1 = 10%) lo hace un acento sutil, no un contorno duro.
      
-     RESULT: The dock has a refined, premium appearance with a delicate edge glow. */
+     RESULTADO: El dock tiene una apariencia refinada y premium con un brillo de borde delicado. */
   border: 1px solid rgba(255, 255, 255, 0.1);
   
-  /* WHY: ELEVATION SHADOW - A strong shadow (0 8px 32px) creates depth, making
-     the dock appear to float well above the page surface. The large blur radius
-     (32px) creates a soft, diffused shadow (not harsh).
+  /* ¿POR QUÉ? SOMBRA DE ELEVACIÓN - Una sombra fuerte (0 8px 32px) crea profundidad,
+     haciendo que el dock parezca flotar bien por encima de la superficie de la página.
+     El radio de blur grande (32px) crea una sombra suave y difusa (no dura).
      
-     HOW: 0 horizontal offset, 8px downward offset, 32px blur, 30% opacity black.
-     This mimics natural lighting from above.
+     ¿CÓMO FUNCIONA? 0 offset horizontal, 8px offset hacia abajo, 32px blur, 30% opacidad negro.
+     Esto imita iluminación natural desde arriba.
      
-     RESULT: The dock casts a realistic shadow, reinforcing its "floating" nature
-     and separating it from background content. */
+     RESULTADO: El dock proyecta una sombra realista, reforzando su naturaleza "flotante"
+     y separándolo del contenido de fondo. */
   box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
   
-  /* WHY: Compact vertical padding (15px top/bottom) keeps the dock tight. We use
-     0 horizontal padding because we'll add padding to individual links instead
-     for better control over icon centering.
+  /* ¿POR QUÉ? Padding vertical compacto (15px arriba/abajo) mantiene el dock ajustado.
+     Usamos 0 padding horizontal porque agregaremos padding a enlaces individuales
+     para mejor control sobre centrado de íconos.
      
-     HOW: padding: 15px 0 applies vertical padding only.
+     ¿CÓMO FUNCIONA? padding: 15px 0 aplica solo padding vertical.
      
-     RESULT: A compact capsule with comfortable icon spacing. */
+     RESULTADO: Una cápsula compacta con espaciado de ícono cómodo. */
   padding: 15px 0;
   
-  /* WHY: CRITICAL - overflow: hidden prevents link text from spilling out when
-     the dock is collapsed. Without this, full text would be visible outside the
-     60px width, breaking the collapsed illusion.
+  /* ¿POR QUÉ? CRÍTICO - overflow: hidden previene que el texto de enlaces se derrame
+     cuando el dock está colapsado. Sin esto, el texto completo sería visible fuera
+     del ancho de 60px, rompiendo la ilusión de colapsado.
      
-     HOW: Any content extending beyond the dock's boundaries is clipped and hidden.
+     ¿CÓMO FUNCIONA? Cualquier contenido que se extienda más allá de los límites del
+     dock se recorta y oculta.
      
-     RESULT: In collapsed state, text is completely hidden - only icons visible. */
+     RESULTADO: En estado colapsado, el texto está completamente oculto - solo íconos visibles. */
   overflow: hidden;
   
-  /* WHY: CRITICAL - white-space: nowrap prevents text from wrapping to multiple
-     lines. This ensures text stays on one line and gets clipped by overflow: hidden,
-     rather than breaking into multiple lines within the 60px width.
+  /* ¿POR QUÉ? CRÍTICO - white-space: nowrap previene que el texto se envuelva a
+     múltiples líneas. Esto asegura que el texto permanezca en una línea y sea recortado
+     por overflow: hidden, en lugar de romperse en múltiples líneas dentro del ancho de 60px.
      
-     HOW: nowrap forces all text to remain on a single line regardless of container width.
+     ¿CÓMO FUNCIONA? nowrap fuerza que todo el texto permanezca en una sola línea sin
+     importar el ancho del contenedor.
      
-     RESULT: Text remains on one line, making the collapsed state clean (icons only).
-     When expanded, full text appears on one line elegantly. */
+     RESULTADO: El texto permanece en una línea, haciendo el estado colapsado limpio
+     (solo íconos). Cuando se expande, el texto completo aparece en una línea elegantemente. */
   white-space: nowrap;
   
-  /* WHY: SMOOTH EXPANSION - We use a custom cubic-bezier for a "spring-like" feel.
-     The curve (0.25, 0.8, 0.25, 1) creates initial acceleration then smooth easing,
-     mimicking natural motion with slight elasticity.
+  /* ¿POR QUÉ? EXPANSIÓN SUAVE - Usamos un cubic-bezier personalizado para una sensación
+     "tipo resorte". La curva (0.25, 0.8, 0.25, 1) crea aceleración inicial luego
+     easing suave, imitando movimiento natural con ligera elasticidad.
      
-     ANIMATION THEORY: This curve is more dynamic than standard ease-in-out. The
-     0.8 peak creates a subtle overshoot feeling (though not actual overshoot),
-     making the animation feel alive and responsive.
+     TEORÍA DE ANIMACIÓN: Esta curva es más dinámica que ease-in-out estándar. El
+     pico de 0.8 crea una sensación de overshoot sutil (aunque no overshoot real),
+     haciendo que la animación se sienta viva y responsiva.
      
-     HOW: We transition width and background over 0.4s with the custom easing.
+     ¿CÓMO FUNCIONA? Hacemos transición a width y background sobre 0.4s con el easing personalizado.
      
-     RESULT: The dock expansion feels organic and premium, not mechanical. It has
-     personality and fluidity that standard easing lacks. */
+     ANALOGÍA FEYNMAN: Es como una banda elástica que estiras. No va de 0 a 100
+     mecánicamente - acelera, se estira un poco, luego se asienta suavemente en su
+     lugar. Se siente orgánico, vivo.
+     
+     RESULTADO: La expansión del dock se siente orgánica y premium, no mecánica. Tiene
+     personalidad y fluidez que el easing estándar carece. */
   transition: width 0.4s cubic-bezier(0.25, 0.8, 0.25, 1),
               background 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
 }
 
-/* WHY: EXPANDED STATE (on hover) - When the user shows interest by hovering, we
-   expand the dock to full width (260px) and increase opacity for better text
-   readability. This is the "reveal" part of "hover to reveal."
+/* ¿POR QUÉ? ESTADO EXPANDIDO (en hover) - Cuando el usuario muestra interés haciendo
+   hover, expandimos el dock a ancho completo (260px) y aumentamos opacidad para mejor
+   legibilidad de texto. Esta es la parte de "reveal" (revelar) de "hover to reveal".
    
-   UX PATTERN: Hover is an explicit signal of intent without requiring a click.
-   It's faster and more intuitive - the user gets information immediately.
+   PATRÓN UX: Hover es una señal explícita de intención sin requerir un clic. Es más
+   rápido e intuitivo - el usuario obtiene información inmediatamente.
    
-   HOW: :hover pseudo-class detects mouse proximity and triggers transformations.
+   ¿CÓMO FUNCIONA? La pseudo-clase :hover detecta proximidad del mouse y activa transformaciones.
    
-   RESULT: Dock smoothly expands, revealing full navigation text in a satisfying,
-   fluid animation that feels responsive and intentional. */
+   RESULTADO: El dock se expande suavemente, revelando texto de navegación completo en
+   una animación satisfactoria y fluida que se siente responsiva e intencional. */
 .utility-sidebar:hover {
-  /* WHY: EXPANDED WIDTH - 260px provides generous space for comfortable text
-     reading without becoming so wide that it blocks too much content. This is
-     about 22% of a 1200px screen - noticeable but not dominating.
+  /* ¿POR QUÉ? ANCHO EXPANDIDO - 260px proporciona espacio generoso para lectura
+     cómoda de texto sin volverse tan ancho que bloquee demasiado contenido. Esto
+     es cerca del 22% de una pantalla de 1200px - notable pero no dominante.
      
-     HOW: Width animates from 60px to 260px over 0.4s with our spring curve.
+     ¿CÓMO FUNCIONA? El ancho anima de 60px a 260px sobre 0.4s con nuestra curva de resorte.
      
-     RESULT: Dock grows smoothly to reveal full link text, creating a satisfying
-     expansion effect that feels intentional and polished. */
+     RESULTADO: El dock crece suavemente para revelar texto de enlace completo, creando
+     un efecto de expansión satisfactorio que se siente intencional y pulido. */
   width: 260px;
   
-  /* WHY: EXPANDED BACKGROUND - When expanded, we increase opacity to 85% for
-     maximum text contrast and readability. The darker, more opaque background
-     signals "this is now active and interactive."
+  /* ¿POR QUÉ? FONDO EXPANDIDO - Cuando se expande, aumentamos opacidad a 85% para
+     máximo contraste de texto y legibilidad. El fondo más oscuro y opaco señala
+     "esto ahora está activo e interactivo".
      
-     UX PRINCIPLE: Active UI elements should be more prominent. The opacity jump
-     from 40% to 85% clearly indicates state change.
+     PRINCIPIO UX: Elementos UI activos deben ser más prominentes. El salto de opacidad
+     de 40% a 85% indica claramente cambio de estado.
      
-     HOW: rgba(5, 10, 20, 0.85) gives us 85% opacity (only 15% transparent), making
-     the background very prominent while maintaining a hint of glassmorphism.
+     ¿CÓMO FUNCIONA? rgba(5, 10, 20, 0.85) nos da 85% de opacidad (solo 15% transparente),
+     haciendo el fondo muy prominente mientras mantiene una pizca de glassmorphism.
      
-     RESULT: Expanded dock has excellent text contrast while still feeling like
-     glass thanks to the backdrop-blur and subtle transparency. */
+     RESULTADO: El dock expandido tiene excelente contraste de texto mientras aún se
+     siente como vidrio gracias al backdrop-blur y transparencia sutil. */
   background: rgba(5, 10, 20, 0.85);
 }
 
-/* WHY: The dock links need to stack vertically (traditional navigation menu layout)
-   rather than horizontally. Each link should be a distinct, clickable row.
+/* ¿POR QUÉ? Los enlaces del dock necesitan apilarse verticalmente (layout de menú
+   de navegación tradicional) en lugar de horizontalmente. Cada enlace debe ser una
+   fila clickeable distinta.
    
-   HOW: display: flex with flex-direction: column arranges children top-to-bottom.
+   ¿CÓMO FUNCIONA? display: flex con flex-direction: column organiza hijos de arriba
+   hacia abajo.
    
-   RESULT: Links appear one below the other in a clean, organized vertical list. */
+   RESULTADO: Los enlaces aparecen uno debajo del otro en una lista vertical limpia y organizada. */
 .sidebar-links {
   display: flex;
   flex-direction: column;
   
-  /* WHY: gap: 8px creates consistent, comfortable spacing between links without
-     manually adding margins to each item. This is cleaner than margin-bottom
-     on each link.
+  /* ¿POR QUÉ? gap: 8px crea espaciado consistente y cómodo entre enlaces sin agregar
+     manualmente márgenes a cada ítem. Esto es más limpio que margin-bottom en cada enlace.
      
-     HOW: Flexbox gap automatically applies spacing between children (not on edges).
+     ¿CÓMO FUNCIONA? Flexbox gap automáticamente aplica espaciado entre hijos (no en bordes).
      
-     RESULT: Even, predictable 8px gaps between all navigation links. */
+     RESULTADO: Gaps uniformes y predecibles de 8px entre todos los enlaces de navegación. */
   gap: 8px;
   
-  /* WHY: Remove default list styling (bullets, margins, padding) that browsers
-     add to <ul> elements. We're creating a custom navigation dock, not a text list.
+  /* ¿POR QUÉ? Remueve estilizado de lista predeterminado (viñetas, márgenes, padding)
+     que los navegadores agregan a elementos <ul>. Estamos creando un dock de navegación
+     personalizado, no una lista de texto.
      
-     HOW: Zeroing these properties removes all browser defaults.
+     ¿CÓMO FUNCIONA? Poniendo a cero estas propiedades remueve todos los defaults del navegador.
      
-     RESULT: Clean slate for custom link styling without interference. */
+     RESULTADO: Hoja en blanco limpia para estilizado de enlace personalizado sin interferencia. */
   list-style: none;
   padding: 0;
   margin: 0;
 }
 
-/* WHY: In collapsed state, we need to hide text while showing only icons. We
-   target text spans (not icon spans) and make them invisible with opacity: 0.
+/* ¿POR QUÉ? En estado colapsado, necesitamos ocultar texto mientras mostramos solo
+   íconos. Apuntamos a spans de texto (no spans de íconos) y los hacemos invisibles
+   con opacity: 0.
    
-   HOW: :not(.icon) selector excludes elements with the "icon" class, targeting
-   only text spans.
+   ¿CÓMO FUNCIONA? El selector :not(.icon) excluye elementos con la clase "icon",
+   apuntando solo a spans de texto.
    
-   RESULT: In collapsed state, text is invisible but ready to fade in on hover. */
+   RESULTADO: En estado colapsado, el texto es invisible pero listo para fade in en hover. */
 .sidebar-links li a span:not(.icon),
 .nav-text {
-  /* WHY: opacity: 0 makes text completely transparent while maintaining its
-     space in layout. This is crucial for smooth transitions - if we used
-     display: none, text would pop in/out instead of fading smoothly.
+  /* ¿POR QUÉ? opacity: 0 hace el texto completamente transparente mientras mantiene
+     su espacio en el layout. Esto es crucial para transiciones suaves - si usáramos
+     display: none, el texto aparecería/desaparecería bruscamente en lugar de fade suave.
      
-     HOW: opacity: 0 renders the element invisible but it still occupies space
-     and can transition.
+     ¿CÓMO FUNCIONA? opacity: 0 renderiza el elemento invisible pero aún ocupa espacio
+     y puede hacer transición.
      
-     RESULT: Text is hidden in collapsed state but ready for smooth fade-in. */
+     RESULTADO: El texto está oculto en estado colapsado pero listo para fade-in suave. */
   opacity: 0;
   
-  /* WHY: FAST fade transition - 0.2s makes text disappear/appear quickly but
-     smoothly. This is faster than the dock expansion (0.4s) to create a
-     sequential reveal effect.
+  /* ¿POR QUÉ? Transición de fade RÁPIDA - 0.2s hace que el texto desaparezca/aparezca
+     rápida pero suavemente. Esto es más rápido que la expansión del dock (0.4s) para
+     crear un efecto de revelación secuencial.
      
-     HOW: Short duration creates snappy, responsive feeling.
+     ¿CÓMO FUNCIONA? Duración corta crea sensación ágil y responsiva.
      
-     RESULT: Text fades quickly, feeling responsive and intentional. */
+     RESULTADO: El texto hace fade rápidamente, sintiéndose responsivo e intencional. */
   transition: opacity 0.2s ease;
 }
 
-/* WHY: When dock is hovered (expanded), we reveal text by fading it to full
-   opacity. We add a 0.15s delay so text starts appearing AFTER dock width begins
-   expanding, creating a polished sequential reveal.
+/* ¿POR QUÉ? Cuando el dock se hace hover (expandido), revelamos texto haciéndole
+   fade a opacidad completa. Agregamos un delay de 0.15s para que el texto comience
+   a aparecer DESPUÉS de que el ancho del dock comience a expandirse, creando una
+   revelación secuencial pulida.
    
-   SEQUENTIAL ANIMATION THEORY: When multiple properties animate simultaneously,
-   it can feel chaotic. Staggering animations (width first, then text) creates
-   intentional, elegant choreography.
+   TEORÍA DE ANIMACIÓN SECUENCIAL: Cuando múltiples propiedades animan simultáneamente,
+   puede sentirse caótico. Escalonar animaciones (ancho primero, luego texto) crea
+   coreografía intencional y elegante.
    
-   TIMING BREAKDOWN:
-   - 0-0.4s: Dock width expands from 60px to 260px
-   - 0.15-0.35s: Text fades from 0 to 1 opacity
-   Result: Text appears as dock is expanding, but not before there's space for it.
+   DESGLOSE DE TIMING:
+   - 0-0.4s: El ancho del dock se expande de 60px a 260px
+   - 0.15-0.35s: El texto hace fade de 0 a 1 de opacidad
+   Resultado: El texto aparece mientras el dock se está expandiendo, pero no antes de
+   que haya espacio para él.
    
-   HOW: transition-delay shifts the start of opacity transition by 0.15 seconds.
+   ¿CÓMO FUNCIONA? transition-delay desplaza el inicio de la transición de opacidad
+   por 0.15 segundos.
    
-   RESULT: Text smoothly fades in as dock expands, creating a sophisticated,
-   choreographed reveal that feels intentional and premium. */
+   ANALOGÍA FEYNMAN: Es como abrir una cortina y encender una luz. Primero la cortina
+   se abre (dock se expande), luego la luz se enciende (texto aparece). Si hicieras
+   ambos exactamente al mismo tiempo, sería confuso - secuenciarlos se siente intencional.
+   
+   RESULTADO: El texto hace fade in suavemente mientras el dock se expande, creando
+   una revelación coreografiada y sofisticada que se siente intencional y premium. */
 .utility-sidebar:hover .sidebar-links li a span:not(.icon),
 .utility-sidebar:hover .nav-text {
-  /* WHY: opacity: 1 makes text fully visible and readable.
+  /* ¿POR QUÉ? opacity: 1 hace el texto completamente visible y legible.
      
-     RESULT: Text is crisp and clear when dock is expanded. */
+     RESULTADO: El texto es nítido y claro cuando el dock está expandido. */
   opacity: 1;
   
-  /* WHY: The 0.15s delay creates the sequential reveal choreography. Text starts
-     fading in 150ms after hover begins, allowing dock to establish its expansion
-     first.
+  /* ¿POR QUÉ? El delay de 0.15s crea la coreografía de revelación secuencial. El texto
+     comienza a hacer fade in 150ms después de que comience el hover, permitiendo que
+     el dock establezca su expansión primero.
      
-     RESULT: Polished, intentional animation sequence that feels professional. */
+     RESULTADO: Secuencia de animación pulida e intencional que se siente profesional. */
   transition-delay: 0.15s;
 }
 
-/* WHY: Each dock link needs to be a comfortable click target with clear visual
-   hierarchy, hover feedback, and accessibility compliance.
+/* ¿POR QUÉ? Cada enlace del dock necesita ser un target de clic cómodo con jerarquía
+   visual clara, retroalimentación hover, y compliance de accesibilidad.
    
-   HOW: We style with proper padding, colors, and interactive states.
+   ¿CÓMO FUNCIONA? Estilizamos con padding apropiado, colores, y estados interactivos.
    
-   RESULT: Professional, usable navigation links that feel responsive. */
+   RESULTADO: Enlaces de navegación profesionales y usables que se sienten responsivos. */
 .sidebar-links li a {
-  /* WHY: display: flex allows us to align icons and text horizontally with
-     precise control using flexbox properties.
+  /* ¿POR QUÉ? display: flex nos permite alinear íconos y texto horizontalmente con
+     control preciso usando propiedades flexbox.
      
-     HOW: Flex container with align-items: center vertically centers children.
+     ¿CÓMO FUNCIONA? Contenedor flex con align-items: center centra verticalmente los hijos.
      
-     RESULT: Icons and text align perfectly on the same baseline. */
+     RESULTADO: Íconos y texto se alinean perfectamente en la misma línea base. */
   display: flex;
   align-items: center;
   
-  /* WHY: Generous padding (12px vertical, 16px horizontal) increases the clickable
-     area beyond just text/icon bounds, improving usability especially on touch devices.
+  /* ¿POR QUÉ? Padding generoso (12px vertical, 16px horizontal) aumenta el área
+     clickeable más allá de solo los límites de texto/ícono, mejorando usabilidad
+     especialmente en dispositivos táctiles.
      
-     ACCESSIBILITY: Larger click targets (minimum 44x44px per WCAG) accommodate
-     users with limited dexterity or motor control issues.
+     ACCESIBILIDAD: Targets de clic más grandes (mínimo 44x44px según WCAG) acomodan
+     a usuarios con destreza limitada o problemas de control motor.
      
-     HOW: Padding expands the interactive area without increasing visual size.
+     ¿CÓMO FUNCIONA? El padding expande el área interactiva sin aumentar el tamaño visual.
      
-     RESULT: Links are easy to click/tap even for users with accessibility needs. */
+     RESULTADO: Los enlaces son fáciles de hacer clic/tap incluso para usuarios con
+     necesidades de accesibilidad. */
   padding: 12px 16px;
   
-  /* WHY: Pure white (#ffffff) on dark background ensures maximum contrast and
-     readability, meeting WCAG AAA standards (contrast ratio > 7:1).
+  /* ¿POR QUÉ? Blanco puro (#ffffff) en fondo oscuro asegura máximo contraste y
+     legibilidad, cumpliendo estándares WCAG AAA (ratio de contraste > 7:1).
      
-     ACCESSIBILITY: High contrast is critical for users with visual impairments,
-     color blindness, or those viewing in bright sunlight.
+     ACCESIBILIDAD: Alto contraste es crítico para usuarios con discapacidades visuales,
+     daltonismo, o quienes ven en luz solar brillante.
      
-     HOW: Pure white (255, 255, 255) on dark blue-black (5, 10, 20) provides
-     excellent contrast.
+     ¿CÓMO FUNCIONA? Blanco puro (255, 255, 255) sobre azul-negro oscuro (5, 10, 20)
+     proporciona excelente contraste.
      
-     RESULT: Text is sharp, easily readable, and accessible to all users. */
+     RESULTADO: El texto es nítido, fácilmente legible, y accesible para todos los usuarios. */
   color: #ffffff;
-  font-size: 1rem; /* 16px - comfortable reading size */
-  font-weight: 500; /* Medium weight for clarity without being heavy */
+  font-size: 1rem; /* 16px - tamaño de lectura cómodo */
+  font-weight: 500; /* Peso medio para claridad sin ser pesado */
   
-  /* WHY: border-radius: 8px softens link corners, creating a modern, friendly
-     appearance that matches the dock's rounded capsule shape.
+  /* ¿POR QUÉ? border-radius: 8px suaviza las esquinas del enlace, creando una apariencia
+     moderna y amigable que coincide con la forma de cápsula redondeada del dock.
      
-     HOW: 8px is less rounded than the dock (20px) but still noticeable.
+     ¿CÓMO FUNCIONA? 8px es menos redondeado que el dock (20px) pero aún notable.
      
-     RESULT: Links feel cohesive with the dock's rounded aesthetic. */
+     RESULTADO: Los enlaces se sienten cohesivos con la estética redondeada del dock. */
   border-radius: 8px;
   
-  /* WHY: Smooth transitions for hover effects prevent jarring color jumps and
-     create a polished, professional feel.
+  /* ¿POR QUÉ? Transiciones suaves para efectos hover previenen saltos de color bruscos
+     y crean una sensación pulida y profesional.
      
-     HOW: We transition background-color, color, and transform properties.
+     ¿CÓMO FUNCIONA? Hacemos transición a propiedades background-color, color y transform.
      
-     RESULT: Buttery-smooth hover effects that feel premium. */
+     RESULTADO: Efectos hover suaves como mantequilla que se sienten premium. */
   transition: background-color 0.2s ease,
               color 0.2s ease,
               transform 0.2s ease;
 }
 
-/* WHY: Hover effects provide immediate visual feedback that links are interactive
-   and will respond to clicks. Multi-layered hover effects feel more premium than
-   simple color changes.
+/* ¿POR QUÉ? Los efectos hover proporcionan retroalimentación visual inmediata de que
+   los enlaces son interactivos y responderán a clics. Efectos hover multi-capa se
+   sienten más premium que simples cambios de color.
    
-   HOW: We change background, text color, and add a subtle scale transform.
+   ¿CÓMO FUNCIONA? Cambiamos fondo, color de texto, y agregamos un transform de escala sutil.
    
-   RESULT: Engaging, polished hover interaction that encourages exploration. */
+   RESULTADO: Interacción hover atractiva y pulida que anima exploración. */
 .sidebar-links li a:hover {
-  /* WHY: Lighter background (secondary color) creates depth by making the link
-     appear to "light up" or "activate" on hover.
+  /* ¿POR QUÉ? Fondo más claro (color secundario) crea profundidad haciendo que el
+     enlace parezca "iluminarse" o "activarse" en hover.
      
-     HOW: Using our secondary background variable for consistency.
+     ¿CÓMO FUNCIONA? Usamos nuestra variable de fondo secundario para consistencia.
      
-     RESULT: Clear visual indication of interactivity. */
+     RESULTADO: Indicación visual clara de interactividad. */
   background-color: var(--color-bg-secondary);
   
-  /* WHY: Gold color (Tomorrowland's signature accent) makes hovered links feel
-     special and important, drawing attention.
+  /* ¿POR QUÉ? Color dorado (acento distintivo de Tomorrowland) hace que los enlaces
+     hovered se sientan especiales e importantes, atrayendo atención.
      
-     HOW: We use our accent color variable for brand consistency.
+     ¿CÓMO FUNCIONA? Usamos nuestra variable de color de acento para consistencia de marca.
      
-     RESULT: Hovered links feel premium and magical, fitting the theme. */
+     RESULTADO: Los enlaces hovered se sienten premium y mágicos, encajando con el tema. */
   color: var(--color-accent-gold);
   
-  /* WHY: Subtle scale increase (105%) makes the link feel like it's "coming forward"
-     toward the user, creating a tactile, responsive feeling.
+  /* ¿POR QUÉ? Aumento de escala sutil (105%) hace que el enlace se sienta como si
+     estuviera "viniendo hacia adelante" hacia el usuario, creando una sensación táctil
+     y responsiva.
      
-     HOW: transform: scale(1.05) enlarges the element by 5%.
+     ¿CÓMO FUNCIONA? transform: scale(1.05) agranda el elemento por 5%.
      
-     RESULT: Dynamic, engaging hover that feels alive and responsive. */
+     RESULTADO: Hover dinámico y atractivo que se siente vivo y responsivo. */
   transform: scale(1.05);
 }
 
-/* WHY: Active links (current page) should be visually distinct so users always
-   know their location in the site hierarchy. This prevents disorientation.
+/* ¿POR QUÉ? Los enlaces activos (página actual) deben ser visualmente distintos para
+   que los usuarios siempre sepan su ubicación en la jerarquía del sitio. Esto previene desorientación.
    
-   HOW: We apply hover styles permanently to active links.
+   ¿CÓMO FUNCIONA? Aplicamos estilos hover permanentemente a enlaces activos.
    
-   RESULT: Clear "you are here" indicator in the navigation. */
+   RESULTADO: Indicador claro de "estás aquí" en la navegación. */
 .sidebar-links li a.active {
   background-color: var(--color-bg-secondary);
   color: var(--color-accent-gold);
 }
 
-/* WHY: Icons provide quick visual recognition, making navigation scannable. Users
-   can identify sections by icon alone, speeding up navigation.
+/* ¿POR QUÉ? Los íconos proporcionan reconocimiento visual rápido, haciendo la navegación
+   escaneable. Los usuarios pueden identificar secciones solo por ícono, acelerando navegación.
    
-   HOW: We size icons consistently and add cyan color for visual interest.
+   ¿CÓMO FUNCIONA? Dimensionamos íconos consistentemente y agregamos color cyan para
+   interés visual.
    
-   RESULT: Scannable, icon-driven navigation that's fast to use. */
+   RESULTADO: Navegación escaneable e impulsada por íconos que es rápida de usar. */
 .sidebar-links li a .icon {
-  /* WHY: display: inline-flex with centering ensures icon content (emojis, SVGs)
-     is perfectly centered within its bounds.
+  /* ¿POR QUÉ? display: inline-flex con centrado asegura que el contenido del ícono
+     (emojis, SVGs) esté perfectamente centrado dentro de sus límites.
      
-     HOW: inline-flex allows the icon to flow with text while using flex centering.
+     ¿CÓMO FUNCIONA? inline-flex permite que el ícono fluya con texto mientras usa
+     centrado flex.
      
-     RESULT: Icons are perfectly centered and aligned with text. */
+     RESULTADO: Los íconos están perfectamente centrados y alineados con texto. */
   display: inline-flex;
   align-items: center;
   justify-content: center;
   
-  /* WHY: margin-right creates space between icon and text, preventing cramping.
-     8px provides comfortable separation without excessive space.
+  /* ¿POR QUÉ? margin-right crea espacio entre ícono y texto, previniendo apretamiento.
+     8px proporciona separación cómoda sin espacio excesivo.
      
-     HOW: Right margin pushes text away from the icon.
+     ¿CÓMO FUNCIONA? Margen derecho empuja el texto lejos del ícono.
      
-     RESULT: Clear visual separation between icon and text. */
+     RESULTADO: Separación visual clara entre ícono y texto. */
   margin-right: 8px;
   
-  /* WHY: Fixed dimensions (24x24px) ensure all icons are uniform size, creating
-     visual consistency even if icon designs vary.
+  /* ¿POR QUÉ? Dimensiones fijas (24x24px) aseguran que todos los íconos sean de tamaño
+     uniforme, creando consistencia visual incluso si los diseños de íconos varían.
      
-     HOW: Equal width and height create perfect squares for icons.
+     ¿CÓMO FUNCIONA? Ancho y alto iguales crean cuadrados perfectos para íconos.
      
-     RESULT: Uniform, professional icon sizing throughout the dock. */
+     RESULTADO: Dimensionamiento de ícono uniforme y profesional a través del dock. */
   width: 24px;
   height: 24px;
   
-  /* WHY: Cyan color creates visual hierarchy - gold for hovered text, cyan for
-     default icons. This adds variety while staying within our color system.
+  /* ¿POR QUÉ? Color cyan crea jerarquía visual - dorado para texto hovered, cyan para
+     íconos predeterminados. Esto agrega variedad mientras permanece dentro de nuestro
+     sistema de color.
      
-     HOW: We use our bioluminescent cyan accent for thematic connection.
+     ¿CÓMO FUNCIONA? Usamos nuestro acento cyan bioluminiscente para conexión temática.
      
-     RESULT: Icons that complement text without competing for attention. */
+     RESULTADO: Íconos que complementan texto sin competir por atención. */
   color: var(--color-accent-cyan);
   
-  /* WHY: Smooth color transition makes icon color changes feel polished.
+  /* ¿POR QUÉ? Transición de color suave hace que los cambios de color de ícono se
+     sientan pulidos.
      
-     HOW: 0.2s transition on color property.
+     ¿CÓMO FUNCIONA? Transición de 0.2s en propiedad color.
      
-     RESULT: Icons smoothly shift to gold on hover, maintaining cohesion. */
+     RESULTADO: Los íconos cambian suavemente a dorado en hover, manteniendo cohesión. */
   transition: color 0.2s ease;
 }
 
-/* WHY: On hover, icons should match the text color change (gold) to maintain
-   visual cohesion and reinforce the interactive state.
+/* ¿POR QUÉ? En hover, los íconos deben coincidir con el cambio de color del texto
+   (dorado) para mantener cohesión visual y reforzar el estado interactivo.
    
-   HOW: Icon color transitions to gold matching the text.
+   ¿CÓMO FUNCIONA? El color del ícono hace transición a dorado coincidiendo con el texto.
    
-   RESULT: Unified hover effect where icon and text change together harmoniously. */
+   RESULTADO: Efecto hover unificado donde ícono y texto cambian juntos armoniosamente. */
 .sidebar-links li a:hover .icon,
 .sidebar-links li a.active .icon {
   color: var(--color-accent-gold);
 }
 
-/* WHY: Mobile and tablet devices don't have space for a floating dock, and hover
-   interactions don't work well on touch devices. We hide it by default and show
-   alternative navigation (hamburger menu).
+/* ¿POR QUÉ? Dispositivos móviles y tablet no tienen espacio para un dock flotante, y
+   las interacciones hover no funcionan bien en dispositivos táctiles. Lo ocultamos
+   por defecto y mostramos navegación alternativa (menú hamburguesa).
    
-   HOW: This class can be added via JavaScript or media queries to hide the dock.
+   ¿CÓMO FUNCIONA? Esta clase puede agregarse via JavaScript o media queries para
+   ocultar el dock.
    
-   RESULT: The dock gracefully disappears on small screens without breaking layout. */
+   RESULTADO: El dock desaparece grácilmente en pantallas pequeñas sin romper el layout. */
 .utility-sidebar.hidden {
-  /* WHY: transform: translateX(100%) slides the dock completely off-screen to
-     the right (100% of its own width). Combined with the existing translateY,
-     we need to preserve vertical centering.
+  /* ¿POR QUÉ? transform: translateX(100%) desliza el dock completamente fuera de
+     pantalla hacia la derecha (100% de su propio ancho). Combinado con el translateY
+     existente, necesitamos preservar el centrado vertical.
      
-     HOW: Multiple transforms in one declaration: horizontal slide + vertical center.
+     ¿CÓMO FUNCIONA? Múltiples transforms en una declaración: deslizamiento horizontal
+     + centro vertical.
      
-     RESULT: Dock slides off-screen smoothly to the right while staying centered. */
+     RESULTADO: El dock se desliza suavemente fuera de pantalla hacia la derecha mientras
+     permanece centrado. */
   transform: translateX(100%) translateY(-50%);
   
-  /* WHY: opacity: 0 fades the dock out, making the exit more graceful than just
-     sliding away.
+  /* ¿POR QUÉ? opacity: 0 hace fade out al dock, haciendo la salida más grácil que
+     solo deslizarse.
      
-     HOW: Combined with transform for a slide-and-fade exit.
+     ¿CÓMO FUNCIONA? Combinado con transform para una salida de deslizamiento-y-fade.
      
-     RESULT: Elegant disappearance that doesn't feel abrupt. */
+     RESULTADO: Desaparición elegante que no se siente abrupta. */
   opacity: 0;
   
-  /* WHY: pointer-events: none prevents the hidden dock from intercepting clicks
-     meant for content behind it. Even though it's off-screen, being thorough
-     prevents edge case bugs.
+  /* ¿POR QUÉ? pointer-events: none previene que el dock oculto intercepte clics
+     destinados al contenido detrás de él. Aunque está fuera de pantalla, ser meticuloso
+     previene bugs de casos extremos.
      
-     HOW: This CSS property completely disables mouse/touch interaction.
+     ¿CÓMO FUNCIONA? Esta propiedad CSS deshabilita completamente interacción de mouse/touch.
      
-     RESULT: Hidden dock doesn't interfere with page interaction at all. */
+     RESULTADO: El dock oculto no interfiere con interacción de página en absoluto. */
   pointer-events: none;
 }
 
-/* WHY: On smaller screens (< 768px), we need a toggle button to show/hide the
-   dock since it takes up too much space to be always visible, even collapsed.
+/* ¿POR QUÉ? En pantallas más pequeñas (< 768px), necesitamos un botón toggle para
+   mostrar/ocultar el dock ya que ocupa demasiado espacio para estar siempre visible,
+   incluso colapsado.
    
-   HOW: This button is hidden by default (display: none) and shown on mobile/tablet
-   via media queries in responsive.css.
+   ¿CÓMO FUNCIONA? Este botón está oculto por defecto (display: none) y se muestra
+   en móvil/tablet via media queries en responsive.css.
    
-   RESULT: Clean mobile experience with toggle-able dock access. */
+   RESULTADO: Experiencia móvil limpia con acceso al dock toggleable. */
 .sidebar-toggle {
-  display: none; /* Hidden by default, shown on mobile via media queries */
+  display: none; /* Oculto por defecto, mostrado en móvil via media queries */
   position: fixed;
   bottom: 32px;
   right: 32px;
-  z-index: 1001; /* Above the dock */
+  z-index: 1001; /* Por encima del dock */
   
-  /* WHY: Circular button (56x56px with border-radius: 50%) is the standard size
-     for mobile floating action buttons (FABs), instantly recognizable.
+  /* ¿POR QUÉ? Botón circular (56x56px con border-radius: 50%) es el tamaño estándar
+     para botones de acción flotantes móviles (FABs), instantáneamente reconocible.
      
-     HOW: Equal width and height with 50% border-radius creates perfect circle.
+     ¿CÓMO FUNCIONA? Ancho y alto iguales con 50% de border-radius crea círculo perfecto.
      
-     RESULT: Modern, mobile-friendly toggle button following FAB conventions. */
+     RESULTADO: Botón toggle moderno y amigable para móvil siguiendo convenciones FAB. */
   width: 56px;
   height: 56px;
   border-radius: 50%;
   
-  /* WHY: Gold background makes the button prominent and on-brand with Tomorrowland's
-     signature accent color.
+  /* ¿POR QUÉ? Fondo dorado hace el botón prominente y de marca con el color de acento
+     distintivo de Tomorrowland.
      
-     HOW: Using our accent color variable for consistency.
+     ¿CÓMO FUNCIONA? Usamos nuestra variable de color de acento para consistencia.
      
-     RESULT: Eye-catching, branded button that's easy to find. */
+     RESULTADO: Botón llamativo y de marca que es fácil de encontrar. */
   background-color: var(--color-accent-gold);
   color: var(--color-bg-primary);
   
-  /* WHY: Flexbox centering ensures the icon inside is perfectly centered within
-     the circular button.
+  /* ¿POR QUÉ? Centrado flexbox asegura que el ícono dentro esté perfectamente centrado
+     dentro del botón circular.
      
-     HOW: justify-content and align-items: center work together for perfect centering.
+     ¿CÓMO FUNCIONA? justify-content y align-items: center trabajan juntos para centrado perfecto.
      
-     RESULT: Icon is perfectly centered regardless of size. */
+     RESULTADO: El ícono está perfectamente centrado sin importar el tamaño. */
   display: flex;
   justify-content: center;
   align-items: center;
@@ -559,53 +608,53 @@
   border: none;
   cursor: pointer;
   
-  /* WHY: Strong shadow makes the FAB clearly float above content, emphasizing
-     its interactive nature.
+  /* ¿POR QUÉ? Sombra fuerte hace que el FAB claramente flote sobre contenido, enfatizando
+     su naturaleza interactiva.
      
-     HOW: 0 4px 12px creates a noticeable drop shadow extending downward.
+     ¿CÓMO FUNCIONA? 0 4px 12px crea una sombra notable que se extiende hacia abajo.
      
-     RESULT: Button appears to float above the page, drawing attention. */
+     RESULTADO: El botón parece flotar sobre la página, atrayendo atención. */
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
   
-  /* WHY: Smooth transitions for hover effects make the button feel responsive.
+  /* ¿POR QUÉ? Transiciones suaves para efectos hover hacen que el botón se sienta responsivo.
      
-     HOW: We transition transform, shadow, and background-color.
+     ¿CÓMO FUNCIONA? Hacemos transición a transform, shadow, y background-color.
      
-     RESULT: Polished, premium hover interaction. */
+     RESULTADO: Interacción hover pulida y premium. */
   transition: transform 0.2s ease,
               box-shadow 0.2s ease,
               background-color 0.2s ease;
 }
 
-/* WHY: Hover effect on toggle button provides feedback that it's interactive and
-   encourages interaction.
+/* ¿POR QUÉ? Efecto hover en botón toggle proporciona retroalimentación de que es
+   interactivo y anima interacción.
    
-   HOW: We slightly enlarge it and change to cyan for visual interest.
+   ¿CÓMO FUNCIONA? Lo agrandamos ligeramente y cambiamos a cyan para interés visual.
    
-   RESULT: Engaging hover effect that invites interaction. */
+   RESULTADO: Efecto hover atractivo que invita a interacción. */
 .sidebar-toggle:hover {
-  /* WHY: Scale(1.1) enlarges button by 10%, creating a subtle "come forward" effect.
+  /* ¿POR QUÉ? Scale(1.1) agranda botón por 10%, creando un efecto sutil de "venir hacia adelante".
      
-     RESULT: Button feels responsive and alive. */
+     RESULTADO: El botón se siente responsivo y vivo. */
   transform: scale(1.1);
   
-  /* WHY: Cyan represents the bioluminescent theme and provides color variety.
+  /* ¿POR QUÉ? Cyan representa el tema bioluminiscente y proporciona variedad de color.
      
-     RESULT: Magical color shift that fits the underwater theme. */
+     RESULTADO: Cambio de color mágico que encaja con el tema submarino. */
   background-color: var(--color-accent-cyan);
   
-  /* WHY: Stronger, colored shadow enhances the glow effect.
+  /* ¿POR QUÉ? Sombra más fuerte y coloreada mejora el efecto de brillo.
      
-     RESULT: Button appears to glow on hover, very sci-fi. */
+     RESULTADO: El botón parece brillar en hover, muy sci-fi. */
   box-shadow: 0 6px 20px rgba(0, 188, 212, 0.4);
 }
 
-/* WHY: Active state (button being clicked) provides tactile feedback, mimicking
-   a physical button press.
+/* ¿POR QUÉ? Estado active (botón siendo clickeado) proporciona retroalimentación
+   táctil, imitando una presión de botón físico.
    
-   HOW: Scale(0.95) shrinks button slightly (pressed down).
+   ¿CÓMO FUNCIONA? Scale(0.95) encoge el botón ligeramente (presionado hacia abajo).
    
-   RESULT: Satisfying, realistic button press feeling. */
+   RESULTADO: Sensación de presión de botón satisfactoria y realista. */
 .sidebar-toggle:active {
   transform: scale(0.95);
 }

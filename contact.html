@@ -11,6 +11,7 @@
   <!-- Open Graph / Social Media -->
   <meta property="og:title" content="Contact Us | Tomorrowland Planaxis">
   <meta property="og:description" content="Reach out to the keepers of Planaxis. We'd love to hear from you.">
+  <!-- ⚠️ PERSONALIZA ESTA IMAGEN: Cambia placeholder-hero.jpg por tu imagen -->
   <meta property="og:image" content="assets/images/placeholder-hero.jpg">
   <meta property="og:url" content="https://tomorrowland.com/planaxis/contact">
   <meta property="og:type" content="website">
@@ -19,12 +20,13 @@
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="Contact Us | Tomorrowland Planaxis">
   <meta name="twitter:description" content="Reach out to the keepers of Planaxis.">
+  <!-- ⚠️ PERSONALIZA ESTA IMAGEN: Cambia placeholder-hero.jpg por tu imagen -->
   <meta name="twitter:image" content="assets/images/placeholder-hero.jpg">
   
   <!-- Theme Color -->
   <meta name="theme-color" content="#050a14">
   
-  <!-- Stylesheets - Load in order: reset → variables → layout → components → page-specific → responsive -->
+  <!-- Hojas de estilo - Carga en orden: reset → variables → layout → components → page-specific → responsive -->
   <link rel="stylesheet" href="css/reset.css">
   <link rel="stylesheet" href="css/variables.css">
   <link rel="stylesheet" href="css/layout.css">
@@ -33,14 +35,14 @@
   <link rel="stylesheet" href="css/contact.css">
   <link rel="stylesheet" href="css/responsive.css">
   
-  <!-- Preconnect for external resources -->
+  <!-- Preconnect para recursos externos -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 </head>
 
 <body>
   <!-- ========================================================================
-       HEADER NAVIGATION
+       NAVEGACIÓN EN EL HEADER
        ======================================================================== -->
   <header class="main-header">
     <nav>
@@ -49,21 +51,21 @@
         Planaxis
       </a>
       
-      <!-- Mobile Menu Toggle -->
+      <!-- Toggle del Menú Móvil -->
       <button class="mobile-menu-toggle" aria-label="Toggle navigation menu" aria-expanded="false" data-i18n-aria="nav.toggle.menu">
         <span style="display:block;width:25px;height:3px;background:white;margin:5px 0;"></span>
         <span style="display:block;width:25px;height:3px;background:white;margin:5px 0;"></span>
         <span style="display:block;width:25px;height:3px;background:white;margin:5px 0;"></span>
       </button>
       
-      <!-- Navigation Links -->
+      <!-- Enlaces de Navegación -->
       <ul class="nav-links">
         <li><a href="index.html#festival" data-i18n="nav.festival">Festival</a></li>
         <li><a href="index.html#brand-activation" data-i18n="nav.brand">Brand Activation</a></li>
         <li><a href="index.html#cultural-events" data-i18n="nav.cultural">Cultural Events</a></li>
         <li><a href="contact.html" class="active" aria-current="page" data-i18n="nav.contact">Contact</a></li>
         
-        <!-- Language Selector -->
+        <!-- Selector de Idioma -->
         <li class="language-selector">
           <a href="#" data-lang="en" class="lang-link active">EN</a>
           <span class="lang-separator">|</span>
@@ -74,7 +76,7 @@
   </header>
   
   <!-- ========================================================================
-       SIDEBAR NAVIGATION
+       NAVEGACIÓN EN SIDEBAR
        ======================================================================== -->
   <aside class="utility-sidebar" aria-label="Quick navigation" data-i18n-aria="sidebar.label">
     <nav aria-label="Utility navigation">
@@ -113,26 +115,31 @@
     </nav>
   </aside>
   
-  <!-- Sidebar Toggle Button (Mobile) -->
+  <!-- Botón Toggle del Sidebar (Móvil) -->
   <button class="sidebar-toggle" aria-label="Toggle sidebar" aria-expanded="false" data-i18n-aria="sidebar.toggle">
     ☰
   </button>
   
   <!-- ========================================================================
-       MAIN CONTENT - CONTACT FORM
+       CONTENIDO PRINCIPAL - FORMULARIO DE CONTACTO
        ======================================================================== -->
   <main>
     <section class="contact-section">
       <div class="contact-container">
-        <!-- WHY: Glassmorphism card creates visual hierarchy and makes the form
-             the focal point of the page. The semi-transparent background with
-             backdrop blur creates that modern "frosted glass" effect.
+        <!-- ¿POR QUÉ? La tarjeta glassmorphism crea jerarquía visual y hace que el formulario
+             sea el punto focal de la página. El fondo semi-transparente con blur de fondo
+             crea ese efecto moderno de "vidrio esmerilado".
              
-             HOW: CSS backdrop-filter in contact.css handles the effect.
+             ¿CÓMO FUNCIONA? CSS backdrop-filter en contact.css maneja el efecto.
              
-             RESULT: Beautiful, modern form that stands out. -->
+             ANALOGÍA FEYNMAN: Imagina que estás mirando a través de la ventana de un baño
+             con vidrio esmerilado. Puedes ver formas y colores detrás, pero están borrosos.
+             ¡Eso es backdrop-filter! Toma todo lo que está detrás de esta tarjeta y lo
+             difumina, haciendo que parezca que estamos viendo a través de vidrio texturizado.
+             
+             RESULTADO: Formulario hermoso y moderno que destaca. -->
         <div class="contact-card">
-          <!-- Contact Header -->
+          <!-- Encabezado de Contacto -->
           <div class="contact-header">
             <h1 data-i18n="contact.title">Contact Us</h1>
             <p data-i18n="contact.subtitle">
@@ -140,16 +147,18 @@
             </p>
           </div>
           
-          <!-- WHY: The form element wraps all inputs. It needs an id so JavaScript
-               can find it easily, and a name so we can reference it.
+          <!-- ¿POR QUÉ? El elemento form envuelve todos los inputs. Necesita un id para que
+               JavaScript pueda encontrarlo fácilmente, y un name para que podamos referenciarlo.
                
-               HOW: Standard HTML form with semantic structure.
+               ¿CÓMO FUNCIONA? Formulario HTML estándar con estructura semántica.
                
-               RESULT: Accessible, JavaScript-enabled form. -->
+               RESULTADO: Formulario accesible y habilitado para JavaScript. -->
           <form id="contact-form" class="contact-form">
-            <!-- Name Field -->
+            <!-- Campo de Nombre -->
             <div class="form-group">
               <label for="name" data-i18n="contact.form.name">Your Name</label>
+              <!-- ⚠️ TIP DE PERSONALIZACIÓN: Puedes cambiar el placeholder para que sea
+                   más específico a tu evento o audiencia -->
               <input 
                 type="text" 
                 id="name" 
@@ -160,7 +169,7 @@
               >
             </div>
             
-            <!-- Email Field -->
+            <!-- Campo de Email -->
             <div class="form-group">
               <label for="email" data-i18n="contact.form.email">Email Address</label>
               <input 
@@ -173,15 +182,18 @@
               >
             </div>
             
-            <!-- Subject Field -->
+            <!-- Campo de Asunto -->
             <div class="form-group">
               <label for="subject" data-i18n="contact.form.subject">Subject</label>
-              <!-- WHY: Select dropdown provides predefined options, ensuring
-                   we receive structured, categorized inquiries.
+              <!-- ¿POR QUÉ? El dropdown select proporciona opciones predefinidas, asegurando
+                   que recibamos consultas estructuradas y categorizadas.
                    
-                   HOW: HTML select element with option children.
+                   ¿CÓMO FUNCIONA? Elemento HTML select con children option.
                    
-                   RESULT: Easy categorization and routing of inquiries. -->
+                   ⚠️ PERSONALIZA LAS OPCIONES: Cambia estas opciones según los tipos de
+                   consultas que esperas recibir en tu evento
+                   
+                   RESULTADO: Categorización fácil y enrutamiento de consultas. -->
               <select id="subject" name="subject" required>
                 <option value="general" data-i18n="contact.form.subject.option1">General Inquiry</option>
                 <option value="festival" data-i18n="contact.form.subject.option2">Festival Information</option>
@@ -191,15 +203,15 @@
               </select>
             </div>
             
-            <!-- Message Field -->
+            <!-- Campo de Mensaje -->
             <div class="form-group">
               <label for="message" data-i18n="contact.form.message">Message</label>
-              <!-- WHY: Textarea allows multi-line input for longer messages.
-                   rows attribute sets initial height.
+              <!-- ¿POR QUÉ? Textarea permite input multilínea para mensajes más largos.
+                   El atributo rows establece la altura inicial.
                    
-                   HOW: HTML textarea element.
+                   ¿CÓMO FUNCIONA? Elemento HTML textarea.
                    
-                   RESULT: User can write detailed messages comfortably. -->
+                   RESULTADO: Los usuarios pueden escribir mensajes detallados cómodamente. -->
               <textarea 
                 id="message" 
                 name="message" 
@@ -210,25 +222,35 @@
               ></textarea>
             </div>
             
-            <!-- Submit Button -->
-            <!-- WHY: type="submit" makes this button trigger form submission.
-                 The form's submit event is then handled by our JavaScript.
+            <!-- Botón de Envío -->
+            <!-- ¿POR QUÉ? type="submit" hace que este botón active el envío del formulario.
+                 El evento submit del formulario es entonces manejado por nuestro JavaScript.
                  
-                 HOW: Button with type="submit" inside a form.
+                 ¿CÓMO FUNCIONA? Botón con type="submit" dentro de un form.
                  
-                 RESULT: Accessible, keyboard-friendly form submission. -->
+                 ANALOGÍA FEYNMAN: Es como el botón de "enviar" en el correo postal. Cuando
+                 lo presionas, le dices al sistema "ya terminé de escribir, ahora procesa esto".
+                 Nuestro JavaScript intercepta ese momento para agregar animaciones bonitas y
+                 validación antes de que realmente se envíe.
+                 
+                 RESULTADO: Envío de formulario accesible y amigable con el teclado. -->
             <button type="submit" class="submit-button" data-i18n="contact.form.submit">
               Send Message
             </button>
           </form>
           
-          <!-- Success Message (Hidden by default) -->
-          <!-- WHY: This message is hidden initially and shown by JavaScript after
-               successful form submission. It provides positive feedback to the user.
+          <!-- Mensaje de Éxito (Oculto por defecto) -->
+          <!-- ¿POR QUÉ? Este mensaje está oculto inicialmente y se muestra por JavaScript
+               después del envío exitoso del formulario. Proporciona retroalimentación positiva
+               al usuario.
                
-               HOW: JavaScript toggles display: none/block in main.js.
+               ¿CÓMO FUNCIONA? JavaScript alterna display: none/block en main.js.
                
-               RESULT: Clear confirmation that the message was sent. -->
+               ANALOGÍA FEYNMAN: Es como cuando envías una carta y el cartero te da un recibo
+               de confirmación. Le da al usuario la tranquilidad de que su mensaje fue recibido
+               y no se perdió en el ciberespacio.
+               
+               RESULTADO: Confirmación clara de que el mensaje fue enviado. -->
           <div id="success-message" class="success-message" style="display: none;">
             <h2 data-i18n="contact.form.success">✓ Message Sent Successfully!</h2>
             <p data-i18n="contact.form.success.detail">
@@ -259,16 +281,20 @@
   </footer>
   
   <!-- ========================================================================
-       JAVASCRIPT - MODULE IMPORTS
+       JAVASCRIPT - IMPORTACIONES DE MÓDULOS
        ======================================================================== -->
-  <!-- WHY: We use type="module" to enable ES6 import/export syntax in our
-       JavaScript. This allows us to organize code into separate files and
-       import only what we need.
+  <!-- ¿POR QUÉ? Usamos type="module" para habilitar la sintaxis import/export de ES6 en
+       nuestro JavaScript. Esto nos permite organizar el código en archivos separados e
+       importar solo lo que necesitamos.
        
-       HOW: <script type="module"> enables ES6 modules in the browser.
+       ¿CÓMO FUNCIONA? <script type="module"> habilita módulos ES6 en el navegador.
        
-       RESULT: Modern, modular JavaScript architecture. -->
+       ANALOGÍA FEYNMAN: Los módulos son como una caja de herramientas organizada. En vez
+       de tener todas las herramientas revueltas en una bolsa gigante, cada herramienta
+       (función) vive en su propio cajón (archivo). Cuando necesitas un martillo, solo
+       sacas ese cajón específico - no toda la caja de herramientas.
+       
+       RESULTADO: Arquitectura JavaScript moderna y modular. -->
   <script src="js/main.js" type="module"></script>
 </body>
 </html>
-

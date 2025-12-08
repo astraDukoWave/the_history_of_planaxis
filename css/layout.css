@@ -1,24 +1,29 @@
 /* ============================================================================
-   LAYOUT.CSS - Structural Foundation with CSS Grid & Flexbox
+   LAYOUT.CSS - Base Estructural con CSS Grid y Flexbox
    
-   WHY: This file establishes the fundamental page structure and reusable layout
-   utilities. By separating layout logic from visual styling, we can change
-   colors/fonts without breaking the structure.
+   ¿POR QUÉ? Este archivo establece la estructura fundamental de la página y utilidades
+   de layout reutilizables. Al separar la lógica de layout del estilizado visual, podemos
+   cambiar colores/fuentes sin romper la estructura.
    
-   HOW: We use CSS Grid for the overall page layout (header, main, footer) and
-   Flexbox for component-level alignment (centering, distribution).
+   ¿CÓMO FUNCIONA? Usamos CSS Grid para el layout general de página (header, main, footer)
+   y Flexbox para alineación a nivel de componente (centrado, distribución).
    
-   RESULT: A robust, flexible foundation that adapts to content changes.
+   ANALOGÍA FEYNMAN: Piensa en construir una casa. Este archivo es como la estructura:
+   vigas, columnas, cimientos. Los otros archivos CSS son la decoración: pintura, muebles.
+   Si cambias el color de las paredes (visual), la estructura permanece igual.
+   
+   RESULTADO: Una base robusta y flexible que se adapta a cambios de contenido.
    ============================================================================ */
 
-/* WHY: The body is the root container for all visible content. Setting specific
-   font and color properties here ensures consistency across the entire page.
+/* ¿POR QUÉ? El body es el contenedor raíz para todo el contenido visible. Establecer
+   propiedades específicas de fuente y color aquí asegura consistencia en toda la página.
    
-   HOW: All child elements inherit these values unless explicitly overridden.
-   We're establishing our baseline typography and color scheme.
+   ¿CÓMO FUNCIONA? Todos los elementos hijos heredan estos valores a menos que se
+   sobrescriban explícitamente. Estamos estableciendo nuestra tipografía y esquema de
+   color base.
    
-   RESULT: Every text element defaults to white text on a dark background with
-   the system font stack, creating immediate consistency. */
+   RESULTADO: Cada elemento de texto por defecto es texto blanco sobre fondo oscuro con
+   el stack de fuentes del sistema, creando consistencia inmediata. */
 body {
   font-family: var(--font-primary);
   background-color: var(--color-bg-primary);
@@ -26,25 +31,27 @@ body {
   font-size: var(--font-size-base);
   font-weight: var(--font-weight-normal);
   
-  /* WHY: We disable text selection on the body to prevent awkward blue highlights
-     when users accidentally drag across navigation or UI elements. However, actual
-     content areas (like paragraphs) should re-enable this.
+  /* ¿POR QUÉ? Deshabilitamos la selección de texto en el body para prevenir resaltados
+     azules extraños cuando los usuarios accidentalmente arrastran sobre navegación o
+     elementos de UI. Sin embargo, áreas de contenido real (como párrafos) deben
+     re-habilitar esto.
      
-     HOW: user-select: none prevents the cursor from selecting text.
+     ¿CÓMO FUNCIONA? user-select: none previene que el cursor seleccione texto.
      
-     RESULT: Cleaner UI interaction, though we'll re-enable selection for readable
-     content sections. */
+     RESULTADO: Interacción de UI más limpia, aunque re-habilitaremos la selección para
+     secciones de contenido legible. */
   -webkit-user-select: none;
   -moz-user-select: none;
   user-select: none;
 }
 
-/* WHY: Main content areas should allow text selection for copying important info.
-   We override the body's user-select: none specifically for main content.
+/* ¿POR QUÉ? Las áreas de contenido principal deben permitir selección de texto para
+   copiar información importante. Sobrescribimos el user-select: none del body
+   específicamente para contenido principal.
    
-   HOW: The main element represents the primary content of the page.
+   ¿CÓMO FUNCIONA? El elemento main representa el contenido primario de la página.
    
-   RESULT: Users can select and copy actual content, but not UI chrome. */
+   RESULTADO: Los usuarios pueden seleccionar y copiar contenido real, pero no chrome de UI. */
 main {
   -webkit-user-select: text;
   -moz-user-select: text;
@@ -52,179 +59,206 @@ main {
 }
 
 /* ============================================================================
-   CONTAINER SYSTEM
+   SISTEMA DE CONTENEDORES
    
-   WHY: Wide screens (like 27" monitors) make reading uncomfortable if text
-   stretches across the entire width. Optimal line length is 50-75 characters.
+   ¿POR QUÉ? Las pantallas anchas (como monitores de 27") hacen que leer sea incómodo
+   si el texto se estira por todo el ancho. La longitud de línea óptima es 50-75 caracteres.
    
-   HOW: We create container classes that constrain content width and center it.
+   ¿CÓMO FUNCIONA? Creamos clases contenedoras que restringen el ancho del contenido
+   y lo centran.
+   
+   ANALOGÍA FEYNMAN: Es como leer un libro vs leer en una pizarra gigante. El libro
+   tiene columnas del ancho perfecto. La pizarra es demasiado ancha - tus ojos se
+   cansan yendo de izquierda a derecha. Los contenedores hacen "columnas" del ancho
+   perfecto incluso en pantallas gigantes.
    ============================================================================ */
 
-/* WHY: PERFECT CENTERING with Floating Dock Awareness - The container must be
-   centered while also creating a safe zone for the Floating Glass Dock on the right.
+/* ¿POR QUÉ? CENTRADO PERFECTO con Conciencia del Dock Flotante - El contenedor debe
+   estar centrado mientras también crea una zona segura para el Dock de Vidrio Flotante
+   a la derecha.
    
-   DESIGN STRATEGY: Instead of asymmetric padding (which breaks centering), we use
-   a narrower max-width (1100px instead of 1200px) and perfect centering. This
-   creates natural breathing room on both sides, ensuring the dock floats over
-   white space without obstructing content.
+   ESTRATEGIA DE DISEÑO: En lugar de padding asimétrico (que rompe el centrado), usamos
+   un max-width más estrecho (1100px en lugar de 1200px) y centrado perfecto. Esto
+   crea espacio de respiración natural en ambos lados, asegurando que el dock flote
+   sobre espacio blanco sin obstruir contenido.
    
-   HOW: margin-inline: auto (modern CSS) centers the container perfectly. max-width
-   constrains content width. Width 90% ensures mobile spacing.
+   ¿CÓMO FUNCIONA? margin-inline: auto (CSS moderno) centra el contenedor perfectamente.
+   max-width restringe el ancho del contenido. Width 90% asegura espaciado en móviles.
    
-   RESULT: Symmetrically centered content with equal spacing on both sides, and
-   enough right-side space for the Floating Glass Dock to hover comfortably. */
+   RESULTADO: Contenido simétricamente centrado con espaciado igual en ambos lados, y
+   suficiente espacio del lado derecho para que el Dock de Vidrio Flotante flote cómodamente. */
 .container {
-  /* WHY: width: 90% ensures content doesn't touch screen edges on mobile devices
-     while being responsive to different viewport sizes.
+  /* ¿POR QUÉ? width: 90% asegura que el contenido no toque los bordes de la pantalla
+     en dispositivos móviles mientras es responsivo a diferentes tamaños de viewport.
      
-     HOW: 90% width leaves 5% breathing room on each side on small screens.
+     ¿CÓMO FUNCIONA? 90% de ancho deja 5% de espacio de respiración en cada lado en
+     pantallas pequeñas.
      
-     RESULT: Content has comfortable spacing on all devices. */
+     RESULTADO: El contenido tiene espaciado cómodo en todos los dispositivos. */
   width: 90%;
   
-  /* WHY: max-width: 1100px (reduced from 1200px) ensures content stays within
-     a readable width while creating natural space for the Floating Glass Dock.
+  /* ¿POR QUÉ? max-width: 1100px (reducido de 1200px) asegura que el contenido permanezca
+     dentro de un ancho legible mientras crea espacio natural para el Dock de Vidrio Flotante.
      
-     STRATEGIC CALCULATION: 1100px content + dock (60px collapsed / 280px expanded)
-     + spacing = perfect balance on typical screens (1366px, 1440px, 1920px).
+     CÁLCULO ESTRATÉGICO: Contenido de 1100px + dock (60px colapsado / 280px expandido)
+     + espaciado = balance perfecto en pantallas típicas (1366px, 1440px, 1920px).
      
-     HOW: Max-width prevents content from exceeding this value even if viewport
-     is wider.
+     ¿CÓMO FUNCIONA? Max-width previene que el contenido exceda este valor incluso si
+     el viewport es más ancho.
      
-     RESULT: Content never becomes uncomfortably wide, and the dock always has
-     space to float without obstruction. */
+     RESULTADO: El contenido nunca se vuelve incómodamente ancho, y el dock siempre
+     tiene espacio para flotar sin obstrucción. */
   max-width: 1100px;
   
-  /* WHY: margin-inline: auto is THE CRITICAL PROPERTY for horizontal centering.
-     It's the modern CSS way to center block elements (equivalent to margin: 0 auto).
+  /* ¿POR QUÉ? margin-inline: auto es LA PROPIEDAD CRÍTICA para centrado horizontal.
+     Es la forma moderna en CSS de centrar elementos de bloque (equivalente a margin: 0 auto).
      
-     HOW: "inline" refers to the horizontal axis. "auto" on both sides distributes
-     remaining space equally, achieving perfect centering.
+     ¿CÓMO FUNCIONA? "inline" se refiere al eje horizontal. "auto" en ambos lados
+     distribuye el espacio restante equitativamente, logrando centrado perfecto.
      
-     RESULT: The container is perfectly centered with equal spacing on left and
-     right, creating visual balance and harmony. */
+     ANALOGÍA FEYNMAN: Es como poner un cuadro en una pared. "auto" en ambos lados es
+     como tener resortes invisibles que empujan con igual fuerza desde izquierda y
+     derecha - el cuadro naturalmente queda en el centro perfecto.
+     
+     RESULTADO: El contenedor está perfectamente centrado con espaciado igual a
+     izquierda y derecha, creando balance visual y armonía. */
   margin-inline: auto;
   
-  /* WHY: Minimal uniform padding prevents content from touching edges while
-     maintaining centering. We use small padding instead of large asymmetric
-     padding to preserve balance.
+  /* ¿POR QUÉ? Padding mínimo uniforme previene que el contenido toque los bordes
+     mientras mantiene el centrado. Usamos padding pequeño en lugar de padding
+     asimétrico grande para preservar el balance.
      
-     HOW: var(--spacing-md) applies 24px padding on both sides equally.
+     ¿CÓMO FUNCIONA? var(--spacing-md) aplica 24px de padding en ambos lados equitativamente.
      
-     RESULT: Content has breathing room without breaking the centered layout. */
+     RESULTADO: El contenido tiene espacio de respiración sin romper el layout centrado. */
   padding-left: var(--spacing-md);
   padding-right: var(--spacing-md);
 }
 
-/* WHY: Some sections need to span the full width (like full-bleed images or
-   background colors) even if their content is contained.
+/* ¿POR QUÉ? Algunas secciones necesitan abarcar el ancho completo (como imágenes
+   full-bleed o colores de fondo) incluso si su contenido está contenido.
    
-   HOW: width: 100% explicitly makes the element fill its parent container.
+   ¿CÓMO FUNCIONA? width: 100% explícitamente hace que el elemento llene su contenedor padre.
    
-   RESULT: Full-width sections for dramatic visual impact. */
+   RESULTADO: Secciones de ancho completo para impacto visual dramático. */
 .container-fluid {
   width: 100%;
   padding-left: var(--spacing-md);
   padding-right: var(--spacing-md);
   
-  /* WHY: Even fluid containers benefit from centered content when they contain
-     text or structural elements.
+  /* ¿POR QUÉ? Incluso los contenedores fluidos se benefician de contenido centrado
+     cuando contienen texto o elementos estructurales.
      
-     HOW: margin-inline: auto with width: 100% centers any constrained children.
+     ¿CÓMO FUNCIONA? margin-inline: auto con width: 100% centra cualquier hijo restringido.
      
-     RESULT: Fluid width sections with properly centered internal content. */
+     RESULTADO: Secciones de ancho fluido con contenido interno correctamente centrado. */
   margin-inline: auto;
 }
 
 /* ============================================================================
-   FLEXBOX UTILITIES
+   UTILIDADES FLEXBOX
    
-   WHY: Flexbox is the most efficient way to align items in a single direction
-   (horizontally or vertically). These utility classes eliminate repetitive code.
+   ¿POR QUÉ? Flexbox es la forma más eficiente de alinear elementos en una sola
+   dirección (horizontalmente o verticalmente). Estas clases de utilidad eliminan
+   código repetitivo.
    
-   HOW: We create reusable classes that apply common flexbox patterns.
+   ¿CÓMO FUNCIONA? Creamos clases reutilizables que aplican patrones comunes de flexbox.
+   
+   GLOSARIO: Flexbox = "Caja Flexible". Un sistema de layout que organiza elementos
+   en una fila o columna con superpoderes: centrado automático, distribución de espacio,
+   cambio de orden, etc. Piensa en organizar libros en un estante inteligente.
    ============================================================================ */
 
-/* WHY: Centering content (both horizontally and vertically) is extremely common
-   in web design - hero sections, cards, modals, etc.
+/* ¿POR QUÉ? Centrar contenido (tanto horizontal como verticalmente) es extremadamente
+   común en diseño web - secciones hero, tarjetas, modals, etc.
    
-   HOW: display: flex activates flexbox. justify-content: center centers children
-   along the main axis (horizontal by default), and align-items: center does the
-   same for the cross axis (vertical).
+   ¿CÓMO FUNCIONA? display: flex activa flexbox. justify-content: center centra hijos
+   a lo largo del eje principal (horizontal por defecto), y align-items: center hace
+   lo mismo para el eje cruzado (vertical).
    
-   RESULT: Perfect centering with just one class, no margin calculations needed. */
+   ANALOGÍA FEYNMAN: Es como tener un marco con imanes invisibles que empujan tu
+   contenido exactamente al centro desde todas las direcciones. No importa el tamaño
+   del contenido - siempre queda perfectamente centrado.
+   
+   RESULTADO: Centrado perfecto con solo una clase, sin cálculos de margin necesarios. */
 .flex-center {
   display: flex;
   justify-content: center;
   align-items: center;
 }
 
-/* WHY: Navigation bars typically have content split between left and right
-   (logo on left, menu on right).
+/* ¿POR QUÉ? Las barras de navegación típicamente tienen contenido dividido entre
+   izquierda y derecha (logo a la izquierda, menú a la derecha).
    
-   HOW: space-between distributes children so the first item is at the start,
-   the last item is at the end, and remaining space is evenly distributed between.
+   ¿CÓMO FUNCIONA? space-between distribuye hijos para que el primer elemento esté al
+   inicio, el último elemento al final, y el espacio restante se distribuya equitativamente
+   entre ellos.
    
-   RESULT: Automatic spacing that adapts to content size - perfect for headers. */
+   RESULTADO: Espaciado automático que se adapta al tamaño del contenido - perfecto para headers. */
 .flex-between {
   display: flex;
   justify-content: space-between;
   align-items: center;
 }
 
-/* WHY: Sometimes we want items evenly spaced with space on the sides too,
-   like a set of evenly distributed buttons.
+/* ¿POR QUÉ? A veces queremos elementos espaciados equitativamente con espacio en los
+   lados también, como un conjunto de botones distribuidos uniformemente.
    
-   HOW: space-around gives each item equal space on both sides, creating even
-   distribution including the edges.
+   ¿CÓMO FUNCIONA? space-around da a cada elemento espacio igual en ambos lados,
+   creando distribución uniforme incluyendo los bordes.
    
-   RESULT: Visually balanced spacing across the entire container. */
+   RESULTADO: Espaciado visualmente balanceado a través de todo el contenedor. */
 .flex-around {
   display: flex;
   justify-content: space-around;
   align-items: center;
 }
 
-/* WHY: Vertical layouts (like sidebars or stacked cards) need flex-direction: column.
-   Without this, flex defaults to horizontal row layout.
+/* ¿POR QUÉ? Los layouts verticales (como sidebars o tarjetas apiladas) necesitan
+   flex-direction: column. Sin esto, flex por defecto es layout horizontal en fila.
    
-   HOW: flex-direction: column makes the main axis vertical instead of horizontal.
+   ¿CÓMO FUNCIONA? flex-direction: column hace que el eje principal sea vertical en
+   lugar de horizontal.
    
-   RESULT: Items stack top-to-bottom instead of left-to-right. */
+   RESULTADO: Los elementos se apilan de arriba hacia abajo en lugar de izquierda a derecha. */
 .flex-column {
   display: flex;
   flex-direction: column;
 }
 
 /* ============================================================================
-   CSS GRID UTILITIES
+   UTILIDADES CSS GRID
    
-   WHY: CSS Grid is superior for two-dimensional layouts (rows AND columns
-   simultaneously). It's perfect for overall page structure.
+   ¿POR QUÉ? CSS Grid es superior para layouts bidimensionales (filas Y columnas
+   simultáneamente). Es perfecto para la estructura general de página.
    
-   HOW: We define grid templates that create predictable layouts.
+   ¿CÓMO FUNCIONA? Definimos templates de grid que crean layouts predecibles.
+   
+   GLOSARIO: Grid = "Cuadrícula". Como una tabla de Excel pero para layout. Defines
+   filas y columnas, y colocas elementos en las celdas. Mucho más poderoso que tables HTML.
    ============================================================================ */
 
-/* WHY: A standard 12-column grid provides flexibility for complex layouts while
-   maintaining alignment. It's divisible by 2, 3, 4, and 6, making it versatile.
+/* ¿POR QUÉ? Un grid estándar de 12 columnas proporciona flexibilidad para layouts
+   complejos mientras mantiene alineación. Es divisible por 2, 3, 4 y 6, haciéndolo versátil.
    
-   HOW: repeat(12, 1fr) creates 12 equal-width columns. "fr" stands for "fraction"
-   and distributes available space proportionally.
+   ¿CÓMO FUNCIONA? repeat(12, 1fr) crea 12 columnas de ancho igual. "fr" significa
+   "fracción" y distribuye el espacio disponible proporcionalmente.
    
-   RESULT: A flexible grid that can accommodate any layout combination (6+6 columns,
-   4+4+4, 3+3+3+3, etc.). */
+   RESULTADO: Un grid flexible que puede acomodar cualquier combinación de layout
+   (6+6 columnas, 4+4+4, 3+3+3+3, etc.). */
 .grid-12 {
   display: grid;
   grid-template-columns: repeat(12, 1fr);
   gap: var(--spacing-md);
 }
 
-/* WHY: Many layouts need equal columns (like a 3-column feature section).
+/* ¿POR QUÉ? Muchos layouts necesitan columnas iguales (como una sección de características
+   de 3 columnas).
    
-   HOW: repeat(3, 1fr) creates 3 columns of equal width. auto-fit allows columns
-   to wrap to the next row if the container is too narrow.
+   ¿CÓMO FUNCIONA? repeat(3, 1fr) crea 3 columnas de ancho igual. auto-fit permite que
+   las columnas se envuelvan a la siguiente fila si el contenedor es muy estrecho.
    
-   RESULT: Responsive columns that automatically adjust to available space. */
+   RESULTADO: Columnas responsivas que automáticamente se ajustan al espacio disponible. */
 .grid-auto {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
@@ -232,49 +266,55 @@ main {
 }
 
 /* ============================================================================
-   POSITIONING & Z-INDEX
+   POSICIONAMIENTO & Z-INDEX
    
-   WHY: Certain elements (navigation, sidebar) need to stay in place while the
-   user scrolls. We also need a clear stacking order for overlapping elements.
+   ¿POR QUÉ? Ciertos elementos (navegación, sidebar) necesitan quedarse en su lugar
+   mientras el usuario hace scroll. También necesitamos un orden de apilamiento claro
+   para elementos superpuestos.
    ============================================================================ */
 
-/* WHY: Headers typically need to stay visible while scrolling (sticky navigation),
-   but for this design we want it to overlay the hero image.
+/* ¿POR QUÉ? Los headers típicamente necesitan permanecer visibles mientras se hace
+   scroll (navegación sticky), pero para este diseño queremos que se superponga a la
+   imagen hero.
    
-   HOW: position: relative establishes a positioning context for absolute children.
-   z-index ensures the header stays on top of other content.
+   ¿CÓMO FUNCIONA? position: relative establece un contexto de posicionamiento para
+   hijos absolutos. z-index asegura que el header permanezca encima de otro contenido.
    
-   RESULT: The header provides a reference point for absolutely positioned children
-   and maintains proper stacking order. */
+   RESULTADO: El header proporciona un punto de referencia para hijos posicionados
+   absolutamente y mantiene el orden de apilamiento correcto. */
 .relative {
   position: relative;
 }
 
-/* WHY: Fixed elements stay in the same position relative to the viewport, even
-   when scrolling. This is essential for sidebars and sticky navigation.
+/* ¿POR QUÉ? Los elementos fixed permanecen en la misma posición relativa al viewport,
+   incluso cuando se hace scroll. Esto es esencial para sidebars y navegación sticky.
    
-   HOW: position: fixed removes the element from normal document flow and positions
-   it relative to the viewport.
+   ¿CÓMO FUNCIONA? position: fixed remueve el elemento del flujo normal del documento
+   y lo posiciona relativo al viewport.
    
-   RESULT: Elements that follow the user as they scroll, maintaining visibility. */
+   ANALOGÍA FEYNMAN: Es como poner una nota adhesiva en tu monitor. Sin importar qué
+   desplaces en la pantalla (scroll), la nota adhesiva permanece en el mismo lugar en
+   tu monitor - no se mueve con el contenido.
+   
+   RESULTADO: Elementos que siguen al usuario mientras hacen scroll, manteniendo visibilidad. */
 .fixed {
   position: fixed;
 }
 
 /* ============================================================================
-   SPACING UTILITIES
+   UTILIDADES DE ESPACIADO
    
-   WHY: Quick spacing adjustments without writing custom CSS for every element.
-   These utilities follow our 8px spacing system.
+   ¿POR QUÉ? Ajustes rápidos de espaciado sin escribir CSS personalizado para cada
+   elemento. Estas utilidades siguen nuestro sistema de espaciado de 8px.
    ============================================================================ */
 
-/* WHY: Vertical spacing between sections is crucial for visual rhythm. Different
-   section types need different spacing amounts.
+/* ¿POR QUÉ? El espaciado vertical entre secciones es crucial para el ritmo visual.
+   Diferentes tipos de sección necesitan diferentes cantidades de espaciado.
    
-   HOW: We create utility classes for common spacing needs, using our spacing
-   scale variables for consistency.
+   ¿CÓMO FUNCIONA? Creamos clases de utilidad para necesidades comunes de espaciado,
+   usando nuestras variables de escala de espaciado para consistencia.
    
-   RESULT: Consistent vertical rhythm throughout the page without custom classes. */
+   RESULTADO: Ritmo vertical consistente a través de toda la página sin clases personalizadas. */
 .section-spacing {
   padding-top: var(--spacing-2xl);
   padding-bottom: var(--spacing-2xl);
@@ -294,18 +334,19 @@ main {
 }
 
 /* ============================================================================
-   TEXT UTILITIES
+   UTILIDADES DE TEXTO
    
-   WHY: Common text alignments are used throughout the design. Creating utilities
-   reduces repetition and keeps HTML semantic.
+   ¿POR QUÉ? Las alineaciones comunes de texto se usan en todo el diseño. Crear
+   utilidades reduce repetición y mantiene el HTML semántico.
    ============================================================================ */
 
-/* WHY: Different content types need different alignment - headings often center,
-   body text aligns left, numbers align right.
+/* ¿POR QUÉ? Diferentes tipos de contenido necesitan diferente alineación - los
+   encabezados a menudo centran, el texto del cuerpo se alinea a la izquierda,
+   los números se alinean a la derecha.
    
-   HOW: text-align is a simple CSS property that controls horizontal alignment.
+   ¿CÓMO FUNCIONA? text-align es una propiedad CSS simple que controla la alineación horizontal.
    
-   RESULT: Quick alignment control without inline styles or custom classes. */
+   RESULTADO: Control rápido de alineación sin estilos inline o clases personalizadas. */
 .text-center {
   text-align: center;
 }
@@ -318,43 +359,52 @@ main {
   text-align: right;
 }
 
-/* WHY: Some sections need white text even if other styles would override it.
+/* ¿POR QUÉ? Algunas secciones necesitan texto blanco incluso si otros estilos lo
+   sobrescribirían.
    
-   HOW: The !important flag ensures this color takes precedence over other styles.
-   (Note: Use sparingly! Only for genuine utility classes.)
+   ¿CÓMO FUNCIONA? La bandera !important asegura que este color tome precedencia sobre
+   otros estilos. (Nota: ¡Usa con moderación! Solo para clases de utilidad genuinas.)
    
-   RESULT: Guaranteed white text when needed, regardless of cascading styles. */
+   RESULTADO: Texto blanco garantizado cuando sea necesario, independientemente de
+   estilos en cascada. */
 .text-white {
   color: var(--color-text-main) !important;
 }
 
-/* WHY: Secondary information (captions, metadata) should be visually de-emphasized
-   to create hierarchy.
+/* ¿POR QUÉ? La información secundaria (leyendas, metadatos) debe estar visualmente
+   des-enfatizada para crear jerarquía.
    
-   HOW: Using our muted text color (blue-gray) reduces visual weight.
+   ¿CÓMO FUNCIONA? Usando nuestro color de texto apagado (gris-azul) reduce el peso visual.
    
-   RESULT: Clear distinction between primary and secondary information. */
+   RESULTADO: Distinción clara entre información primaria y secundaria. */
 .text-muted {
   color: var(--color-text-muted);
 }
 
 /* ============================================================================
-   VISIBILITY UTILITIES
+   UTILIDADES DE VISIBILIDAD
    
-   WHY: Responsive design often requires hiding elements at certain screen sizes.
+   ¿POR QUÉ? El diseño responsivo a menudo requiere ocultar elementos en ciertos
+   tamaños de pantalla.
    
-   HOW: display: none removes the element from layout entirely (no space reserved).
+   ¿CÓMO FUNCIONA? display: none remueve el elemento del layout completamente
+   (no se reserva espacio).
    
-   RESULT: Clean conditional visibility without JavaScript.
+   RESULTADO: Visibilidad condicional limpia sin JavaScript.
    ============================================================================ */
 
-/* WHY: Sometimes we need to hide content visually but keep it accessible to
-   screen readers (like icon labels or skip navigation links).
+/* ¿POR QUÉ? A veces necesitamos ocultar contenido visualmente pero mantenerlo accesible
+   para lectores de pantalla (como labels de íconos o enlaces de skip navigation).
    
-   HOW: This technique clips the element to 1x1 pixel, positions it off-screen,
-   and hides overflow, making it invisible but still in the DOM.
+   ¿CÓMO FUNCIONA? Esta técnica recorta el elemento a 1x1 píxel, lo posiciona fuera
+   de pantalla y oculta overflow, haciéndolo invisible pero todavía en el DOM.
    
-   RESULT: Screen readers can access the content, but sighted users don't see it. */
+   ANALOGÍA FEYNMAN: Es como susurrar algo tan bajito que solo alguien con audífonos
+   especiales (lectores de pantalla) puede oírlo. Las personas viendo la pantalla no
+   ven nada, pero el contenido está ahí para quien lo necesite.
+   
+   RESULTADO: Los lectores de pantalla pueden acceder al contenido, pero usuarios
+   videntes no lo ven. */
 .sr-only {
   position: absolute;
   width: 1px;
@@ -370,4 +420,3 @@ main {
 .hidden {
   display: none;
 }
-

@@ -1,6 +1,6 @@
 <!DOCTYPE html>
-<!-- WHY: Festival guide page that consolidates all sidebar navigation destinations
-     into a single comprehensive resource for attendees. -->
+<!-- ¿POR QUÉ? Página de guía del festival que consolida todos los destinos de navegación
+     del sidebar en un solo recurso integral para los asistentes. -->
 <html lang="en">
 <head>
   <meta charset="UTF-8">
@@ -8,7 +8,7 @@
   <title>Tomorrowland 2018: Festival Guide | Planaxis Edition</title>
   <meta name="description" content="Complete festival guide for Tomorrowland 2018: Line-up, DreamVille camping, tickets, Global Journey packages, and FAQ.">
   
-  <!-- WHY: Same CSS files as index.html to maintain visual consistency across pages -->
+  <!-- ¿POR QUÉ? Mismos archivos CSS que index.html para mantener consistencia visual entre páginas -->
   <link rel="stylesheet" href="css/reset.css">
   <link rel="stylesheet" href="css/variables.css">
   <link rel="stylesheet" href="css/layout.css">
@@ -17,14 +17,14 @@
   <link rel="stylesheet" href="css/sidebar.css">
   <link rel="stylesheet" href="css/responsive.css">
   
-  <!-- WHY: New CSS file for guide-specific components (grids, cards, accordions) -->
+  <!-- ¿POR QUÉ? Nuevo archivo CSS para componentes específicos de la guía (grids, cards, accordions) -->
   <link rel="stylesheet" href="css/guide.css">
   
   <meta name="theme-color" content="#050a14">
 </head>
 
 <body>
-  <!-- WHY: Same header as index.html for consistent navigation across the site -->
+  <!-- ¿POR QUÉ? Mismo header que index.html para navegación consistente en todo el sitio -->
   <header class="main-header">
     <nav>
       <a href="index.html" class="logo" aria-label="Tomorrowland Planaxis Home" data-i18n="nav.logo">
@@ -55,7 +55,7 @@
     </nav>
   </header>
   
-  <!-- WHY: Hero section with festival guide theme instead of story theme -->
+  <!-- ¿POR QUÉ? Sección hero con tema de guía del festival en lugar del tema de historia -->
   <section class="hero" style="background-image: linear-gradient(135deg, #0a1e3c 0%, #050a14 100%);">
     <div class="hero-content">
       <h1 class="hero-title">Festival Guide 2018</h1>
@@ -68,7 +68,8 @@
     </div>
   </section>
   
-  <!-- WHY: Same sidebar structure, but links point to sections within THIS page (href="#section") -->
+  <!-- ¿POR QUÉ? Misma estructura de sidebar, pero los enlaces apuntan a secciones dentro de
+       ESTA página (href="#section") -->
   <aside class="utility-sidebar" aria-label="Quick navigation" data-i18n-aria="sidebar.label">
     <nav aria-label="Utility navigation">
       <ul class="sidebar-links">
@@ -112,8 +113,8 @@
   
   <main>
     <!-- ========================================================================
-         SECTION 1: LINE-UP
-         WHY: Showcases the 3 main stages with description cards
+         SECCIÓN 1: LINE-UP
+         ¿POR QUÉ? Muestra los 3 escenarios principales con tarjetas descriptivas
          ======================================================================== -->
     <section id="lineup" class="section-spacing container">
       <h2 class="text-center" data-i18n="lineup_title">Line-Up 2018</h2>
@@ -121,7 +122,10 @@
         Three legendary stages, hundreds of world-class artists, one unforgettable experience.
       </p>
       
-      <!-- WHY: Grid layout displays stage cards in a responsive 3-column layout -->
+      <!-- ¿POR QUÉ? Layout de grid muestra tarjetas de escenarios en un layout responsivo de 3 columnas
+      
+           ⚠️ PERSONALIZA ESTE CONTENIDO: Cambia nombres de escenarios, artistas y horarios por
+           los de tu festival -->
       <div class="guide-grid">
         <article class="guide-card">
           <div class="card-icon">🎪</div>
@@ -168,8 +172,10 @@
     </section>
     
     <!-- ========================================================================
-         SECTION 2: DREAMVILLE
-         WHY: Camping package options with pricing tiers
+         SECCIÓN 2: DREAMVILLE
+         ¿POR QUÉ? Opciones de paquetes de camping con niveles de precios
+         
+         ⚠️ PERSONALIZA: Actualiza nombres de paquetes, precios y características
          ======================================================================== -->
     <section id="dreamville" class="section-spacing container">
       <h2 class="text-center" data-i18n="camping_title">DreamVille Camping</h2>
@@ -227,13 +233,13 @@
     </section>
     
     <!-- ========================================================================
-         SECTION 3: TICKETS (SOLD OUT BANNER)
-         WHY: Important status message for ticket availability
+         SECCIÓN 3: TICKETS (BANNER DE AGOTADO)
+         ¿POR QUÉ? Mensaje de estado importante para disponibilidad de tickets
          ======================================================================== -->
     <section id="tickets" class="section-spacing container">
       <h2 class="text-center" data-i18n="tickets_title">Ticket Sale</h2>
       
-      <!-- WHY: Large, attention-grabbing banner communicates sold-out status -->
+      <!-- ¿POR QUÉ? Banner grande y llamativo comunica el estado de agotado -->
       <div class="sold-out-banner">
         <div class="banner-icon">🎫</div>
         <h3 class="banner-title" data-i18n="tickets_edition">2018 EDITION</h3>
@@ -253,8 +259,10 @@
     </section>
     
     <!-- ========================================================================
-         SECTION 4: GLOBAL JOURNEY
-         WHY: Travel package information for international attendees
+         SECCIÓN 4: GLOBAL JOURNEY
+         ¿POR QUÉ? Información de paquetes de viaje para asistentes internacionales
+         
+         ⚠️ PERSONALIZA: Ajusta precios y ciudades según tu evento
          ======================================================================== -->
     <section id="global-journey" class="section-spacing container">
       <h2 class="text-center" data-i18n="gj_title">Global Journey</h2>
@@ -262,7 +270,7 @@
         Travel packages from over 300 cities worldwide. Festival ticket, transportation, and accommodation in one package.
       </p>
       
-      <!-- WHY: Icon-based grid showing different travel options -->
+      <!-- ¿POR QUÉ? Grid basado en íconos mostrando diferentes opciones de viaje -->
       <div class="guide-grid guide-grid-journey">
         <article class="guide-card guide-card-journey">
           <div class="journey-icon">✈️</div>
@@ -314,8 +322,13 @@
     </section>
     
     <!-- ========================================================================
-         SECTION 5: FAQ (ACCORDION STYLE)
-         WHY: Answers common questions using native HTML5 details/summary
+         SECCIÓN 5: FAQ (ESTILO ACORDEÓN)
+         ¿POR QUÉ? Responde preguntas comunes usando details/summary nativo de HTML5
+         
+         ANALOGÍA FEYNMAN: Los acordeones son como cajones que abres cuando necesitas
+         algo. En vez de ver todo a la vez (abrumador), solo abres el cajón con la
+         respuesta que buscas. El elemento <details> de HTML5 hace esto automáticamente
+         sin necesidad de JavaScript - ¡el navegador lo maneja por ti!
          ======================================================================== -->
     <section id="faq" class="section-spacing container">
       <h2 class="text-center">Frequently Asked Questions</h2>
@@ -323,7 +336,12 @@
         Find answers to the most common questions about Tomorrowland 2018.
       </p>
       
-      <!-- WHY: HTML5 details/summary provides native accordion without JavaScript -->
+      <!-- ¿POR QUÉ? HTML5 details/summary proporciona acordeón nativo sin JavaScript
+      
+           ANALOGÍA FEYNMAN: Imagina una pila de sobres. Cada sobre (details) tiene una
+           etiqueta visible (summary) con la pregunta. Cuando haces clic en un sobre, se
+           abre y revela la respuesta dentro. No necesitas escribir código complicado -
+           ¡el navegador ya sabe cómo abrir y cerrar sobres! -->
       <div class="faq-container">
         <details class="faq-item">
           <summary class="faq-question" data-i18n="faq_q1">What can I bring to the festival?</summary>
@@ -384,7 +402,7 @@
     </section>
   </main>
   
-  <!-- WHY: Same footer as index.html for consistency -->
+  <!-- ¿POR QUÉ? Mismo footer que index.html para consistencia -->
   <footer style="background-color: var(--color-bg-secondary); padding: var(--spacing-2xl); text-align: center;">
     <p class="text-muted" data-i18n="footer.copyright">
       &copy; 2024 Tomorrowland - The Story of Planaxis. All rights reserved.
@@ -399,10 +417,8 @@
     </nav>
   </footer>
   
-  <!-- WHY: We now use a modular JavaScript approach with ES6 modules. The main.js
-       file handles all interactive functionality including i18n and the old inline
-       functionality. -->
+  <!-- ¿POR QUÉ? Usamos un enfoque modular de JavaScript con módulos ES6. El archivo main.js
+       maneja toda la funcionalidad interactiva incluyendo i18n y la funcionalidad inline antigua. -->
   <script src="js/main.js" type="module"></script>
 </body>
 </html>
-

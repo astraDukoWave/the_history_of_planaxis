@@ -1,48 +1,53 @@
-// WHY: We import translations as a module to keep our code organized and maintainable.
-// This way, translation data lives in its own file, making it easy to update without
-// touching the logic code.
+// ¿POR QUÉ? Importamos translations como un módulo para mantener nuestro código organizado
+// y mantenible. De esta manera, los datos de traducción viven en su propio archivo, haciendo
+// fácil actualizarlos sin tocar el código de lógica.
 //
-// HOW: ES6 import statement pulls the translations object from translations.js.
+// ¿CÓMO FUNCIONA? La declaración import de ES6 trae el objeto translations desde translations.js.
 //
-// RESULT: Clean separation of data (translations) and behavior (this file).
+// ANALOGÍA FEYNMAN: Imagina que tienes un diccionario bilingüe en un libro separado. En vez
+// de escribir todas las traducciones aquí mezcladas con el código, simplemente "importamos"
+// ese diccionario cuando lo necesitamos. Esto mantiene todo ordenado y fácil de encontrar.
+//
+// RESULTADO: Separación limpia de datos (translations) y comportamiento (este archivo).
 import { translations } from './translations.js';
 
 // ============================================================================
-// INTERNATIONALIZATION (i18n) SYSTEM
+// SISTEMA DE INTERNACIONALIZACIÓN (i18n)
 // ============================================================================
 
-// WHY: We need a variable to track the current language. This lets us remember
-// which language the user selected and use it throughout the application.
+// ¿POR QUÉ? Necesitamos una variable para rastrear el idioma actual. Esto nos permite recordar
+// qué idioma seleccionó el usuario y usarlo en toda la aplicación.
 //
-// HOW: Start with a default (English), then check if user has a saved preference.
+// ¿CÓMO FUNCIONA? Empezamos con un valor predeterminado (inglés), luego verificamos si el
+// usuario tiene una preferencia guardada.
 //
-// RESULT: Consistent language state that persists across page loads.
+// RESULTADO: Estado de idioma consistente que persiste entre cargas de página.
 let currentLanguage = 'en';
 
-// WHY: localStorage is browser storage that persists even after closing the browser.
-// We use it to remember the user's language choice so they don't have to select it
-// every time they visit the site.
+// ¿POR QUÉ? localStorage es almacenamiento del navegador que persiste incluso después de
+// cerrar el navegador. Lo usamos para recordar la elección de idioma del usuario para que
+// no tengan que seleccionarlo cada vez que visiten el sitio.
 //
-// HOW: localStorage.getItem('key') retrieves data. localStorage.setItem('key', value)
-// saves data. Both work with strings only.
+// ¿CÓMO FUNCIONA? localStorage.getItem('key') recupera datos. localStorage.setItem('key', value)
+// guarda datos. Ambos funcionan solo con strings.
 //
-// RESULT: User preferences are remembered across sessions, creating a better UX.
+// RESULTADO: Las preferencias del usuario se recuerdan entre sesiones, creando mejor UX.
 //
-// FEYNMAN EXPLANATION:
-// Think of localStorage like a notepad that the browser keeps for each website.
-// When you write something on it (setItem), it stays there even if you close the
-// browser and come back tomorrow. This is different from regular JavaScript variables
-// that disappear when you close the page. We use this to remember if the user likes
-// English or Spanish, so they don't have to tell us every time they visit.
+// EXPLICACIÓN FEYNMAN:
+// Piensa en localStorage como una libreta que el navegador guarda para cada sitio web.
+// Cuando escribes algo en ella (setItem), se queda ahí incluso si cierras el navegador
+// y vuelves mañana. Esto es diferente de las variables normales de JavaScript que
+// desaparecen cuando cierras la página. Lo usamos para recordar si al usuario le gusta
+// inglés o español, así no tienen que decirnos cada vez que visitan.
 
 function initializeLanguage() {
-  // WHY: Check localStorage first to see if user previously selected a language.
-  // If they did, use that. Otherwise, use English as the default.
+  // ¿POR QUÉ? Verificar localStorage primero para ver si el usuario seleccionó previamente
+  // un idioma. Si lo hizo, usar ese. De lo contrario, usar inglés como predeterminado.
   //
-  // HOW: Try to get 'preferred-language' from localStorage. If it exists and is
-  // valid (en or es), use it. Otherwise, default to 'en'.
+  // ¿CÓMO FUNCIONA? Intentamos obtener 'preferred-language' de localStorage. Si existe y es
+  // válido (en o es), lo usamos. De lo contrario, predeterminado a 'en'.
   //
-  // RESULT: Respects user's previous choice or provides sensible default.
+  // RESULTADO: Respeta la elección previa del usuario o proporciona un predeterminado sensato.
   
   const savedLanguage = localStorage.getItem('preferred-language');
   
@@ -50,80 +55,80 @@ function initializeLanguage() {
     currentLanguage = savedLanguage;
   }
   
-  // WHY: After determining the language, we need to actually update the page
-  // text to match it.
+  // ¿POR QUÉ? Después de determinar el idioma, necesitamos realmente actualizar el texto
+  // de la página para que coincida.
   //
-  // HOW: Call our translatePage function to apply the correct translations.
+  // ¿CÓMO FUNCIONA? Llamamos nuestra función translatePage para aplicar las traducciones correctas.
   //
-  // RESULT: Page loads in the user's preferred language immediately.
+  // RESULTADO: La página carga en el idioma preferido del usuario inmediatamente.
   translatePage(currentLanguage);
   updateLanguageSelectorUI(currentLanguage);
 }
 
 function translatePage(language) {
-  // WHY: To translate the page, we need to find all elements marked for translation
-  // and replace their text with the correct language version.
+  // ¿POR QUÉ? Para traducir la página, necesitamos encontrar todos los elementos marcados
+  // para traducción y reemplazar su texto con la versión del idioma correcto.
   //
-  // HOW: We use the data-i18n attribute as a marker. Elements with data-i18n="key"
-  // get their text replaced with translations[language][key].
+  // ¿CÓMO FUNCIONA? Usamos el atributo data-i18n como marcador. Elementos con data-i18n="key"
+  // obtienen su texto reemplazado con translations[language][key].
   //
-  // RESULT: Entire page updates to the selected language dynamically.
+  // RESULTADO: Toda la página se actualiza al idioma seleccionado dinámicamente.
   
-  // WHY: querySelectorAll finds ALL elements matching a CSS selector (unlike
-  // querySelector which finds only the first one). [data-i18n] is an attribute
-  // selector that matches any element with a data-i18n attribute.
+  // ¿POR QUÉ? querySelectorAll encuentra TODOS los elementos que coinciden con un selector
+  // CSS (a diferencia de querySelector que encuentra solo el primero). [data-i18n] es un
+  // selector de atributo que coincide con cualquier elemento con atributo data-i18n.
   //
-  // HOW: Returns a NodeList (array-like) of all matching elements.
+  // ¿CÓMO FUNCIONA? Retorna un NodeList (tipo array) de todos los elementos coincidentes.
   //
-  // RESULT: We can loop through every translatable element on the page.
+  // RESULTADO: Podemos iterar sobre cada elemento traducible en la página.
   const elements = document.querySelectorAll('[data-i18n]');
   
   elements.forEach(element => {
-    // WHY: Each element's data-i18n attribute contains a KEY that maps to the
-    // translation text in our translations object.
+    // ¿POR QUÉ? El atributo data-i18n de cada elemento contiene una KEY que mapea al texto
+    // de traducción en nuestro objeto translations.
     //
-    // HOW: getAttribute reads the data-i18n value, then we look it up in
+    // ¿CÓMO FUNCIONA? getAttribute lee el valor data-i18n, luego lo buscamos en
     // translations[language][key].
     //
-    // RESULT: We get the correct translated text for this element.
+    // RESULTADO: Obtenemos el texto traducido correcto para este elemento.
     const key = element.getAttribute('data-i18n');
     const translatedText = translations[language][key];
     
-    // WHY: Safety check - only update if translation exists. This prevents errors
-    // if a key is missing from the translations object.
+    // ¿POR QUÉ? Verificación de seguridad - solo actualizar si la traducción existe. Esto
+    // previene errores si falta una key del objeto translations.
     //
-    // HOW: Simple if statement checks for undefined/null.
+    // ¿CÓMO FUNCIONA? Simple if statement verifica undefined/null.
     //
-    // RESULT: Robust code that doesn't break if translations are incomplete.
+    // RESULTADO: Código robusto que no se rompe si las traducciones están incompletas.
     if (translatedText) {
-      // WHY: Different elements need their text updated in different ways.
-      // - Input placeholders use the placeholder attribute
-      // - Buttons and links use textContent
-      // - Some elements might have aria-label for accessibility
+      // ¿POR QUÉ? Diferentes elementos necesitan su texto actualizado de diferentes maneras.
+      // - Los placeholders de input usan el atributo placeholder
+      // - Botones y enlaces usan textContent
+      // - Algunos elementos podrían tener aria-label para accesibilidad
       //
-      // HOW: Check element type and update the appropriate property.
+      // ¿CÓMO FUNCIONA? Verificamos el tipo de elemento y actualizamos la propiedad apropiada.
       //
-      // RESULT: All element types translate correctly.
+      // RESULTADO: Todos los tipos de elemento se traducen correctamente.
       
       if (element.tagName === 'INPUT' || element.tagName === 'TEXTAREA') {
-        // For form inputs, update the placeholder
+        // Para inputs de formulario, actualizar el placeholder
         element.placeholder = translatedText;
       } else if (element.hasAttribute('aria-label')) {
-        // For accessibility labels
+        // Para labels de accesibilidad
         element.setAttribute('aria-label', translatedText);
       } else {
-        // For regular text content
+        // Para contenido de texto regular
         element.textContent = translatedText;
       }
     }
   });
   
-  // WHY: We also need to translate aria-label attributes separately, as some
-  // elements use data-i18n-aria instead of data-i18n to avoid conflicts.
+  // ¿POR QUÉ? También necesitamos traducir atributos aria-label por separado, ya que algunos
+  // elementos usan data-i18n-aria en lugar de data-i18n para evitar conflictos.
   //
-  // HOW: Query for elements with data-i18n-aria and update their aria-label.
+  // ¿CÓMO FUNCIONA? Consultar elementos con data-i18n-aria y actualizar su aria-label.
   //
-  // RESULT: Complete translation of all text including accessibility labels.
+  // RESULTADO: Traducción completa de todo el texto incluyendo labels de accesibilidad.
   const ariaElements = document.querySelectorAll('[data-i18n-aria]');
   
   ariaElements.forEach(element => {
@@ -137,13 +142,13 @@ function translatePage(language) {
 }
 
 function updateLanguageSelectorUI(language) {
-  // WHY: We need visual feedback showing which language is currently active.
-  // This helps users understand the current state.
+  // ¿POR QUÉ? Necesitamos retroalimentación visual mostrando qué idioma está actualmente activo.
+  // Esto ayuda a los usuarios a entender el estado actual.
   //
-  // HOW: Add an 'active' class to the selected language button and remove it
-  // from the other one.
+  // ¿CÓMO FUNCIONA? Agregamos una clase 'active' al botón de idioma seleccionado y la
+  // removemos del otro.
   //
-  // RESULT: Clear visual indicator of the current language.
+  // RESULTADO: Indicador visual claro del idioma actual.
   
   const enButton = document.querySelector('[data-lang="en"]');
   const esButton = document.querySelector('[data-lang="es"]');
@@ -160,24 +165,24 @@ function updateLanguageSelectorUI(language) {
 }
 
 function switchLanguage(newLanguage) {
-  // WHY: When the user clicks a language button, we need to:
-  // 1. Update our state variable
-  // 2. Save the preference to localStorage
-  // 3. Update the page text
-  // 4. Update the UI to show which language is active
+  // ¿POR QUÉ? Cuando el usuario hace clic en un botón de idioma, necesitamos:
+  // 1. Actualizar nuestra variable de estado
+  // 2. Guardar la preferencia a localStorage
+  // 3. Actualizar el texto de la página
+  // 4. Actualizar la UI para mostrar qué idioma está activo
   //
-  // HOW: Orchestrate all these actions in one function.
+  // ¿CÓMO FUNCIONA? Orquestamos todas estas acciones en una función.
   //
-  // RESULT: Complete language switch with all side effects handled.
+  // RESULTADO: Cambio completo de idioma con todos los efectos secundarios manejados.
   
   currentLanguage = newLanguage;
   
-  // WHY: Save to localStorage so the choice persists across page loads.
+  // ¿POR QUÉ? Guardar a localStorage para que la elección persista entre cargas de página.
   //
-  // FEYNMAN EXPLANATION:
-  // We're writing the user's choice on that browser notepad (localStorage)
-  // so next time they visit, we can read it and automatically show their
-  // preferred language. It's like leaving yourself a reminder note.
+  // EXPLICACIÓN FEYNMAN:
+  // Estamos escribiendo la elección del usuario en esa libreta del navegador (localStorage)
+  // para que la próxima vez que visiten, podamos leerla y automáticamente mostrar su
+  // idioma preferido. Es como dejarte una nota recordatoria.
   localStorage.setItem('preferred-language', newLanguage);
   
   translatePage(newLanguage);
@@ -185,18 +190,18 @@ function switchLanguage(newLanguage) {
 }
 
 function initializeLanguageSelector() {
-  // WHY: We need to listen for clicks on the language selector buttons and
-  // trigger the language switch when clicked.
+  // ¿POR QUÉ? Necesitamos escuchar clics en los botones selectores de idioma y activar
+  // el cambio de idioma cuando se hace clic.
   //
-  // HOW: Find all elements with data-lang attribute and add click listeners.
+  // ¿CÓMO FUNCIONA? Encontramos todos los elementos con atributo data-lang y agregamos listeners de clic.
   //
-  // RESULT: Interactive language switcher that responds to user clicks.
+  // RESULTADO: Selector de idioma interactivo que responde a clics del usuario.
   
   const languageButtons = document.querySelectorAll('[data-lang]');
   
   languageButtons.forEach(button => {
     button.addEventListener('click', (e) => {
-      e.preventDefault(); // Prevent default link behavior
+      e.preventDefault(); // Prevenir comportamiento de enlace predeterminado
       const selectedLanguage = button.getAttribute('data-lang');
       switchLanguage(selectedLanguage);
     });
@@ -204,65 +209,65 @@ function initializeLanguageSelector() {
 }
 
 // ============================================================================
-// CONTACT FORM HANDLER
+// MANEJADOR DE FORMULARIO DE CONTACTO
 // ============================================================================
 
 function initializeContactForm() {
-  // WHY: We need to intercept the form submission to prevent a page reload and
-  // handle it with JavaScript instead. This creates a smoother, more modern UX.
+  // ¿POR QUÉ? Necesitamos interceptar el envío del formulario para prevenir una recarga de
+  // página y manejarlo con JavaScript en su lugar. Esto crea una UX más suave y moderna.
   //
-  // HOW: Listen for the 'submit' event on the form and handle it with our
-  // custom function.
+  // ¿CÓMO FUNCIONA? Escuchamos el evento 'submit' en el formulario y lo manejamos con nuestra
+  // función personalizada.
   //
-  // RESULT: Ajax-style form submission without page reload.
+  // RESULTADO: Envío de formulario estilo Ajax sin recarga de página.
   
   const contactForm = document.getElementById('contact-form');
   
-  // WHY: Check if the form exists before adding listeners. Not all pages have
-  // a contact form, so we need to be defensive.
+  // ¿POR QUÉ? Verificar si el formulario existe antes de agregar listeners. No todas las
+  // páginas tienen un formulario de contacto, así que necesitamos ser defensivos.
   //
-  // HOW: Simple existence check with if statement.
+  // ¿CÓMO FUNCIONA? Simple verificación de existencia con if statement.
   //
-  // RESULT: Code works on all pages, even those without the contact form.
+  // RESULTADO: El código funciona en todas las páginas, incluso aquellas sin formulario de contacto.
   if (!contactForm) {
-    return; // Exit early if form doesn't exist
+    return; // Salir temprano si el formulario no existe
   }
   
   contactForm.addEventListener('submit', handleFormSubmit);
 }
 
 function handleFormSubmit(e) {
-  // WHY: preventDefault() stops the browser's default form submission behavior,
-  // which would reload the page and send data to a server. We want to handle
-  // submission with JavaScript instead for a smoother experience.
+  // ¿POR QUÉ? preventDefault() detiene el comportamiento de envío de formulario predeterminado
+  // del navegador, que recargaría la página y enviaría datos a un servidor. Queremos manejar
+  // el envío con JavaScript en su lugar para una experiencia más suave.
   //
-  // HOW: Call preventDefault() on the event object.
+  // ¿CÓMO FUNCIONA? Llamamos preventDefault() en el objeto evento.
   //
-  // RESULT: Form doesn't reload the page; we control what happens next.
+  // RESULTADO: El formulario no recarga la página; nosotros controlamos qué pasa después.
   //
-  // FEYNMAN EXPLANATION:
-  // Normally, when you click "Submit" on a form, the browser says "Okay, let me
-  // send this data to a server and reload the page." But we say "Wait! We want
-  // to handle this ourselves!" That's what preventDefault() does - it tells the
-  // browser "don't do your normal thing, we've got this." This way, we can show
-  // a nice loading message and success message without the jarring page reload.
+  // EXPLICACIÓN FEYNMAN:
+  // Normalmente, cuando haces clic en "Enviar" en un formulario, el navegador dice "Okay,
+  // déjame enviar estos datos a un servidor y recargar la página." Pero nosotros decimos
+  // "¡Espera! Queremos manejar esto nosotros mismos!" Eso es lo que preventDefault() hace -
+  // le dice al navegador "no hagas tu cosa normal, nosotros nos encargamos." De esta manera,
+  // podemos mostrar un mensaje de carga bonito y mensaje de éxito sin la recarga de página brusca.
   e.preventDefault();
   
-  // WHY: Get references to the elements we'll need to manipulate (button, messages).
+  // ¿POR QUÉ? Obtener referencias a los elementos que necesitaremos manipular (botón, mensajes).
   //
-  // HOW: Use querySelector to find elements by ID or class.
+  // ¿CÓMO FUNCIONA? Usar querySelector para encontrar elementos por ID o clase.
   //
-  // RESULT: We can update these elements to show feedback to the user.
+  // RESULTADO: Podemos actualizar estos elementos para mostrar retroalimentación al usuario.
   const form = e.target;
   const submitButton = form.querySelector('button[type="submit"]');
   const successMessage = document.getElementById('success-message');
   const originalButtonText = submitButton.textContent;
   
-  // WHY: Get form data to validate and potentially send to a server.
+  // ¿POR QUÉ? Obtener datos del formulario para validar y potencialmente enviar a un servidor.
   //
-  // HOW: Access form input values through their name attributes.
+  // ¿CÓMO FUNCIONA? Acceder valores de input del formulario a través de sus atributos name.
   //
-  // RESULT: We have all the user's input data.
+  // RESULTADO: Tenemos todos los datos de input del usuario.
   const formData = {
     name: form.querySelector('[name="name"]').value,
     email: form.querySelector('[name="email"]').value,
@@ -270,76 +275,76 @@ function handleFormSubmit(e) {
     message: form.querySelector('[name="message"]').value
   };
   
-  // WHY: Basic validation to ensure required fields are filled.
+  // ¿POR QUÉ? Validación básica para asegurar que los campos requeridos estén llenos.
   //
-  // HOW: Check if any field is empty.
+  // ¿CÓMO FUNCIONA? Verificar si algún campo está vacío.
   //
-  // RESULT: Prevent submission of incomplete forms.
+  // RESULTADO: Prevenir envío de formularios incompletos.
   if (!formData.name || !formData.email || !formData.message) {
-    alert('Please fill in all required fields.');
+    alert('Por favor llena todos los campos requeridos.');
     return;
   }
   
-  // WHY: Disable the submit button to prevent multiple submissions while we're
-  // processing the first one. This prevents duplicate submissions.
+  // ¿POR QUÉ? Deshabilitar el botón de envío para prevenir múltiples envíos mientras estamos
+  // procesando el primero. Esto previene envíos duplicados.
   //
-  // HOW: Set disabled = true on the button element.
+  // ¿CÓMO FUNCIONA? Establecer disabled = true en el elemento botón.
   //
-  // RESULT: User can't accidentally submit the form twice.
+  // RESULTADO: El usuario no puede enviar accidentalmente el formulario dos veces.
   submitButton.disabled = true;
   
-  // WHY: Update button text to show we're processing the submission. This gives
-  // immediate feedback that something is happening.
+  // ¿POR QUÉ? Actualizar texto del botón para mostrar que estamos procesando el envío. Esto
+  // da retroalimentación inmediata de que algo está pasando.
   //
-  // HOW: Change textContent to a loading message (translated).
+  // ¿CÓMO FUNCIONA? Cambiar textContent a un mensaje de carga (traducido).
   //
-  // RESULT: User sees "Sending..." instead of "Send Message".
+  // RESULTADO: El usuario ve "Enviando..." en lugar de "Enviar Mensaje".
   submitButton.textContent = translations[currentLanguage]['contact.form.sending'];
   
-  // WHY: Simulate a network request with setTimeout. In a real application, this
-  // would be a fetch() call to your backend API. The 2-second delay simulates
-  // network latency so users see the loading state.
+  // ¿POR QUÉ? Simulamos una solicitud de red con setTimeout. En una aplicación real, esto
+  // sería una llamada fetch() a tu backend API. El retraso de 2 segundos simula latencia
+  // de red para que los usuarios vean el estado de carga.
   //
-  // HOW: setTimeout runs a function after a specified delay (in milliseconds).
+  // ¿CÓMO FUNCIONA? setTimeout ejecuta una función después de un retraso especificado (en milisegundos).
   //
-  // RESULT: Realistic simulation of sending data to a server.
+  // RESULTADO: Simulación realista de envío de datos a un servidor.
   //
-  // FEYNMAN EXPLANATION:
-  // In a real website, we'd send this form data to a server (computer far away)
-  // that would save it in a database or send an email. That takes time - maybe
-  // 1-2 seconds. Here, we're pretending to do that with setTimeout. It's like
-  // when you order food and the restaurant says "wait 10 minutes" - we're making
-  // the user wait 2 seconds to simulate what a real submission would feel like.
+  // EXPLICACIÓN FEYNMAN:
+  // En un sitio web real, enviaríamos estos datos del formulario a un servidor (computadora
+  // lejana) que los guardaría en una base de datos o enviaría un email. Eso toma tiempo -
+  // tal vez 1-2 segundos. Aquí, estamos pretendiendo hacer eso con setTimeout. Es como cuando
+  // ordenas comida y el restaurante dice "espera 10 minutos" - estamos haciendo esperar al
+  // usuario 2 segundos para simular cómo se sentiría un envío real.
   setTimeout(() => {
-    // WHY: After "sending" (or in real app, after getting server response),
-    // show success message and reset the form.
+    // ¿POR QUÉ? Después de "enviar" (o en app real, después de obtener respuesta del servidor),
+    // mostrar mensaje de éxito y resetear el formulario.
     //
-    // HOW: Display success message, reset button, clear form fields.
+    // ¿CÓMO FUNCIONA? Mostrar mensaje de éxito, resetear botón, limpiar campos del formulario.
     //
-    // RESULT: Complete feedback loop showing the user their submission worked.
+    // RESULTADO: Ciclo completo de retroalimentación mostrando al usuario que su envío funcionó.
     
-    // Hide form and show success message
+    // Ocultar formulario y mostrar mensaje de éxito
     form.style.display = 'none';
     successMessage.style.display = 'block';
     
-    // WHY: In a real application, you'd also:
-    // - Send data to a server with fetch() or XMLHttpRequest
-    // - Handle errors if the network request fails
-    // - Maybe show different messages based on server response
+    // ¿POR QUÉ? En una aplicación real, también harías:
+    // - Enviar datos a un servidor con fetch() o XMLHttpRequest
+    // - Manejar errores si la solicitud de red falla
+    // - Tal vez mostrar diferentes mensajes basados en respuesta del servidor
     //
-    // HOW: Would use something like:
+    // ¿CÓMO FUNCIONA? Usarías algo como:
     // fetch('/api/contact', { method: 'POST', body: JSON.stringify(formData) })
     //
-    // RESULT: Data would be saved on the server.
+    // RESULTADO: Los datos se guardarían en el servidor.
     
-    console.log('Form submitted with data:', formData);
+    console.log('Formulario enviado con datos:', formData);
     
-    // WHY: After 5 seconds, reset everything so user could submit another message
-    // if they wanted to. This creates a complete, cyclical interaction.
+    // ¿POR QUÉ? Después de 5 segundos, resetear todo para que el usuario pueda enviar otro
+    // mensaje si quisiera. Esto crea una interacción completa y cíclica.
     //
-    // HOW: Another setTimeout to reset after a delay.
+    // ¿CÓMO FUNCIONA? Otro setTimeout para resetear después de un retraso.
     //
-    // RESULT: Form is ready for another submission.
+    // RESULTADO: El formulario está listo para otro envío.
     setTimeout(() => {
       form.style.display = 'block';
       successMessage.style.display = 'none';
@@ -348,11 +353,11 @@ function handleFormSubmit(e) {
       submitButton.textContent = originalButtonText;
     }, 5000);
     
-  }, 2000); // 2-second simulated network delay
+  }, 2000); // Retraso de red simulado de 2 segundos
 }
 
 // ============================================================================
-// EXISTING FUNCTIONALITY (from inline scripts)
+// FUNCIONALIDAD EXISTENTE (de scripts inline)
 // ============================================================================
 
 function initializeMobileMenu() {
@@ -417,28 +422,32 @@ function initializeSmoothScroll() {
 }
 
 // ============================================================================
-// INITIALIZATION
+// INICIALIZACIÓN
 // ============================================================================
 
-// WHY: We wrap all initialization in DOMContentLoaded to ensure the HTML is
-// fully loaded before we try to manipulate it. If we run too early, elements
-// won't exist yet and querySelector will return null.
+// ¿POR QUÉ? Envolvemos toda la inicialización en DOMContentLoaded para asegurar que el HTML
+// esté completamente cargado antes de intentar manipularlo. Si ejecutamos muy temprano, los
+// elementos no existirán aún y querySelector retornará null.
 //
-// HOW: addEventListener on 'DOMContentLoaded' event waits for HTML to be ready.
+// ¿CÓMO FUNCIONA? addEventListener en el evento 'DOMContentLoaded' espera a que el HTML esté listo.
 //
-// RESULT: All our code runs at the right time, when elements exist.
+// ANALOGÍA FEYNMAN: Es como llegar a una fiesta. No quieres tocar el timbre antes de que
+// los anfitriones terminen de arreglar la casa. DOMContentLoaded es como el anfitrión diciendo
+// "¡Okay, todo está listo, puedes entrar ahora!" Solo entonces empezamos a interactuar con
+// los elementos de la página.
+//
+// RESULTADO: Todo nuestro código se ejecuta en el momento correcto, cuando los elementos existen.
 document.addEventListener('DOMContentLoaded', () => {
-  // Initialize language system
+  // Inicializar sistema de idiomas
   initializeLanguage();
   initializeLanguageSelector();
   
-  // Initialize contact form (if present)
+  // Inicializar formulario de contacto (si está presente)
   initializeContactForm();
   
-  // Initialize existing functionality
+  // Inicializar funcionalidad existente
   initializeMobileMenu();
   initializeSidebar();
   initializeScrollHeader();
   initializeSmoothScroll();
 });
-

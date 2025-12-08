@@ -1,244 +1,280 @@
 /* ============================================================================
-   HEADER.CSS - Fixed Sticky Navigation with Glassmorphism
+   HEADER.CSS - Navegación Sticky Fija con Glassmorphism
    
-   WHY: Modern UX demands that navigation is always accessible. A fixed header
-   follows the user as they scroll, eliminating the need to scroll back to the top
-   to access the menu. This improves usability and reduces friction.
+   ¿POR QUÉ? La UX moderna demanda que la navegación esté siempre accesible. Un header
+   fijo sigue al usuario mientras hace scroll, eliminando la necesidad de volver al
+   tope para acceder al menú. Esto mejora usabilidad y reduce fricción.
    
-   HOW: We use position: fixed instead of absolute to keep the header in the
-   viewport at all times. Combined with scroll-triggered styles, it becomes a
-   smart navigation system that adapts to user behavior.
+   ¿CÓMO FUNCIONA? Usamos position: fixed en lugar de absolute para mantener el header
+   en el viewport todo el tiempo. Combinado con estilos activados por scroll, se
+   convierte en un sistema de navegación inteligente que se adapta al comportamiento
+   del usuario.
    
-   RESULT: A persistent navigation bar that's transparent at the top but gains
-   a frosted glass backdrop as you scroll, ensuring readability without blocking
-   content unnecessarily.
+   ANALOGÍA FEYNMAN: Es como tener un menú de restaurante pegado a tu mesa con velcro.
+   No importa cuánto te muevas o estires para alcanzar la comida, el menú siempre está
+   ahí, fácil de consultar. No tienes que buscarlo o levantarte por él.
+   
+   RESULTADO: Una barra de navegación persistente que es transparente arriba pero gana
+   un fondo de vidrio esmerilado al hacer scroll, asegurando legibilidad sin bloquear
+   contenido innecesariamente.
    ============================================================================ */
 
-/* WHY: The main-header class defines our primary navigation bar. position: fixed
-   is crucial because it removes the header from the document flow AND keeps it
-   in the same position relative to the viewport, even when scrolling.
+/* ¿POR QUÉ? La clase main-header define nuestra barra de navegación primaria. position:
+   fixed es crucial porque remueve el header del flujo del documento Y lo mantiene en
+   la misma posición relativa al viewport, incluso cuando se hace scroll.
    
-   PERFORMANCE NOTE: Fixed positioning is GPU-accelerated in modern browsers,
-   making scroll animations smooth. The browser creates a separate layer for the
-   header, avoiding expensive repaints of the entire page on scroll.
+   NOTA DE RENDIMIENTO: El posicionamiento fixed es acelerado por GPU en navegadores
+   modernos, haciendo las animaciones de scroll suaves. El navegador crea una capa
+   separada para el header, evitando repintados costosos de toda la página en scroll.
    
-   HOW: top: 0 positions it at the very top of the viewport (not the page), and
-   width: 100% makes it span the entire screen. left: 0 ensures it starts from
-   the leftmost edge. The header now "floats" above all content, always visible.
+   ¿CÓMO FUNCIONA? top: 0 lo posiciona en el tope del viewport (no de la página), y
+   width: 100% hace que abarque toda la pantalla. left: 0 asegura que empiece desde
+   el borde izquierdo. El header ahora "flota" sobre todo el contenido, siempre visible.
    
-   RESULT: The header stays with the user as they scroll, providing constant
-   access to navigation without requiring them to scroll back to the top. */
+   RESULTADO: El header permanece con el usuario mientras hacen scroll, proporcionando
+   acceso constante a navegación sin requerir que vuelvan al tope. */
 .main-header {
-  position: fixed; /* Changed from absolute to fixed for sticky behavior */
+  position: fixed; /* Cambiado de absolute a fixed para comportamiento sticky */
   top: 0;
   left: 0;
   width: 100%;
-  /* WHY: z-index: 1000 ensures the header stays on top of ALL content on the page.
-     This is critical for fixed headers - without proper z-index, scrolling content
-     would appear over the navigation, making it unusable.
+  /* ¿POR QUÉ? z-index: 1000 asegura que el header permanezca encima de TODO el contenido
+     en la página. Esto es crítico para headers fixed - sin z-index apropiado, el contenido
+     al hacer scroll aparecería sobre la navegación, haciéndola inutilizable.
      
-     HOW: We use a high value (1000) that's unlikely to conflict with other elements.
-     Most content uses z-index values below 100, so 1000 provides a safe buffer.
+     ¿CÓMO FUNCIONA? Usamos un valor alto (1000) que es improbable que entre en conflicto
+     con otros elementos. La mayoría del contenido usa valores z-index bajo 100, así que
+     1000 proporciona un buffer seguro.
      
-     RESULT: Navigation is always clickable and visible, never hidden behind content,
-     regardless of what the user scrolls past. */
-  z-index: 1000; /* Explicit high value for fixed positioning */
+     GLOSARIO: z-index = controla el orden de apilamiento. Piensa en hojas de papel
+     transparente apiladas - números más altos están "más arriba" en la pila.
+     
+     RESULTADO: La navegación es siempre clickeable y visible, nunca oculta detrás de
+     contenido, sin importar por qué pase el usuario haciendo scroll. */
+  z-index: 1000; /* Valor alto explícito para posicionamiento fixed */
   
-  /* WHY: Adding vertical padding creates space above and below the navigation links,
-     making them easier to click (larger touch target) and visually balanced.
+  /* ¿POR QUÉ? Agregar padding vertical crea espacio arriba y abajo de los enlaces de
+     navegación, haciéndolos más fáciles de hacer clic (target táctil más grande) y
+     visualmente balanceados.
      
-     HOW: --spacing-md gives us 24px of padding top and bottom. This creates a
-     comfortable click area without making the header too tall.
+     ¿CÓMO FUNCIONA? --spacing-md nos da 24px de padding arriba y abajo. Esto crea un
+     área de clic cómoda sin hacer el header demasiado alto.
      
-     RESULT: A header that's easy to use on both desktop (mouse) and mobile (touch). */
+     RESULTADO: Un header que es fácil de usar tanto en escritorio (mouse) como móvil (touch). */
   padding-top: var(--spacing-md);
   padding-bottom: var(--spacing-md);
   
-  /* WHY: Transitions make the header smoothly adapt when we add effects on scroll
-     (like changing background color, adding shadow, or applying backdrop-filter).
-     Without transitions, these changes would be jarring and unprofessional.
+  /* ¿POR QUÉ? Las transiciones hacen que el header se adapte suavemente cuando agregamos
+     efectos en scroll (como cambiar color de fondo, agregar sombra o aplicar backdrop-filter).
+     Sin transiciones, estos cambios serían bruscos y poco profesionales.
      
-     HOW: We transition multiple properties (background-color, box-shadow, and the
-     crucial backdrop-filter) with smooth easing. The 0.3s duration is fast enough
-     to feel responsive but slow enough to be perceived as smooth.
+     ¿CÓMO FUNCIONA? Hacemos transición a múltiples propiedades (background-color, box-shadow
+     y el crucial backdrop-filter) con easing suave. La duración de 0.3s es lo suficientemente
+     rápida para sentirse responsiva pero lo suficientemente lenta para percibirse como suave.
      
-     RESULT: When the user scrolls past 50px, the header elegantly transforms from
-     transparent to having a frosted glass effect, providing clear visual feedback. */
+     RESULTADO: Cuando el usuario hace scroll pasado 50px, el header elegantemente se
+     transforma de transparente a tener un efecto de vidrio esmerilado, proporcionando
+     retroalimentación visual clara. */
   transition: background-color var(--transition-normal) var(--easing-default),
               box-shadow var(--transition-normal) var(--easing-default),
               backdrop-filter var(--transition-normal) var(--easing-default);
 }
 
-/* WHY: When users scroll down past 50px (threshold defined in JS), we want the
-   header to gain a frosted glass background for readability. The .scrolled class
-   (added via JavaScript scroll event listener) triggers this transformation.
+/* ¿POR QUÉ? Cuando los usuarios hacen scroll pasado 50px (umbral definido en JS),
+   queremos que el header gane un fondo de vidrio esmerilado para legibilidad. La
+   clase .scrolled (agregada vía listener de evento de scroll en JavaScript) activa
+   esta transformación.
    
-   GLASSMORPHISM EFFECT: This creates the modern "frosted glass" aesthetic by
-   combining a semi-transparent background with backdrop-filter blur, making
-   content behind the header appear blurred and slightly saturated.
+   EFECTO GLASSMORPHISM: Esto crea la estética moderna de "vidrio esmerilado" al
+   combinar un fondo semi-transparente con backdrop-filter blur, haciendo que el
+   contenido detrás del header aparezca difuminado y ligeramente saturado.
    
-   HOW: The background uses a very dark blue-black with 90% opacity, providing
-   solid readability while maintaining some translucency. backdrop-filter: blur(10px)
-   is the magic - it blurs whatever content is BEHIND this element (unlike regular
-   filter which would blur the header itself).
+   ¿CÓMO FUNCIONA? El fondo usa azul-negro muy oscuro con 90% de opacidad,
+   proporcionando legibilidad sólida mientras mantiene algo de translucidez.
+   backdrop-filter: blur(10px) es la magia - difumina cualquier contenido que esté
+   DETRÁS de este elemento (a diferencia de filter regular que difuminaría el header mismo).
    
-   RESULT: The header becomes highly visible and readable against any content while
-   maintaining the elegant glassmorphism aesthetic. Users can subtly see content
-   scrolling behind the header, providing nice visual feedback. */
+   RESULTADO: El header se vuelve altamente visible y legible contra cualquier contenido
+   mientras mantiene la estética elegante de glassmorphism. Los usuarios pueden ver
+   sutilmente contenido scrolleando detrás del header, proporcionando retroalimentación
+   visual agradable. */
 .main-header.scrolled {
-  background-color: rgba(5, 10, 20, 0.9); /* Dark ocean color with 90% opacity */
+  background-color: rgba(5, 10, 20, 0.9); /* Color océano oscuro con 90% opacidad */
   
-  /* WHY: backdrop-filter is the key to glassmorphism. It applies a blur effect to
-     the area BEHIND the element, creating that frosted glass window effect.
+  /* ¿POR QUÉ? backdrop-filter es la clave del glassmorphism. Aplica un efecto de blur
+     al área DETRÁS del elemento, creando ese efecto de ventana de vidrio esmerilado.
      
-     BROWSER SUPPORT: backdrop-filter is supported in all modern browsers (Chrome 76+,
-     Firefox 103+, Safari 9+). We include the -webkit- prefix for older Safari versions.
+     SOPORTE DE NAVEGADOR: backdrop-filter es soportado en todos los navegadores modernos
+     (Chrome 76+, Firefox 103+, Safari 9+). Incluimos el prefijo -webkit- para versiones
+     antiguas de Safari.
      
-     PERFORMANCE: backdrop-filter is GPU-accelerated and performs well, but can be
-     expensive on low-end devices. That's why we only apply it on scroll (when the
-     user has shown engagement) rather than always having it active.
+     RENDIMIENTO: backdrop-filter es acelerado por GPU y tiene buen rendimiento, pero
+     puede ser costoso en dispositivos de gama baja. Por eso solo lo aplicamos en scroll
+     (cuando el usuario ha mostrado compromiso) en lugar de tenerlo activo siempre.
      
-     HOW: blur(10px) creates a 10-pixel radius blur of background content. This is
-     strong enough to create the effect but not so strong that it's distracting.
+     ¿CÓMO FUNCIONA? blur(10px) crea un blur de radio de 10 píxeles del contenido de
+     fondo. Esto es lo suficientemente fuerte para crear el efecto pero no tan fuerte
+     que sea distractor.
      
-     RESULT: Content behind the header appears elegantly blurred, like looking through
-     textured glass, while the header content remains perfectly sharp. */
+     ANALOGÍA FEYNMAN: Es como mirar a través del vidrio esmerilado de una ducha.
+     Puedes ver formas y colores detrás, pero los detalles están difuminados. El vidrio
+     (header) es claro pero difumina lo que está detrás para enfocarte en lo que está
+     escrito en el vidrio.
+     
+     RESULTADO: El contenido detrás del header aparece elegantemente difuminado, como
+     viendo a través de vidrio texturizado, mientras el contenido del header permanece
+     perfectamente nítido. */
   backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px); /* Safari support */
+  -webkit-backdrop-filter: blur(10px); /* Soporte Safari */
   
-  /* WHY: A subtle shadow helps separate the header from content below it, adding
-     depth to the design and reinforcing the "floating" glass panel aesthetic.
+  /* ¿POR QUÉ? Una sombra sutil ayuda a separar el header del contenido debajo,
+     agregando profundidad al diseño y reforzando la estética de panel de vidrio "flotante".
      
-     HOW: box-shadow creates a soft black shadow (rgba 0,0,0) with 20% opacity
-     that extends 10px down and blurs over 30px for a gradual fade.
+     ¿CÓMO FUNCIONA? box-shadow crea una sombra negra suave (rgba 0,0,0) con 20% de
+     opacidad que se extiende 10px abajo y se difumina sobre 30px para un fade gradual.
      
-     RESULT: The header appears to "float" above the page content like a pane of
-     glass suspended over the page. */
+     RESULTADO: El header parece "flotar" sobre el contenido de la página como un panel
+     de vidrio suspendido sobre la página. */
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
 }
 
-/* WHY: The nav element contains all navigation links. We need to distribute space
-   between the logo (left) and menu (right) while keeping everything vertically centered.
+/* ¿POR QUÉ? El elemento nav contiene todos los enlaces de navegación. Necesitamos
+   distribuir espacio entre el logo (izquierda) y menú (derecha) mientras mantenemos
+   todo verticalmente centrado.
    
-   HOW: Flexbox with justify-content: space-between pushes the first child (logo)
-   to the left and the last child (nav links) to the right, with maximum space between.
+   ¿CÓMO FUNCIONA? Flexbox con justify-content: space-between empuja el primer hijo (logo)
+   a la izquierda y el último hijo (enlaces nav) a la derecha, con espacio máximo entre ellos.
    
-   RESULT: Classic header layout with logo on left, menu on right, automatically
-   responsive to content size. */
+   RESULTADO: Layout clásico de header con logo a la izquierda, menú a la derecha,
+   automáticamente responsivo al tamaño del contenido. */
 .main-header nav {
   display: flex;
   justify-content: space-between;
   align-items: center;
   
-  /* WHY: We constrain the navigation to a max-width and center it so that on very
-     wide screens (like 4K monitors), the nav doesn't stretch uncomfortably.
+  /* ¿POR QUÉ? Restringimos la navegación a un max-width y la centramos para que en
+     pantallas muy anchas (como monitores 4K), la nav no se estire incómodamente.
      
-     HOW: max-width uses our standard container width (1200px), and margin: 0 auto
-     centers it horizontally. Padding prevents edge-touching on smaller screens.
+     ¿CÓMO FUNCIONA? max-width usa nuestro ancho de contenedor estándar (1200px), y
+     margin: 0 auto la centra horizontalmente. El padding previene tocar bordes en
+     pantallas más pequeñas.
      
-     RESULT: The navigation stays readable and well-proportioned on all screen sizes. */
+     RESULTADO: La navegación permanece legible y bien proporcionada en todos los tamaños
+     de pantalla. */
   max-width: 1200px;
   margin: 0 auto;
   padding-left: var(--spacing-md);
   padding-right: var(--spacing-md);
 }
 
-/* WHY: The logo needs to be visually prominent and clickable. We style it as a
-   text element rather than an image for flexibility and fast loading.
+/* ¿POR QUÉ? El logo necesita ser visualmente prominente y clickeable. Lo estilizamos
+   como elemento de texto en lugar de imagen para flexibilidad y carga rápida.
    
-   HOW: Larger font size (--font-size-lg = 24px) and bold weight (700) make it stand
-   out. The gold color connects to the Planaxis theme.
+   ¿CÓMO FUNCIONA? Tamaño de fuente más grande (--font-size-lg = 24px) y peso bold (700)
+   lo hacen destacar. El color dorado conecta con el tema Planaxis.
    
-   RESULT: A clear, recognizable brand identifier that's immediately visible. */
+   RESULTADO: Un identificador de marca claro y reconocible que es inmediatamente visible. */
 .logo {
   font-size: var(--font-size-lg);
   font-weight: var(--font-weight-bold);
   color: var(--color-accent-gold);
-  /* WHY: Text-transform: uppercase creates a strong, authoritative brand presence.
-     It's a common technique for logos to increase visual impact.
+  /* ¿POR QUÉ? Text-transform: uppercase crea una presencia de marca fuerte y autoritaria.
+     Es una técnica común para logos para aumentar impacto visual.
      
-     HOW: CSS automatically converts lowercase letters to capitals.
+     ¿CÓMO FUNCIONA? CSS automáticamente convierte letras minúsculas a mayúsculas.
      
-     RESULT: "Planaxis" becomes "PLANAXIS" - more striking and memorable. */
+     RESULTADO: "Planaxis" se convierte en "PLANAXIS" - más impactante y memorable. */
   text-transform: uppercase;
-  /* WHY: Letter-spacing (tracking) adds space between letters, creating an elegant,
-     luxurious feel. It's commonly used in high-end branding.
+  /* ¿POR QUÉ? Letter-spacing (tracking) agrega espacio entre letras, creando una
+     sensación elegante y lujosa. Se usa comúnmente en branding de alta gama.
      
-     HOW: 0.1em means 10% of the font size. At 24px, this adds ~2.4px between letters.
+     ¿CÓMO FUNCIONA? 0.1em significa 10% del tamaño de fuente. A 24px, esto agrega ~2.4px
+     entre letras.
      
-     RESULT: The logo feels premium and easier to read at a glance. */
+     RESULTADO: El logo se siente premium y más fácil de leer de un vistazo. */
   letter-spacing: 0.1em;
-  /* WHY: Adding a transition allows the logo to smoothly change color on hover,
-     providing subtle feedback that it's interactive.
+  /* ¿POR QUÉ? Agregar una transición permite que el logo cambie suavemente de color
+     en hover, proporcionando retroalimentación sutil de que es interactivo.
      
-     HOW: We transition the color property over 200ms (fast) with ease-in-out timing.
+     ¿CÓMO FUNCIONA? Hacemos transición a la propiedad color sobre 200ms (rápido) con
+     timing ease-in-out.
      
-     RESULT: Smooth, polished interaction when users hover over the logo. */
+     RESULTADO: Interacción suave y pulida cuando los usuarios hacen hover sobre el logo. */
   transition: color var(--transition-fast) var(--easing-default);
 }
 
-/* WHY: Hover states provide visual feedback that an element is interactive. Without
-   this, users might not realize the logo is clickable (returns to homepage).
+/* ¿POR QUÉ? Los estados hover proporcionan retroalimentación visual de que un elemento
+   es interactivo. Sin esto, los usuarios podrían no darse cuenta de que el logo es
+   clickeable (retorna al homepage).
    
-   HOW: On hover, we change to cyan (our bioluminescent accent color).
+   ¿CÓMO FUNCIONA? En hover, cambiamos a cyan (nuestro color de acento bioluminiscente).
    
-   RESULT: The logo appears to "light up" when you hover over it, like bioluminescence
-   in the deep ocean. */
+   ANALOGÍA FEYNMAN: Como cuando tocas una medusa bioluminiscente en el océano - se
+   "ilumina" en respuesta a tu toque. El logo se ilumina con cyan cuando tu cursor lo toca.
+   
+   RESULTADO: El logo parece "iluminarse" cuando haces hover sobre él, como bioluminiscencia
+   en el océano profundo. */
 .logo:hover {
   color: var(--color-accent-cyan);
 }
 
-/* WHY: Navigation links need to be horizontal (side-by-side) rather than stacked.
-   By default, <ul> is a block element with bullets.
+/* ¿POR QUÉ? Los enlaces de navegación necesitan estar horizontales (lado a lado) en
+   lugar de apilados. Por defecto, <ul> es un elemento de bloque con viñetas.
    
-   HOW: display: flex makes children (the <li> elements) line up horizontally.
-   gap adds spacing between each link without manual margins.
+   ¿CÓMO FUNCIONA? display: flex hace que los hijos (los elementos <li>) se alineen
+   horizontalmente. gap agrega espaciado entre cada enlace sin márgenes manuales.
    
-   RESULT: A clean, horizontal navigation menu with consistent spacing. */
+   RESULTADO: Un menú de navegación limpio y horizontal con espaciado consistente. */
 .nav-links {
   display: flex;
   gap: var(--spacing-lg);
   align-items: center;
 }
 
-/* WHY: Each navigation link should be a comfortable click target. Links that are too
-   small are hard to click, especially on touch devices.
+/* ¿POR QUÉ? Cada enlace de navegación debe ser un target de clic cómodo. Enlaces
+   demasiado pequeños son difíciles de hacer clic, especialmente en dispositivos táctiles.
    
-   HOW: We add padding to increase the clickable area beyond just the text itself.
+   ¿CÓMO FUNCIONA? Agregamos padding para aumentar el área clickeable más allá del
+   texto mismo.
    
-   RESULT: Links are easier to click/tap, improving usability on all devices. */
+   RESULTADO: Los enlaces son más fáciles de hacer clic/tap, mejorando usabilidad en
+   todos los dispositivos. */
 .nav-links li a {
   font-size: var(--font-size-base);
   font-weight: var(--font-weight-medium);
   color: var(--color-text-main);
   padding: var(--spacing-xs) var(--spacing-sm);
   
-  /* WHY: Position: relative is needed for the ::after pseudo-element (the underline)
-     to be positioned relative to the link, not the whole page.
+  /* ¿POR QUÉ? Position: relative es necesario para que el pseudo-elemento ::after
+     (el subrayado) se posicione relativo al enlace, no a toda la página.
      
-     HOW: The ::after element will use position: absolute, which positions it relative
-     to the nearest positioned ancestor (this link).
+     ¿CÓMO FUNCIONA? El elemento ::after usará position: absolute, que lo posiciona
+     relativo al ancestro positioned más cercano (este enlace).
      
-     RESULT: The animated underline appears exactly under the link text. */
+     RESULTADO: El subrayado animado aparece exactamente bajo el texto del enlace. */
   position: relative;
   
-  /* WHY: We're setting up transitions for both color and the ::after element's
-     transform. This enables smooth hover animations.
+  /* ¿POR QUÉ? Estamos configurando transiciones tanto para color como para el elemento
+     ::after's transform. Esto habilita animaciones suaves de hover.
      
-     HOW: "all" means every animatable property will transition, but we could be
-     more specific for performance (only transition properties that change).
+     ¿CÓMO FUNCIONA? "all" significa que cada propiedad animatable hará transición,
+     pero podríamos ser más específicos para rendimiento (solo hacer transición a
+     propiedades que cambien).
      
-     RESULT: Smooth color change and underline animation on hover. */
+     RESULTADO: Cambio suave de color y animación de subrayado en hover. */
   transition: color var(--transition-fast) var(--easing-default);
 }
 
-/* WHY: The ::after pseudo-element creates a decorative underline that animates on
-   hover. This is more flexible than text-decoration: underline.
+/* ¿POR QUÉ? El pseudo-elemento ::after crea un subrayado decorativo que se anima en
+   hover. Esto es más flexible que text-decoration: underline.
    
-   HOW: content: '' creates an empty element. position: absolute with bottom: -4px
-   positions it 4px below the link. width: 0 makes it invisible initially.
+   ¿CÓMO FUNCIONA? content: '' crea un elemento vacío. position: absolute con bottom: -4px
+   lo posiciona 4px debajo del enlace. width: 0 lo hace invisible inicialmente.
    
-   RESULT: An invisible underline that's ready to animate on hover. */
+   ANALOGÍA FEYNMAN: Es como tener una cinta invisible bajo cada enlace. Cuando haces
+   hover, la cinta se "desenrolla" de izquierda a derecha, apareciendo gradualmente.
+   
+   RESULTADO: Un subrayado invisible que está listo para animarse en hover. */
 .nav-links li a::after {
   content: '';
   position: absolute;
@@ -248,26 +284,27 @@
   height: 2px;
   background-color: var(--color-accent-gold);
   
-  /* WHY: We transition width and opacity to create a smooth "drawing" effect where
-     the line appears to extend from left to right.
+  /* ¿POR QUÉ? Hacemos transición de width y opacity para crear un efecto suave de
+     "dibujo" donde la línea parece extenderse de izquierda a derecha.
      
-     HOW: Starting at width: 0 and opacity: 0, these will animate to width: 100%
-     and opacity: 1 on hover.
+     ¿CÓMO FUNCIONA? Empezando en width: 0 y opacity: 0, estas animarán a width: 100%
+     y opacity: 1 en hover.
      
-     RESULT: A elegant, animated underline that draws itself in on hover. */
+     RESULTADO: Un subrayado elegante y animado que se dibuja a sí mismo en hover. */
   transition: width var(--transition-normal) var(--easing-default),
               opacity var(--transition-normal) var(--easing-default);
   opacity: 0;
 }
 
-/* WHY: On hover, we want the link text to turn gold and the underline to appear.
-   This provides clear, immediate feedback that the link is interactive.
+/* ¿POR QUÉ? En hover, queremos que el texto del enlace se vuelva dorado y el subrayado
+   aparezca. Esto proporciona retroalimentación clara e inmediata de que el enlace es
+   interactivo.
    
-   HOW: We change the text color and trigger the ::after animation by changing
-   its width to 100% and opacity to 1.
+   ¿CÓMO FUNCIONA? Cambiamos el color del texto y activamos la animación del ::after
+   cambiando su width a 100% y opacity a 1.
    
-   RESULT: A polished hover effect where the text turns gold and an underline
-   smoothly draws itself from left to right. */
+   RESULTADO: Un efecto hover pulido donde el texto se vuelve dorado y un subrayado se
+   dibuja suavemente de izquierda a derecha. */
 .nav-links li a:hover {
   color: var(--color-accent-gold);
 }
@@ -277,12 +314,13 @@
   opacity: 1;
 }
 
-/* WHY: The active class indicates the current page in the navigation. Users need
-   to know where they are in the site hierarchy.
+/* ¿POR QUÉ? La clase active indica la página actual en la navegación. Los usuarios
+   necesitan saber dónde están en la jerarquía del sitio.
    
-   HOW: We permanently show the gold underline and gold text for the active page.
+   ¿CÓMO FUNCIONA? Mostramos permanentemente el subrayado dorado y texto dorado para
+   la página activa.
    
-   RESULT: Clear visual indication of the current page in the navigation. */
+   RESULTADO: Indicación visual clara de la página actual en la navegación. */
 .nav-links li a.active {
   color: var(--color-accent-gold);
 }
@@ -292,53 +330,56 @@
   opacity: 1;
 }
 
-/* WHY: Mobile devices need a hamburger menu button since there isn't enough space
-   for all navigation links horizontally. We hide it by default (desktop-first).
+/* ¿POR QUÉ? Los dispositivos móviles necesitan un botón de menú hamburguesa ya que
+   no hay suficiente espacio para todos los enlaces de navegación horizontalmente.
+   Lo ocultamos por defecto (desktop-first).
    
-   HOW: display: none removes it from the layout. Media queries in responsive.css
-   will show it on small screens.
+   ¿CÓMO FUNCIONA? display: none lo remueve del layout. Media queries en responsive.css
+   lo mostrarán en pantallas pequeñas.
    
-   RESULT: The button exists in the HTML but is hidden until needed on mobile. */
+   RESULTADO: El botón existe en el HTML pero está oculto hasta que se necesite en móvil. */
 .mobile-menu-toggle {
   display: none;
-  /* WHY: Flexbox centers the hamburger icon (three horizontal lines) within the button.
+  /* ¿POR QUÉ? Flexbox centra el ícono hamburguesa (tres líneas horizontales) dentro del botón.
      
-     HOW: justify-content and align-items: center work together to perfectly center
-     the icon both horizontally and vertically.
+     ¿CÓMO FUNCIONA? justify-content y align-items: center trabajan juntos para
+     centrar perfectamente el ícono tanto horizontal como verticalmente.
      
-     RESULT: The hamburger icon is perfectly centered in its clickable area. */
+     RESULTADO: El ícono hamburguesa está perfectamente centrado en su área clickeable. */
   justify-content: center;
   align-items: center;
-  /* WHY: A square button (40x40px) provides a comfortable touch target on mobile.
-     Apple's HIG recommends minimum 44x44px, so we're close to that guideline.
+  /* ¿POR QUÉ? Un botón cuadrado (40x40px) proporciona un target táctil cómodo en móvil.
+     El HIG de Apple recomienda mínimo 44x44px, así que estamos cerca de esa pauta.
      
-     HOW: Fixed width and height create a square.
+     ¿CÓMO FUNCIONA? Width y height fijos crean un cuadrado.
      
-     RESULT: Easy-to-tap button that meets accessibility guidelines. */
+     RESULTADO: Botón fácil de tap que cumple pautas de accesibilidad. */
   width: 40px;
   height: 40px;
   background-color: transparent;
   border: none;
   cursor: pointer;
-  /* WHY: Transitions make the hamburger icon animate smoothly when transforming
-     into an X (close icon) on mobile.
+  /* ¿POR QUÉ? Las transiciones hacen que el ícono hamburguesa se anime suavemente
+     cuando se transforma en una X (ícono cerrar) en móvil.
      
-     HOW: We'll use transform to rotate the lines, and this transition makes it smooth.
+     ¿CÓMO FUNCIONA? Usaremos transform para rotar las líneas, y esta transición lo
+     hace suave.
      
-     RESULT: Polished animation when opening/closing the mobile menu. */
+     RESULTADO: Animación pulida al abrir/cerrar el menú móvil. */
   transition: transform var(--transition-fast) var(--easing-default);
 }
 
 /* ============================================================================
-   LANGUAGE SELECTOR
+   SELECTOR DE IDIOMA
    ============================================================================
    
-   WHY: The language selector needs to be visually distinct from regular nav
-   links while still fitting cohesively into the navigation design.
+   ¿POR QUÉ? El selector de idioma necesita ser visualmente distinto de los enlaces
+   nav regulares mientras todavía encaja cohesivamente en el diseño de navegación.
    
-   HOW: Special styling for language links with active state indicators.
+   ¿CÓMO FUNCIONA? Estilizado especial para enlaces de idioma con indicadores de estado
+   activo.
    
-   RESULT: Clear, accessible language switching interface. */
+   RESULTADO: Interfaz clara y accesible de cambio de idioma. */
 
 .language-selector {
   display: flex;
@@ -362,22 +403,22 @@
   display: none !important;
 }
 
-/* WHY: Active language should be clearly highlighted so users know which
-   language is currently selected.
+/* ¿POR QUÉ? El idioma activo debe estar claramente resaltado para que los usuarios
+   sepan qué idioma está actualmente seleccionado.
    
-   HOW: Golden background with contrasting text color.
+   ¿CÓMO FUNCIONA? Fondo dorado con color de texto contrastante.
    
-   RESULT: Obvious visual indicator of current language. */
+   RESULTADO: Indicador visual obvio del idioma actual. */
 .lang-link.active {
   background: var(--color-gold);
   color: var(--color-bg-primary);
 }
 
-/* WHY: Non-active languages should be subdued but still accessible.
+/* ¿POR QUÉ? Los idiomas no activos deben estar atenuados pero todavía accesibles.
    
-   HOW: Muted color that brightens on hover.
+   ¿CÓMO FUNCIONA? Color apagado que se ilumina en hover.
    
-   RESULT: Clear hierarchy between active and inactive languages. */
+   RESULTADO: Jerarquía clara entre idiomas activos e inactivos. */
 .lang-link:not(.active) {
   color: var(--color-text-muted);
 }
@@ -392,4 +433,3 @@
   color: var(--color-text-muted);
   font-size: var(--font-size-sm);
 }
-

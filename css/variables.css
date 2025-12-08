@@ -1,237 +1,286 @@
 /* ============================================================================
-   VARIABLES.CSS - Design Tokens for Tomorrowland: The Story of Planaxis
+   VARIABLES.CSS - Tokens de Diseño para Tomorrowland: The Story of Planaxis
    
-   WHY: CSS Custom Properties (variables) allow us to define values once and
-   reuse them throughout the entire stylesheet. When we need to change a color
-   or spacing value, we update it in one place instead of hundreds.
+   ¿POR QUÉ? Las Propiedades Personalizadas de CSS (variables) nos permiten definir valores
+   una vez y reutilizarlos en toda la hoja de estilos. Cuando necesitamos cambiar un color
+   o valor de espaciado, lo actualizamos en un lugar en vez de cientos.
    
-   HOW: Variables are defined with the -- prefix inside a :root selector, making
-   them globally accessible. We reference them with var(--variable-name).
+   ¿CÓMO FUNCIONA? Las variables se definen con el prefijo -- dentro de un selector :root,
+   haciéndolas accesibles globalmente. Las referenciamos con var(--nombre-variable).
    
-   RESULT: Consistent design system that's easy to maintain and modify.
+   ANALOGÍA FEYNMAN: Imagina que tienes un cuaderno de recetas. En vez de escribir "2 tazas
+   de harina" en cada receta, escribes "usa la medida estándar de harina" que defines al
+   inicio del cuaderno. Si cambias la medida estándar, ¡todas las recetas se actualizan
+   automáticamente!
+   
+   RESULTADO: Sistema de diseño consistente que es fácil de mantener y modificar.
    ============================================================================ */
 
 :root {
   /* ========================================================================
-     COLOR SYSTEM - Planaxis Ocean Theme
+     SISTEMA DE COLORES - Tema Océano Planaxis
      
-     WHY: The Planaxis story is about a mystical underwater kingdom, so we use
-     deep ocean blues and blacks instead of purples. The color palette evokes
-     bioluminescence, depths of the ocean, and mysterious sea creatures.
+     ¿POR QUÉ? La historia de Planaxis trata de un reino submarino místico, así que usamos
+     azules profundos del océano y negros en lugar de morados. La paleta de colores evoca
+     bioluminiscencia, profundidades oceánicas y criaturas marinas misteriosas.
      ======================================================================== */
   
-  /* WHY: This near-black blue (#050a14) serves as our primary background because
-     pure black (#000000) can feel harsh on screens, especially for long reading.
-     The subtle blue tint connects to the ocean theme.
+  /* ¿POR QUÉ? Este azul casi negro (#050a14) sirve como nuestro fondo principal porque
+     el negro puro (#000000) puede sentirse duro en pantallas, especialmente para lectura
+     prolongada. El tinte azul sutil conecta con el tema oceánico.
      
-     HOW: The hex value has very low RGB values (5, 10, 20), making it almost
-     black but with a cool tone.
+     ¿CÓMO FUNCIONA? El valor hex tiene valores RGB muy bajos (5, 10, 20), haciéndolo casi
+     negro pero con un tono frío.
      
-     RESULT: A sophisticated dark background that's easier on the eyes than pure
-     black while maintaining the mysterious ocean depth aesthetic. */
+     ANALOGÍA FEYNMAN: Es como pintar tu cuarto de negro, pero agregando una gotita de
+     pintura azul. A simple vista parece negro, pero hay un toque casi imperceptible de
+     azul que lo hace sentir menos "vacío" y más "misterioso océano profundo".
+     
+     RESULTADO: Un fondo oscuro sofisticado que es más suave para los ojos que negro puro
+     mientras mantiene la estética de profundidades oceánicas misteriosas. */
   --color-bg-primary: #050a14;
   
-  /* WHY: This deeper blue (#0a1e3c) creates depth and hierarchy. We use it for
-     cards, overlays, and sections that need to stand out from the main background.
+  /* ¿POR QUÉ? Este azul más profundo (#0a1e3c) crea profundidad y jerarquía. Lo usamos
+     para tarjetas, overlays y secciones que necesitan destacarse del fondo principal.
      
-     HOW: It's significantly lighter than the primary background (RGB: 10, 30, 60),
-     creating clear visual separation while staying within the dark theme.
+     ¿CÓMO FUNCIONA? Es significativamente más claro que el fondo principal (RGB: 10, 30, 60),
+     creando separación visual clara mientras permanece dentro del tema oscuro.
      
-     RESULT: UI elements have subtle contrast without breaking the cohesive dark
-     ocean aesthetic. */
+     RESULTADO: Los elementos de UI tienen contraste sutil sin romper la estética cohesiva
+     del océano oscuro. */
   --color-bg-secondary: #0a1e3c;
   
-  /* WHY: Gold (#ffd700) represents the mythical "golden seahorse" creatures of
-     Planaxis lore. It's also Tomorrowland's signature accent color, providing
-     warmth against the cool blues.
+  /* ¿POR QUÉ? El dorado (#ffd700) representa las criaturas míticas "caballito de mar
+     dorado" de la leyenda de Planaxis. También es el color de acento característico de
+     Tomorrowland, proporcionando calidez contra los azules fríos.
      
-     HOW: Pure gold (255, 215, 0) is highly saturated and visible, ensuring it
-     stands out for important CTAs and hover states.
+     ¿CÓMO FUNCIONA? El dorado puro (255, 215, 0) es altamente saturado y visible,
+     asegurando que destaque para CTAs importantes y estados hover.
      
-     RESULT: Interactive elements (buttons, links) immediately catch the eye and
-     feel premium/luxurious. */
+     ⚠️ CONCEPTO IMPORTANTE: Este color dorado es como un "faro" en el océano oscuro.
+     Cuando queremos que los usuarios noten algo importante (un botón, un enlace hover),
+     lo iluminamos con dorado - como si brillara en la oscuridad del fondo marino.
+     
+     RESULTADO: Elementos interactivos (botones, enlaces) inmediatamente captan la atención
+     y se sienten premium/lujosos. */
   --color-accent-gold: #ffd700;
   
-  /* WHY: Cyan (#00bcd4) mimics bioluminescent sea creatures that glow in the deep
-     ocean. It's used for subtle interactive states and glowing effects.
+  /* ¿POR QUÉ? El cyan (#00bcd4) imita criaturas marinas bioluminiscentes que brillan en
+     el océano profundo. Se usa para estados interactivos sutiles y efectos de brillo.
      
-     HOW: This cyan (RGB: 0, 188, 212) is bright enough to be visible on dark
-     backgrounds but cooler than gold, creating visual hierarchy.
+     ¿CÓMO FUNCIONA? Este cyan (RGB: 0, 188, 212) es lo suficientemente brillante para ser
+     visible en fondos oscuros pero más frío que el dorado, creando jerarquía visual.
      
-     RESULT: A secondary accent that adds variety to interactions without competing
-     with the primary gold accent. */
+     ANALOGÍA FEYNMAN: ¿Has visto videos de medusas bioluminiscentes o plancton que brilla
+     en la noche? Ese brillo azul-verde es exactamente este color. Lo usamos para hacer
+     que elementos se "iluminen" como criaturas del fondo marino cuando interactúas con ellos.
+     
+     RESULTADO: Un acento secundario que agrega variedad a las interacciones sin competir
+     con el dorado primario. */
   --color-accent-cyan: #00bcd4;
   
-  /* WHY: Pure white (#ffffff) for primary text ensures maximum readability against
-     the dark backgrounds. Accessibility guidelines require high contrast ratios
-     (WCAG AA requires 4.5:1 for normal text).
+  /* ¿POR QUÉ? Blanco puro (#ffffff) para texto principal asegura máxima legibilidad contra
+     los fondos oscuros. Las pautas de accesibilidad requieren ratios de contraste altos
+     (WCAG AA requiere 4.5:1 para texto normal).
      
-     HOW: White on dark blue/black provides a contrast ratio well above 12:1,
-     exceeding AAA standards (7:1).
+     ¿CÓMO FUNCIONA? Blanco sobre azul/negro oscuro proporciona un ratio de contraste muy
+     por encima de 12:1, excediendo los estándares AAA (7:1).
      
-     RESULT: Text is effortlessly readable even for users with low vision. */
+     GLOSARIO: WCAG = Web Content Accessibility Guidelines (Pautas de Accesibilidad para
+     Contenido Web). Son estándares internacionales para hacer sitios web accesibles para
+     personas con discapacidades.
+     
+     RESULTADO: El texto es legible sin esfuerzo incluso para usuarios con baja visión. */
   --color-text-main: #ffffff;
   
-  /* WHY: Muted blue-gray (#a0b3c5) is used for secondary text (captions, metadata)
-     to create hierarchy. Not everything should demand equal attention.
+  /* ¿POR QUÉ? Gris-azul apagado (#a0b3c5) se usa para texto secundario (pies de foto,
+     metadatos) para crear jerarquía. No todo debe demandar atención igual.
      
-     HOW: This color (RGB: 160, 179, 197) is desaturated and lighter, reducing
-     visual weight while maintaining readability (contrast ratio ~5:1).
+     ¿CÓMO FUNCIONA? Este color (RGB: 160, 179, 197) está desaturado y más claro,
+     reduciendo peso visual mientras mantiene legibilidad (ratio de contraste ~5:1).
      
-     RESULT: Clear distinction between primary content and supporting information. */
+     RESULTADO: Distinción clara entre contenido primario e información de apoyo. */
   --color-text-muted: #a0b3c5;
   
   /* ========================================================================
-     SPACING SYSTEM - 8px Base Unit
+     SISTEMA DE ESPACIADO - Unidad Base de 8px
      
-     WHY: Using multiples of 8 (8, 16, 24, 32, 48, 64) creates visual rhythm and
-     makes spacing decisions easier. It's a common design system standard used by
-     Google Material Design, Apple HIG, and many others.
+     ¿POR QUÉ? Usar múltiplos de 8 (8, 16, 24, 32, 48, 64) crea ritmo visual y hace que
+     las decisiones de espaciado sean más fáciles. Es un estándar común de sistema de
+     diseño usado por Google Material Design, Apple HIG y muchos otros.
      
-     HOW: All spacing values are calculated from a base unit (8px), ensuring
-     proportional relationships. We use rem instead of px so spacing scales with
-     user's browser font size settings (accessibility).
+     ¿CÓMO FUNCIONA? Todos los valores de espaciado se calculan desde una unidad base (8px),
+     asegurando relaciones proporcionales. Usamos rem en vez de px para que el espaciado
+     escale con la configuración de tamaño de fuente del usuario (accesibilidad).
      
-     RESULT: Consistent, harmonious spacing throughout the design that respects
-     user preferences for larger text.
-     ======================================================================== */
+     ANALOGÍA FEYNMAN: Es como construir con LEGO. Cada pieza de LEGO es múltiplo de una
+     unidad base. No puedes tener 1.7 bloques de LEGO - siempre es 1, 2, 3, etc. Esto
+     hace que todo encaje perfectamente. Nuestro espaciado funciona igual: siempre múltiplos
+     de 8px, así todo se alinea perfectamente.
+     
+     RESULTADO: Espaciado consistente y armonioso en todo el diseño que respeta las
+     preferencias de usuario para texto más grande.
+     ======================================================================== -->
   
-  /* WHY: 0.5rem = 8px (assuming default 16px root font size). This is our smallest
-     spacing unit for tight areas like gaps between inline elements.
+  /* ¿POR QUÉ? 0.5rem = 8px (asumiendo tamaño de fuente root predeterminado de 16px). Esta
+     es nuestra unidad de espaciado más pequeña para áreas apretadas como gaps entre
+     elementos inline.
      
-     HOW: rem units are relative to the root font size. If a user sets their browser
-     to 20px, this automatically becomes 10px (0.5 × 20).
+     ¿CÓMO FUNCIONA? Las unidades rem son relativas al tamaño de fuente root. Si un usuario
+     configura su navegador a 20px, esto automáticamente se convierte en 10px (0.5 × 20).
      
-     RESULT: Spacing adapts to user's accessibility settings. */
+     GLOSARIO: rem = "root em". Es una unidad que se basa en el tamaño de fuente del
+     elemento raíz (html). 1rem = tamaño de fuente del elemento html (usualmente 16px).
+     
+     RESULTADO: El espaciado se adapta a configuraciones de accesibilidad del usuario. */
   --spacing-xs: 0.5rem;   /* 8px */
-  --spacing-sm: 1rem;     /* 16px - Comfortable spacing for list items, card padding */
-  --spacing-md: 1.5rem;   /* 24px - Standard section padding */
-  --spacing-lg: 2rem;     /* 32px - Large section padding */
-  --spacing-xl: 3rem;     /* 48px - Section gaps */
-  --spacing-2xl: 4rem;    /* 64px - Major section separation */
+  --spacing-sm: 1rem;     /* 16px - Espaciado cómodo para elementos de lista, padding de tarjetas */
+  --spacing-md: 1.5rem;   /* 24px - Padding estándar de sección */
+  --spacing-lg: 2rem;     /* 32px - Padding grande de sección */
+  --spacing-xl: 3rem;     /* 48px - Gaps de sección */
+  --spacing-2xl: 4rem;    /* 64px - Separación mayor de sección */
   
   /* ========================================================================
-     TYPOGRAPHY SYSTEM
+     SISTEMA DE TIPOGRAFÍA
      
-     WHY: Font choices dramatically affect readability and brand personality.
-     We use system fonts for fast loading and native appearance.
+     ¿POR QUÉ? Las opciones de fuente afectan dramáticamente la legibilidad y personalidad
+     de marca. Usamos fuentes del sistema para carga rápida y apariencia nativa.
      ======================================================================== */
   
-  /* WHY: System font stack uses the native UI font for each OS (-apple-system for
-     macOS/iOS, Segoe UI for Windows, Roboto for Android). This eliminates font
-     loading time and feels native to each platform.
+  /* ¿POR QUÉ? El stack de fuentes del sistema usa la fuente de UI nativa para cada OS
+     (-apple-system para macOS/iOS, Segoe UI para Windows, Roboto para Android). Esto
+     elimina tiempo de carga de fuentes y se siente nativo a cada plataforma.
      
-     HOW: Browsers try each font in order, falling back to the next if unavailable.
-     sans-serif is the ultimate fallback.
+     ¿CÓMO FUNCIONA? Los navegadores intentan cada fuente en orden, respaldándose a la
+     siguiente si no está disponible. sans-serif es el respaldo final.
      
-     RESULT: Instant text rendering with no FOUT (Flash of Unstyled Text), and
-     the site feels native to whatever device you're on. */
+     ANALOGÍA FEYNMAN: Es como ordenar comida con una lista de preferencias: "Quiero pizza
+     de Luigi's, pero si no está abierto, dame pizza de Mario's, o si no, cualquier pizza".
+     El navegador intenta tu primera opción y baja por la lista hasta encontrar una disponible.
+     
+     RESULTADO: Renderizado instantáneo de texto sin FOUT (Flash of Unstyled Text), y el
+     sitio se siente nativo a cualquier dispositivo en que estés. */
   --font-primary: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 
                    'Helvetica Neue', Arial, sans-serif;
   
-  /* WHY: Georgia is a serif font designed for screen reading. Serifs add elegance
-     and are often used for quotes or special sections to create contrast.
+  /* ¿POR QUÉ? Georgia es una fuente serif diseñada para lectura en pantalla. Las serifas
+     agregan elegancia y a menudo se usan para citas o secciones especiales para crear contraste.
      
-     HOW: If Georgia isn't available, we fallback to Times New Roman, then any serif.
+     ¿CÓMO FUNCIONA? Si Georgia no está disponible, respaldamos a Times New Roman, luego
+     cualquier serif.
      
-     RESULT: Elegant, readable serif font for special content sections. */
+     RESULTADO: Fuente serif elegante y legible para secciones especiales de contenido. */
   --font-secondary: Georgia, 'Times New Roman', serif;
   
-  /* WHY: Type scale creates hierarchy. Larger text = more important. We use rem
-     so the scale adapts to user's font size preferences.
+  /* ¿POR QUÉ? La escala de tipos crea jerarquía. Texto más grande = más importante. Usamos
+     rem para que la escala se adapte a las preferencias de tamaño de fuente del usuario.
      
-     HOW: Each size is proportional, roughly following a 1.25 multiplier scale:
+     ¿CÓMO FUNCIONA? Cada tamaño es proporcional, siguiendo aproximadamente una escala
+     multiplicadora de 1.25:
      0.875 → 1 → 1.125 → 1.5 → 2 → 3
      
-     RESULT: Clear visual hierarchy that's flexible and accessible. */
-  --font-size-sm: 0.875rem;    /* 14px - Captions, fine print */
-  --font-size-base: 1rem;      /* 16px - Body text (browser default) */
-  --font-size-md: 1.125rem;    /* 18px - Emphasized body text */
-  --font-size-lg: 1.5rem;      /* 24px - Section headings */
-  --font-size-xl: 2rem;        /* 32px - Page headings */
-  --font-size-2xl: 3rem;       /* 48px - Hero titles */
+     RESULTADO: Jerarquía visual clara que es flexible y accesible. -->
+  --font-size-sm: 0.875rem;    /* 14px - Pies de foto, texto pequeño */
+  --font-size-base: 1rem;      /* 16px - Texto del cuerpo (predeterminado del navegador) */
+  --font-size-md: 1.125rem;    /* 18px - Texto del cuerpo enfatizado */
+  --font-size-lg: 1.5rem;      /* 24px - Encabezados de sección */
+  --font-size-xl: 2rem;        /* 32px - Encabezados de página */
+  --font-size-2xl: 3rem;       /* 48px - Títulos hero */
   
-  /* WHY: Font weights create emphasis. 400 is normal, 700 is bold. Using numeric
-     values (instead of "bold") gives us precise control and works better with
-     variable fonts.
+  /* ¿POR QUÉ? Los pesos de fuente crean énfasis. 400 es normal, 700 es bold. Usar valores
+     numéricos (en lugar de "bold") nos da control preciso y funciona mejor con fuentes
+     variables.
      
-     HOW: Not all fonts support all weights. System fonts generally support
-     300, 400, 600, and 700.
+     ¿CÓMO FUNCIONA? No todas las fuentes soportan todos los pesos. Las fuentes del sistema
+     generalmente soportan 300, 400, 600 y 700.
      
-     RESULT: Flexible typography with clear emphasis options. */
+     RESULTADO: Tipografía flexible con opciones claras de énfasis. */
   --font-weight-normal: 400;
   --font-weight-medium: 600;
   --font-weight-bold: 700;
   
   /* ========================================================================
-     RESPONSIVE BREAKPOINTS
+     BREAKPOINTS RESPONSIVOS
      
-     WHY: Websites need to work on phones (320px wide), tablets (768px), and
-     desktops (1024px+). We define these widths as variables for consistency.
+     ¿POR QUÉ? Los sitios web necesitan funcionar en teléfonos (320px de ancho), tablets
+     (768px) y escritorios (1024px+). Definimos estos anchos como variables para consistencia.
      
-     HOW: These values represent typical device widths where layouts need to change.
-     We use em units in media queries because they handle browser zoom better.
+     ¿CÓMO FUNCIONA? Estos valores representan anchos típicos de dispositivos donde los
+     layouts necesitan cambiar. Usamos unidades em en media queries porque manejan mejor
+     el zoom del navegador.
      
-     RESULT: Consistent breakpoints throughout all responsive CSS.
+     RESULTADO: Breakpoints consistentes en todo el CSS responsivo.
      ======================================================================== */
-  --breakpoint-mobile: 320px;     /* Small phones */
-  --breakpoint-tablet: 768px;     /* iPads, small tablets */
-  --breakpoint-desktop: 1024px;   /* Laptops and larger */
+  --breakpoint-mobile: 320px;     /* Teléfonos pequeños */
+  --breakpoint-tablet: 768px;     /* iPads, tablets pequeñas */
+  --breakpoint-desktop: 1024px;   /* Laptops y más grandes */
   
   /* ========================================================================
-     TRANSITIONS & ANIMATIONS
+     TRANSICIONES & ANIMACIONES
      
-     WHY: Smooth animations feel premium and provide visual feedback for interactions.
-     Instant changes can feel jarring.
+     ¿POR QUÉ? Las animaciones suaves se sienten premium y proporcionan retroalimentación
+     visual para interacciones. Los cambios instantáneos pueden sentirse bruscos.
      
-     HOW: We define standard durations (in milliseconds) and easing functions
-     (how the animation accelerates/decelerates).
+     ¿CÓMO FUNCIONA? Definimos duraciones estándar (en milisegundos) y funciones de easing
+     (cómo la animación acelera/desacelera).
      
-     RESULT: Consistent, smooth animations across all interactive elements.
+     RESULTADO: Animaciones consistentes y suaves en todos los elementos interactivos.
      ======================================================================== */
   
-  /* WHY: 200ms is fast enough to feel immediate but slow enough to be perceived.
-     It's ideal for hover states and small UI changes.
+  /* ¿POR QUÉ? 200ms es lo suficientemente rápido para sentirse inmediato pero lo
+     suficientemente lento para ser percibido. Es ideal para estados hover y cambios
+     pequeños de UI.
      
-     HOW: Applied to transitions like color changes on hover.
+     ¿CÓMO FUNCIONA? Se aplica a transiciones como cambios de color en hover.
      
-     RESULT: Smooth, responsive hover effects. */
+     RESULTADO: Efectos hover suaves y responsivos. */
   --transition-fast: 200ms;
   
-  /* WHY: 300ms is the sweet spot for most UI animations - noticeable but not slow.
+  /* ¿POR QUÉ? 300ms es el punto óptimo para la mayoría de animaciones UI - notorio pero
+     no lento.
      
-     HOW: Used for dropdowns, modals, and medium-complexity animations.
+     ¿CÓMO FUNCIONA? Usado para dropdowns, modals y animaciones de complejidad media.
      
-     RESULT: Polished interactions that feel intentional. */
+     RESULTADO: Interacciones pulidas que se sienten intencionales. */
   --transition-normal: 300ms;
   
-  /* WHY: 500ms is for larger movements like sidebars sliding in or sections expanding.
+  /* ¿POR QUÉ? 500ms es para movimientos más grandes como sidebars deslizándose o secciones
+     expandiéndose.
      
-     HOW: Longer duration prevents disorientation when large UI elements move.
+     ¿CÓMO FUNCIONA? La duración más larga previene desorientación cuando elementos grandes
+     de UI se mueven.
      
-     RESULT: Smooth, easy-to-follow animations for big changes. */
+     RESULTADO: Animaciones suaves y fáciles de seguir para cambios grandes. */
   --transition-slow: 500ms;
   
-  /* WHY: Ease-in-out creates natural motion by starting slow, accelerating in the
-     middle, and slowing down at the end - mimicking real-world physics.
+  /* ¿POR QUÉ? Ease-in-out crea movimiento natural empezando lento, acelerando en el medio
+     y desacelerando al final - imitando física del mundo real.
      
-     HOW: It's a cubic-bezier curve defined by CSS. The curve controls acceleration.
+     ¿CÓMO FUNCIONA? Es una curva cubic-bezier definida por CSS. La curva controla la aceleración.
      
-     RESULT: Animations feel organic and professional, not robotic. */
+     ANALOGÍA FEYNMAN: Cuando un auto arranca desde un semáforo, no pasa de 0 a 60 km/h
+     instantáneamente. Acelera gradualmente (ease-in), va rápido en el medio, luego
+     desacelera cuando se acerca al siguiente semáforo (ease-out). Este "ease-in-out" hace
+     que las animaciones se sientan naturales como movimiento en el mundo real.
+     
+     RESULTADO: Las animaciones se sienten orgánicas y profesionales, no robóticas. */
   --easing-default: ease-in-out;
   
   /* ========================================================================
-     Z-INDEX LAYERS
+     CAPAS Z-INDEX
      
-     WHY: Multiple overlapping elements need a clear stacking order. Without a
-     system, z-index values become arbitrary (z-index: 9999!important).
+     ¿POR QUÉ? Múltiples elementos superpuestos necesitan un orden de apilamiento claro.
+     Sin un sistema, los valores z-index se vuelven arbitrarios (z-index: 9999!important).
      
-     HOW: We define standard layers: 0 (content), 10 (sidebars), 100 (modals), etc.
+     ¿CÓMO FUNCIONA? Definimos capas estándar: 0 (contenido), 10 (sidebars), 100 (modals), etc.
      
-     RESULT: Predictable layering without conflicts.
+     GLOSARIO: z-index controla qué elementos aparecen "encima" de otros cuando se superponen.
+     Piensa en z-index como capas de hojas de papel transparente apiladas - números más altos
+     están "más arriba" en la pila.
+     
+     RESULTADO: Apilamiento predecible sin conflictos.
      ======================================================================== */
-  --z-content: 1;      /* Normal page content */
-  --z-sidebar: 900;    /* Fixed sidebar */
-  --z-header: 1000;    /* Navigation header (highest priority) */
+  --z-content: 1;      /* Contenido normal de página */
+  --z-sidebar: 900;    /* Sidebar fijo */
+  --z-header: 1000;    /* Header de navegación (prioridad más alta) */
 }
-

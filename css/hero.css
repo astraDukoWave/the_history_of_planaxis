@@ -1,396 +1,455 @@
 /* ============================================================================
-   HERO.CSS - Full-Screen Hero Section
+   HERO.CSS - Sección Hero de Pantalla Completa
    
-   WHY: The hero section is the first thing visitors see. It needs to make an
-   immediate impact by filling the entire screen (100vh), displaying a stunning
-   background image, and presenting the core message clearly.
+   ¿POR QUÉ? La sección hero es lo primero que los visitantes ven. Necesita causar un
+   impacto inmediato al llenar toda la pantalla (100vh), mostrar una imagen de fondo
+   impresionante y presentar el mensaje central claramente.
    
-   HOW: We use viewport height units (vh), background-size: cover for the image,
-   and flexbox for content centering.
+   ¿CÓMO FUNCIONA? Usamos unidades de viewport height (vh), background-size: cover
+   para la imagen, y flexbox para centrar el contenido.
    
-   RESULT: A dramatic, immersive introduction that works on all screen sizes.
+   ANALOGÍA FEYNMAN: Es como el cartel de una película en el cine. Ocupa toda la
+   pantalla, te atrapa con una imagen impactante, y el título está perfectamente
+   centrado. No tienes que moverte o buscar - todo está ahí, inmediato y dramático.
+   
+   RESULTADO: Una introducción dramática e inmersiva que funciona en todos los tamaños
+   de pantalla.
    ============================================================================ */
 
-/* WHY: The hero section must fill the entire viewport height (100vh) to create
-   that "wow" moment when the page loads - no scrolling needed to see the key message.
+/* ¿POR QUÉ? La sección hero debe llenar toda la altura del viewport (100vh) para crear
+   ese momento "wow" cuando la página carga - no se necesita scroll para ver el mensaje clave.
    
-   HOW: height: 100vh means "100% of the viewport height". On a 1080px tall screen,
-   this is 1080px. On a phone (800px tall), it's 800px. Always fills the screen.
+   ¿CÓMO FUNCIONA? height: 100vh significa "100% de la altura del viewport". En una
+   pantalla de 1080px de alto, esto es 1080px. En un teléfono (800px de alto), son
+   800px. Siempre llena la pantalla.
    
-   RESULT: The hero section perfectly fills the visible area on any device, from
-   phones to 4K monitors. */
+   GLOSARIO: vh = "viewport height". 1vh = 1% de la altura de la ventana del navegador.
+   100vh = altura completa de la pantalla, sin importar el dispositivo.
+   
+   RESULTADO: La sección hero llena perfectamente el área visible en cualquier dispositivo,
+   desde teléfonos hasta monitores 4K. */
 .hero {
   height: 100vh;
-  /* WHY: position: relative establishes a positioning context for the absolutely
-     positioned header (which overlays this section) and for the dark overlay.
+  /* ¿POR QUÉ? position: relative establece un contexto de posicionamiento para el header
+     posicionado absolutamente (que se superpone a esta sección) y para el overlay oscuro.
      
-     HOW: Child elements with position: absolute will be positioned relative to
-     this hero section, not the entire page.
+     ¿CÓMO FUNCIONA? Los elementos hijos con position: absolute se posicionarán relativos
+     a esta sección hero, no a toda la página.
      
-     RESULT: The header and overlay stay properly aligned with the hero section. */
+     RESULTADO: El header y el overlay permanecen correctamente alineados con la
+     sección hero. */
   position: relative;
   
-  /* WHY: We use flexbox to center the hero content (title, tagline, button) both
-     horizontally and vertically in the middle of the screen.
+  /* ¿POR QUÉ? Usamos flexbox para centrar el contenido hero (título, tagline, botón)
+     tanto horizontal como verticalmente en el medio de la pantalla.
      
-     HOW: display: flex activates flexbox. justify-content: center centers along
-     the horizontal axis, and align-items: center does the same vertically.
+     ¿CÓMO FUNCIONA? display: flex activa flexbox. justify-content: center centra a lo
+     largo del eje horizontal, y align-items: center hace lo mismo verticalmente.
      
-     RESULT: Content is perfectly centered regardless of how much content there is. */
+     ANALOGÍA FEYNMAN: Es como tener imanes invisibles en los cuatro bordes de la
+     pantalla que empujan tu contenido exactamente al centro. No importa cuánto contenido
+     tengas - siempre queda perfectamente centrado.
+     
+     RESULTADO: El contenido está perfectamente centrado sin importar cuánto contenido haya. */
   display: flex;
   justify-content: center;
   align-items: center;
   flex-direction: column;
   
-  /* WHY: We add padding to prevent content from touching the screen edges on mobile,
-     especially in cases where notches or rounded corners might cut off content.
+  /* ¿POR QUÉ? Agregamos padding para prevenir que el contenido toque los bordes de la
+     pantalla en móvil, especialmente en casos donde notches o esquinas redondeadas
+     podrían cortar contenido.
      
-     HOW: Padding creates an inner cushion. Even if the content is centered, this
-     ensures text doesn't get too close to edges.
+     ¿CÓMO FUNCIONA? El padding crea un cojín interno. Incluso si el contenido está
+     centrado, esto asegura que el texto no se acerque demasiado a los bordes.
      
-     RESULT: Safe, readable content on all devices, including iPhone notches. */
+     RESULTADO: Contenido seguro y legible en todos los dispositivos, incluyendo notches
+     de iPhone. */
   padding: var(--spacing-md);
   
-  /* WHY: The background image creates the visual foundation of the hero section.
-     We set it on the hero itself so it can be easily changed in HTML or via JavaScript.
+  /* ¿POR QUÉ? La imagen de fondo crea la base visual de la sección hero. La establecemos
+     en el hero mismo para que pueda cambiarse fácilmente en HTML o vía JavaScript.
      
-     HOW: background properties control how the image is displayed, positioned, and sized.
+     ¿CÓMO FUNCIONA? Las propiedades background controlan cómo la imagen se muestra,
+     posiciona y dimensiona.
      
-     RESULT: A beautiful, scalable background that adapts to any screen size. */
+     RESULTADO: Un fondo hermoso y escalable que se adapta a cualquier tamaño de pantalla. */
   background-position: center center;
   background-repeat: no-repeat;
-  /* WHY: background-size: cover ensures the image always fills the entire hero
-     section, maintaining aspect ratio. The image scales up or down as needed.
+  /* ¿POR QUÉ? background-size: cover asegura que la imagen siempre llene toda la
+     sección hero, manteniendo aspect ratio. La imagen escala hacia arriba o abajo
+     según sea necesario.
      
-     HOW: "cover" means "scale the image to cover the entire container, even if
-     some parts are cropped". The alternative, "contain", would show the entire
-     image but might leave gaps.
+     ¿CÓMO FUNCIONA? "cover" significa "escala la imagen para cubrir todo el contenedor,
+     incluso si algunas partes se recortan". La alternativa, "contain", mostraría toda
+     la imagen pero podría dejar gaps.
      
-     RESULT: Edge-to-edge background with no gaps or white space, regardless of
-     image dimensions or screen size. */
+     ANALOGÍA FEYNMAN: Es como una foto que pones en un marco. "Cover" hace que la
+     foto siempre llene el marco completo, aunque tengas que recortar un poco los bordes.
+     "Contain" haría que toda la foto quepa, pero podrías tener barras blancas a los lados.
+     
+     RESULTADO: Fondo edge-to-edge sin gaps ni espacio blanco, sin importar las
+     dimensiones de la imagen o tamaño de pantalla. */
   background-size: cover;
   
-  /* WHY: We set a fallback background color in case the image fails to load or
-     while it's loading. This prevents a jarring white flash.
+  /* ¿POR QUÉ? Establecemos un color de fondo de respaldo en caso de que la imagen
+     falle al cargar o mientras está cargando. Esto previene un flash blanco desagradable.
      
-     HOW: background-color is only visible if the image is transparent or missing.
+     ¿CÓMO FUNCIONA? background-color solo es visible si la imagen es transparente o falta.
      
-     RESULT: Smooth loading experience with no visual gaps. */
+     RESULTADO: Experiencia de carga suave sin gaps visuales. */
   background-color: var(--color-bg-primary);
   
-  /* WHY: Overflow: hidden prevents any child elements from extending beyond the
-     hero section boundaries, keeping the layout clean.
+  /* ¿POR QUÉ? overflow: hidden previene que cualquier elemento hijo se extienda más
+     allá de los límites de la sección hero, manteniendo el layout limpio.
      
-     HOW: Any content that would extend past the edges is clipped and hidden.
+     ¿CÓMO FUNCIONA? Cualquier contenido que se extendería más allá de los bordes se
+     recorta y oculta.
      
-     RESULT: Clean edges with no unexpected overflow on smaller screens. */
+     RESULTADO: Bordes limpios sin overflow inesperado en pantallas más pequeñas. */
   overflow: hidden;
 }
 
-/* WHY: The hero content needs to be layered on top of the background image AND
-   above the dark overlay (which improves text readability).
+/* ¿POR QUÉ? El contenido hero necesita estar en capas encima de la imagen de fondo Y
+   sobre el overlay oscuro (que mejora la legibilidad del texto).
    
-   HOW: position: relative with z-index: 10 ensures the content stays above the
-   overlay (which has z-index: 5).
+   ¿CÓMO FUNCIONA? position: relative con z-index: 10 asegura que el contenido permanezca
+   sobre el overlay (que tiene z-index: 5).
    
-   RESULT: Text and buttons remain clearly visible and interactive. */
+   RESULTADO: Texto y botones permanecen claramente visibles e interactivos. */
 .hero-content {
   position: relative;
   z-index: 10;
   text-align: center;
   
-  /* WHY: PERFECT CENTERING - We use a combination of width constraints and
-     margin-inline: auto to ensure the content is perfectly centered horizontally
-     on all screen sizes.
+  /* ¿POR QUÉ? CENTRADO PERFECTO - Usamos una combinación de restricciones de width y
+     margin-inline: auto para asegurar que el contenido esté perfectamente centrado
+     horizontalmente en todos los tamaños de pantalla.
      
-     UX PRINCIPLE: Centered hero content creates visual balance and draws the eye
-     to the most important message on the page.
+     PRINCIPIO UX: El contenido hero centrado crea balance visual y dirige el ojo al
+     mensaje más importante de la página.
      
-     HOW: width: 90% ensures content doesn't touch edges on mobile. max-width: 800px
-     prevents it from becoming too wide on desktop (optimal reading width). 
-     margin-inline: auto is the CRITICAL property that centers the block horizontally.
+     ¿CÓMO FUNCIONA? width: 90% asegura que el contenido no toque los bordes en móvil.
+     max-width: 800px previene que se vuelva muy ancho en desktop (ancho de lectura
+     óptimo). margin-inline: auto es LA PROPIEDAD CRÍTICA que centra el bloque horizontalmente.
      
-     RESULT: Perfectly centered hero content with equal spacing on both sides,
-     creating visual harmony and balance. */
+     RESULTADO: Contenido hero perfectamente centrado con espaciado igual en ambos lados,
+     creando armonía visual y balance. */
   width: 90%;
   max-width: 800px;
-  margin-inline: auto; /* CRITICAL: Centers the content block horizontally */
+  margin-inline: auto; /* CRÍTICO: Centra el bloque de contenido horizontalmente */
 }
 
-/* WHY: A dark overlay between the background image and text ensures text remains
-   readable regardless of the image's colors. Light images can make white text
-   invisible without this.
+/* ¿POR QUÉ? Un overlay oscuro entre la imagen de fondo y el texto asegura que el texto
+   permanezca legible sin importar los colores de la imagen. Imágenes claras pueden
+   hacer texto blanco invisible sin esto.
    
-   HOW: We use a pseudo-element (::before) to create a semi-transparent black layer.
-   position: absolute with inset: 0 makes it cover the entire hero section.
+   ¿CÓMO FUNCIONA? Usamos un pseudo-elemento (::before) para crear una capa negra
+   semi-transparente. position: absolute con inset: 0 hace que cubra toda la sección hero.
    
-   RESULT: Text is always readable, even if the background image changes. */
+   ANALOGÍA FEYNMAN: Es como poner una cortina negra semi-transparente sobre una ventana.
+   Todavía puedes ver el paisaje afuera (la imagen de fondo), pero está más oscuro y
+   más fácil ver lo que escribes en el vidrio (el texto).
+   
+   RESULTADO: El texto es siempre legible, incluso si la imagen de fondo cambia. */
 .hero::before {
   content: '';
   position: absolute;
-  /* WHY: inset: 0 is shorthand for top: 0, right: 0, bottom: 0, left: 0. This makes
-     the overlay cover the entire hero section.
+  /* ¿POR QUÉ? inset: 0 es shorthand para top: 0, right: 0, bottom: 0, left: 0. Esto
+     hace que el overlay cubra toda la sección hero.
      
-     HOW: The pseudo-element stretches to all four edges of its positioned parent.
+     ¿CÓMO FUNCIONA? El pseudo-elemento se estira a los cuatro bordes de su padre posicionado.
      
-     RESULT: Full-coverage overlay with minimal code. */
+     GLOSARIO: inset = propiedad shorthand moderna para establecer top, right, bottom,
+     left de una vez. Es más limpio que escribir las 4 propiedades.
+     
+     RESULTADO: Overlay de cobertura completa con código mínimo. */
   inset: 0;
-  /* WHY: rgba(5, 10, 20, 0.6) creates a semi-transparent version of our primary
-     background color (60% opacity). This darkens the image while letting it show through.
+  /* ¿POR QUÉ? rgba(5, 10, 20, 0.6) crea una versión semi-transparente de nuestro color
+     de fondo primario (60% de opacidad). Esto oscurece la imagen mientras la deja
+     mostrarse.
      
-     HOW: RGBA adds an alpha channel (transparency) to RGB colors. 0.6 = 60% opaque.
+     ¿CÓMO FUNCIONA? RGBA agrega un canal alpha (transparencia) a colores RGB. 0.6 = 60%
+     opaco (40% transparente).
      
-     RESULT: The background image is visible but darkened, creating the perfect
-     contrast for white text. */
+     GLOSARIO: RGBA = Red, Green, Blue, Alpha. El cuarto valor (Alpha) controla
+     transparencia: 0 = totalmente transparente, 1 = totalmente opaco.
+     
+     RESULTADO: La imagen de fondo es visible pero oscurecida, creando el contraste
+     perfecto para texto blanco. */
   background-color: rgba(5, 10, 20, 0.6);
-  /* WHY: z-index: 5 places the overlay above the background image (z-index: 1)
-     but below the content (z-index: 10).
+  /* ¿POR QUÉ? z-index: 5 coloca el overlay sobre la imagen de fondo (z-index: 1)
+     pero debajo del contenido (z-index: 10).
      
-     HOW: CSS stacks elements by z-index value within the same stacking context.
+     ¿CÓMO FUNCIONA? CSS apila elementos por valor z-index dentro del mismo contexto
+     de apilamiento.
      
-     RESULT: Proper layering: background < overlay < content. */
+     RESULTADO: Capas apropiadas: fondo < overlay < contenido. */
   z-index: 5;
 }
 
-/* WHY: The hero title is the most important text on the page. It must be large,
-   bold, and immediately grab attention.
+/* ¿POR QUÉ? El título hero es el texto más importante de la página. Debe ser grande,
+   bold y atrapar atención inmediatamente.
    
-   HOW: We use our largest font size (48px), bold weight, and generous line-height
-   for readability.
+   ¿CÓMO FUNCIONA? Usamos nuestro tamaño de fuente más grande (48px), peso bold y
+   line-height generoso para legibilidad.
    
-   RESULT: A commanding title that dominates the hero section. */
+   RESULTADO: Un título dominante que domina la sección hero. */
 .hero-title {
   font-size: var(--font-size-2xl);
   font-weight: var(--font-weight-bold);
-  /* WHY: line-height: 1.2 (120% of font size) keeps the title compact while
-     maintaining readability. Titles can use tighter line-height than body text.
+  /* ¿POR QUÉ? line-height: 1.2 (120% del tamaño de fuente) mantiene el título compacto
+     mientras mantiene legibilidad. Los títulos pueden usar line-height más ajustado
+     que el texto del cuerpo.
      
-     HOW: A unitless value scales proportionally with font-size changes.
+     ¿CÓMO FUNCIONA? Un valor sin unidades escala proporcionalmente con cambios de font-size.
      
-     RESULT: Visually powerful title with optimal spacing. */
+     RESULTADO: Título visualmente poderoso con espaciado óptimo. */
   line-height: 1.2;
   color: var(--color-text-main);
-  /* WHY: Margin-bottom creates space between the title and tagline, separating
-     the two messages visually.
+  /* ¿POR QUÉ? Margin-bottom crea espacio entre el título y el tagline, separando los
+     dos mensajes visualmente.
      
-     HOW: --spacing-md gives us 24px of space.
+     ¿CÓMO FUNCIONA? --spacing-md nos da 24px de espacio.
      
-     RESULT: Clear visual hierarchy between title and supporting text. */
+     RESULTADO: Jerarquía visual clara entre título y texto de apoyo. */
   margin-bottom: var(--spacing-md);
   
-  /* WHY: Text-transform: uppercase makes the title feel more authoritative and
-     impactful, perfect for an event like Tomorrowland.
+  /* ¿POR QUÉ? text-transform: uppercase hace que el título se sienta más autoritativo
+     e impactante, perfecto para un evento como Tomorrowland.
      
-     HOW: CSS automatically converts lowercase letters to capitals.
+     ¿CÓMO FUNCIONA? CSS automáticamente convierte letras minúsculas a mayúsculas.
      
-     RESULT: "The Story of Planaxis" becomes "THE STORY OF PLANAXIS" - more dramatic. */
+     RESULTADO: "La Historia de Planaxis" se convierte en "LA HISTORIA DE PLANAXIS" - más dramático. */
   text-transform: uppercase;
   
-  /* WHY: Letter-spacing adds space between letters, creating an elegant, luxurious
-     feel. It's particularly effective with uppercase text.
+  /* ¿POR QUÉ? letter-spacing agrega espacio entre letras, creando una sensación
+     elegante y lujosa. Es particularmente efectivo con texto en mayúsculas.
      
-     HOW: 0.05em = 5% of the font size. At 48px, this adds ~2.4px between letters.
+     ¿CÓMO FUNCIONA? 0.05em = 5% del tamaño de fuente. A 48px, esto agrega ~2.4px entre letras.
      
-     RESULT: The title feels premium and is easier to read at large sizes. */
+     ANALOGÍA FEYNMAN: Es como espaciar las letras de un letrero de neón. No están
+     pegadas - tienen un poco de aire entre ellas, haciéndolas más elegantes y fáciles
+     de leer de un vistazo.
+     
+     RESULTADO: El título se siente premium y es más fácil de leer en tamaños grandes. */
   letter-spacing: 0.05em;
   
-  /* WHY: A subtle text shadow adds depth and improves readability if the overlay
-     isn't dark enough in certain areas.
+  /* ¿POR QUÉ? Una sombra de texto sutil agrega profundidad y mejora legibilidad si el
+     overlay no es suficientemente oscuro en ciertas áreas.
      
-     HOW: We create a soft black shadow (rgba) that's offset 2px down and 4px to
-     the right with a 10px blur.
+     ¿CÓMO FUNCIONA? Creamos una sombra negra suave (rgba) que está desplazada 2px
+     abajo y 4px a la derecha con un blur de 10px.
      
-     RESULT: Text "pops" off the background, ensuring readability. */
+     RESULTADO: El texto "salta" del fondo, asegurando legibilidad. */
   text-shadow: 2px 4px 10px rgba(0, 0, 0, 0.7);
 }
 
-/* WHY: The tagline supports the main title with additional context. It should be
-   visible but less prominent than the title.
+/* ¿POR QUÉ? El tagline apoya al título principal con contexto adicional. Debe ser
+   visible pero menos prominente que el título.
    
-   HOW: We use a smaller font size (18px vs 48px) and medium weight instead of bold.
+   ¿CÓMO FUNCIONA? Usamos un tamaño de fuente más pequeño (18px vs 48px) y peso medium
+   en lugar de bold.
    
-   RESULT: Clear hierarchy - the tagline supports but doesn't compete with the title. */
+   RESULTADO: Jerarquía clara - el tagline apoya pero no compite con el título. */
 .hero-tagline {
   font-size: var(--font-size-md);
   font-weight: var(--font-weight-medium);
   color: var(--color-text-muted);
-  /* WHY: Margin-bottom creates space before the CTA button, giving the tagline
-     breathing room and drawing attention to the button.
+  /* ¿POR QUÉ? margin-bottom crea espacio antes del botón CTA, dando al tagline
+     espacio de respiración y dirigiendo atención al botón.
      
-     HOW: --spacing-xl gives us 48px of space, creating significant visual separation.
+     ¿CÓMO FUNCIONA? --spacing-xl nos da 48px de espacio, creando separación visual significativa.
      
-     RESULT: The button feels distinct and important, not cramped next to the text. */
+     RESULTADO: El botón se siente distinto e importante, no apretado junto al texto. */
   margin-bottom: var(--spacing-xl);
   
-  /* WHY: line-height: 1.6 is more generous than the title's 1.2 because taglines
-     are longer and need more breathing room for readability.
+  /* ¿POR QUÉ? line-height: 1.6 es más generoso que el 1.2 del título porque los
+     taglines son más largos y necesitan más espacio de respiración para legibilidad.
      
-     HOW: Unitless values scale with font-size automatically.
+     ¿CÓMO FUNCIONA? Los valores sin unidades escalan con font-size automáticamente.
      
-     RESULT: Easy-to-read supporting text that complements the title. */
+     RESULTADO: Texto de apoyo fácil de leer que complementa el título. */
   line-height: 1.6;
   
-  /* WHY: Max-width: 600px constrains the tagline to an even narrower width than
-     the overall hero-content (800px), creating visual variety.
+  /* ¿POR QUÉ? max-width: 600px restringe el tagline a un ancho incluso más estrecho
+     que el hero-content general (800px), creando variedad visual.
      
-     HOW: The tagline won't exceed 600px even if the hero-content container is wider.
+     ¿CÓMO FUNCIONA? El tagline no excederá 600px incluso si el contenedor hero-content
+     es más ancho.
      
-     RESULT: Optimal line length for comfortable reading (50-75 characters). */
+     RESULTADO: Longitud de línea óptima para lectura cómoda (50-75 caracteres). */
   max-width: 600px;
   margin-left: auto;
   margin-right: auto;
 }
 
-/* WHY: Call-to-action (CTA) buttons are critical conversion points. They must be
-   immediately recognizable, attractive, and clearly interactive.
+/* ¿POR QUÉ? Los botones de call-to-action (CTA) son puntos críticos de conversión.
+   Deben ser inmediatamente reconocibles, atractivos y claramente interactivos.
    
-   HOW: We use bold colors, generous padding, and hover effects to make the button
-   irresistible to click.
+   ¿CÓMO FUNCIONA? Usamos colores audaces, padding generoso y efectos hover para hacer
+   el botón irresistible de hacer clic.
    
-   RESULT: A prominent, professional button that drives user action. */
+   RESULTADO: Un botón prominente y profesional que impulsa acción del usuario. */
 .hero-cta {
-  /* WHY: display: inline-block allows the button to have padding and dimensions
-     while still centering with the text around it.
+  /* ¿POR QUÉ? display: inline-block permite que el botón tenga padding y dimensiones
+     mientras aún se centra con el texto a su alrededor.
      
-     HOW: Unlike block elements (full width) or inline elements (no padding), inline-block
-     gives us the best of both worlds.
+     ¿CÓMO FUNCIONA? A diferencia de elementos block (ancho completo) o inline (sin padding),
+     inline-block nos da lo mejor de ambos mundos.
      
-     RESULT: A button that's sized to its content but can have padding and margins. */
+     RESULTADO: Un botón que se dimensiona a su contenido pero puede tener padding y márgenes. */
   display: inline-block;
   
-  /* WHY: Generous padding (16px vertical, 48px horizontal) creates a large click
-     target and makes the button feel substantial and important.
+  /* ¿POR QUÉ? Padding generoso (16px vertical, 48px horizontal) crea un target de clic
+     grande y hace que el botón se sienta sustancial e importante.
      
-     HOW: Larger horizontal padding creates a wide, elegant button shape.
+     ¿CÓMO FUNCIONA? Padding horizontal más grande crea una forma de botón ancha y elegante.
      
-     RESULT: Easy to click on desktop, easy to tap on mobile, and visually appealing. */
+     RESULTADO: Fácil de hacer clic en desktop, fácil de tap en móvil, y visualmente atractivo. */
   padding: var(--spacing-md) var(--spacing-xl);
   
-  /* WHY: The gold background immediately draws attention as the primary accent
-     color. Against the dark theme, it pops dramatically.
+  /* ¿POR QUÉ? El fondo dorado inmediatamente atrae atención como el color de acento
+     primario. Contra el tema oscuro, destaca dramáticamente.
      
-     HOW: We use our accent gold variable for consistency across the design.
+     ¿CÓMO FUNCIONA? Usamos nuestra variable gold de acento para consistencia a través
+     del diseño.
      
-     RESULT: A button that's impossible to miss and feels premium. */
+     RESULTADO: Un botón que es imposible perder y se siente premium. */
   background-color: var(--color-accent-gold);
   
-  /* WHY: Dark text on the gold background ensures high contrast and readability.
+  /* ¿POR QUÉ? Texto oscuro en el fondo dorado asegura alto contraste y legibilidad.
      
-     HOW: Our primary background color (nearly black) provides excellent contrast
-     against gold (contrast ratio ~10:1).
+     ¿CÓMO FUNCIONA? Nuestro color de fondo primario (casi negro) proporciona excelente
+     contraste contra dorado (ratio de contraste ~10:1).
      
-     RESULT: Text is effortlessly readable on the button. */
+     RESULTADO: El texto es fácilmente legible en el botón. */
   color: var(--color-bg-primary);
   
   font-size: var(--font-size-md);
   font-weight: var(--font-weight-bold);
   
-  /* WHY: Uppercase text makes the CTA feel more authoritative and action-oriented.
-     "Discover the Story" becomes "DISCOVER THE STORY" - more commanding.
+  /* ¿POR QUÉ? Texto en mayúsculas hace que el CTA se sienta más autoritativo y
+     orientado a la acción. "Discover the Story" se convierte en "DISCOVER THE STORY"
+     - más imperativo.
      
-     HOW: CSS text-transform handles the conversion automatically.
+     ¿CÓMO FUNCIONA? CSS text-transform maneja la conversión automáticamente.
      
-     RESULT: A CTA that feels strong and drives action. */
+     RESULTADO: Un CTA que se siente fuerte e impulsa acción. */
   text-transform: uppercase;
   
-  /* WHY: Letter-spacing improves legibility of uppercase text and adds a touch
-     of elegance.
+  /* ¿POR QUÉ? letter-spacing mejora legibilidad de texto en mayúsculas y agrega un
+     toque de elegancia.
      
-     HOW: 0.05em adds ~0.9px between letters at 18px font size.
+     ¿CÓMO FUNCIONA? 0.05em agrega ~0.9px entre letras a tamaño de fuente 18px.
      
-     RESULT: Clear, readable button text with a premium feel. */
+     RESULTADO: Texto de botón claro y legible con una sensación premium. */
   letter-spacing: 0.05em;
   
-  /* WHY: border-radius: 4px softens the button corners slightly, creating a modern
-     look. Not too rounded (which would look cartoonish), just subtle.
+  /* ¿POR QUÉ? border-radius: 4px suaviza las esquinas del botón ligeramente, creando
+     un look moderno. No muy redondeado (que se vería caricaturesco), solo sutil.
      
-     HOW: 4px rounds the corners just enough to soften the hard edges.
+     ¿CÓMO FUNCIONA? 4px redondea las esquinas justo lo suficiente para suavizar los
+     bordes duros.
      
-     RESULT: A contemporary button that feels polished and professional. */
+     RESULTADO: Un botón contemporáneo que se siente pulido y profesional. */
   border-radius: 4px;
   
   border: none;
   cursor: pointer;
   
-  /* WHY: Transitions make hover effects smooth and polished instead of jarring.
-     We transition multiple properties for a comprehensive hover animation.
+  /* ¿POR QUÉ? Las transiciones hacen que los efectos hover sean suaves y pulidos en
+     lugar de bruscos. Hacemos transición a múltiples propiedades para una animación
+     hover comprehensiva.
      
-     HOW: Each property animates over 300ms with ease-in-out timing (starts slow,
-     speeds up, slows down at the end).
+     ¿CÓMO FUNCIONA? Cada propiedad se anima sobre 300ms con timing ease-in-out
+     (empieza lento, acelera, desacelera al final).
      
-     RESULT: Smooth, professional hover effects that feel premium. */
+     RESULTADO: Efectos hover suaves y profesionales que se sienten premium. */
   transition: background-color var(--transition-normal) var(--easing-default),
               transform var(--transition-normal) var(--easing-default),
               box-shadow var(--transition-normal) var(--easing-default);
 }
 
-/* WHY: Hover effects provide immediate visual feedback that the button is interactive
-   and something will happen when clicked.
+/* ¿POR QUÉ? Los efectos hover proporcionan retroalimentación visual inmediata de que
+   el botón es interactivo y algo sucederá cuando se haga clic.
    
-   HOW: We change the background to cyan (our bioluminescent accent), slightly
-   enlarge the button (scale: 1.05 = 5% larger), and add a glowing shadow.
+   ¿CÓMO FUNCIONA? Cambiamos el fondo a cyan (nuestro acento bioluminiscente),
+   agrandamos ligeramente el botón (scale: 1.05 = 5% más grande) y agregamos una
+   sombra brillante.
    
-   RESULT: The button appears to "light up" and lift off the page on hover, creating
-   an engaging, tactile interaction. */
+   ANALOGÍA FEYNMAN: Es como cuando tocas una medusa bioluminiscente en el océano
+   oscuro - se "ilumina" en respuesta a tu toque. El botón se ilumina con cyan cuando
+   tu cursor lo toca, y "crece" ligeramente como si estuviera respondiendo a ti.
+   
+   RESULTADO: El botón parece "iluminarse" y levantarse de la página en hover, creando
+   una interacción atractiva y táctil. */
 .hero-cta:hover {
   background-color: var(--color-accent-cyan);
-  /* WHY: transform: scale(1.05) makes the button grow by 5%, creating a subtle
-     zoom effect that draws attention.
+  /* ¿POR QUÉ? transform: scale(1.05) hace que el botón crezca 5%, creando un efecto
+     de zoom sutil que atrae atención.
      
-     HOW: Scale transforms the element proportionally. 1.05 means 105% of original size.
+     ¿CÓMO FUNCIONA? Scale transforma el elemento proporcionalmente. 1.05 significa
+     105% del tamaño original.
      
-     RESULT: The button feels responsive and "comes alive" when you hover over it. */
+     RESULTADO: El botón se siente responsivo y "cobra vida" cuando haces hover sobre él. */
   transform: scale(1.05);
   
-  /* WHY: A glowing box-shadow mimics bioluminescence (glowing sea creatures in the
-     deep ocean), reinforcing the Planaxis theme.
+  /* ¿POR QUÉ? Una box-shadow brillante imita bioluminiscencia (criaturas marinas
+     brillantes en el océano profundo), reforzando el tema Planaxis.
      
-     HOW: We create a cyan-colored shadow with 0 offset (centered), 20px blur, and
-     0.6 opacity for a soft glow.
+     ¿CÓMO FUNCIONA? Creamos una sombra color cyan con 0 offset (centrada), blur de
+     20px y 0.6 de opacidad para un brillo suave.
      
-     RESULT: The button appears to glow like a bioluminescent creature, creating
-     a magical, underwater feel. */
+     RESULTADO: El botón parece brillar como una criatura bioluminiscente, creando una
+     sensación mágica y submarina. */
   box-shadow: 0 0 20px rgba(0, 188, 212, 0.6);
 }
 
-/* WHY: The :active pseudo-class captures the moment when the button is being clicked,
-   providing tactile feedback.
+/* ¿POR QUÉ? La pseudo-clase :active captura el momento cuando el botón está siendo
+   clickeado, proporcionando retroalimentación táctil.
    
-   HOW: We slightly shrink the button (scale: 0.98) to create a "pressed" effect.
+   ¿CÓMO FUNCIONA? Encogemos ligeramente el botón (scale: 0.98) para crear un efecto
+   "presionado".
    
-   RESULT: The button feels like a physical button being pushed, enhancing the
-   interaction feel. */
+   RESULTADO: El botón se siente como un botón físico siendo empujado, mejorando la
+   sensación de interacción. */
 .hero-cta:active {
   transform: scale(0.98);
 }
 
-/* WHY: A scroll indicator tells users there's more content below. Without it, users
-   might think the hero section IS the entire page.
+/* ¿POR QUÉ? Un indicador de scroll le dice a los usuarios que hay más contenido abajo.
+   Sin esto, los usuarios podrían pensar que la sección hero ES toda la página.
    
-   HOW: We position it at the bottom center of the hero section and animate it to
-   draw attention.
+   ¿CÓMO FUNCIONA? Lo posicionamos en el centro inferior de la sección hero y lo
+   animamos para llamar atención.
    
-   RESULT: Users are encouraged to scroll down and explore more content. */
+   RESULTADO: Los usuarios son animados a hacer scroll hacia abajo y explorar más contenido. */
 .scroll-indicator {
   position: absolute;
   bottom: var(--spacing-lg);
   left: 50%;
-  /* WHY: transform: translateX(-50%) centers the indicator horizontally. Setting
-     left: 50% positions its left edge at the center, then translateX shifts it
-     back by half its own width.
+  /* ¿POR QUÉ? transform: translateX(-50%) centra el indicador horizontalmente. Establecer
+     left: 50% posiciona su borde izquierdo en el centro, luego translateX lo mueve
+     hacia atrás por la mitad de su propio ancho.
      
-     HOW: This is the standard CSS centering trick for absolutely positioned elements.
+     ¿CÓMO FUNCIONA? Este es el truco CSS estándar de centrado para elementos posicionados
+     absolutamente.
      
-     RESULT: The indicator is perfectly centered horizontally. */
+     ANALOGÍA FEYNMAN: Es como balancear un columpio. Si lo cuelgas del medio exacto,
+     está balanceado. Left: 50% pone el gancho del columpio en el centro. TranslateX(-50%)
+     ajusta para que el CENTRO del asiento del columpio esté en el centro, no solo el gancho.
+     
+     RESULTADO: El indicador está perfectamente centrado horizontalmente. */
   transform: translateX(-50%);
   z-index: 10;
   
-  /* WHY: We animate the indicator with a subtle bounce to draw the eye downward,
-     suggesting scrolling action.
+  /* ¿POR QUÉ? Animamos el indicador con un rebote sutil para dirigir el ojo hacia
+     abajo, sugiriendo acción de scrolling.
      
-     HOW: The animation is defined below and runs infinitely.
+     ¿CÓMO FUNCIONA? La animación se define abajo y corre infinitamente.
      
-     RESULT: A gentle, eye-catching motion that encourages scrolling. */
+     RESULTADO: Un movimiento suave y llamativo que anima a hacer scroll. */
   animation: bounce 2s infinite;
   
   color: var(--color-text-main);
@@ -398,14 +457,18 @@
   opacity: 0.8;
 }
 
-/* WHY: The @keyframes rule defines the bounce animation for the scroll indicator.
-   Animations require keyframes to specify how properties change over time.
+/* ¿POR QUÉ? La regla @keyframes define la animación de rebote para el indicador de
+   scroll. Las animaciones requieren keyframes para especificar cómo las propiedades
+   cambian con el tiempo.
    
-   HOW: We define three states: 0% (start), 50% (middle), and 100% (end). The
-   indicator moves down 10px at the midpoint, creating a bounce effect.
+   ¿CÓMO FUNCIONA? Definimos tres estados: 0% (inicio), 50% (medio) y 100% (fin). El
+   indicador se mueve 10px hacia abajo en el punto medio, creando un efecto de rebote.
    
-   RESULT: A looping animation that moves the indicator down and back up, suggesting
-   downward scrolling action. */
+   GLOSARIO: @keyframes = regla CSS que define una animación paso a paso. Especificas
+   qué propiedades cambiar en qué puntos del tiempo (0%, 25%, 50%, 100%, etc.).
+   
+   RESULTADO: Una animación en loop que mueve el indicador hacia abajo y de vuelta,
+   sugiriendo acción de scroll hacia abajo. */
 @keyframes bounce {
   0%, 100% {
     transform: translateX(-50%) translateY(0);
@@ -414,4 +477,3 @@
     transform: translateX(-50%) translateY(10px);
   }
 }
-

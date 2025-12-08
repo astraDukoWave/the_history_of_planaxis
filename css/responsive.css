@@ -1,85 +1,98 @@
 /* ============================================================================
-   RESPONSIVE.CSS - Mobile-First Media Queries
+   RESPONSIVE.CSS - Media Queries Mobile-First
    
-   WHY: Websites must work on devices of all sizes - from 320px phones to 4K
-   monitors. A mobile-first approach means we style for phones first, then
-   progressively enhance for larger screens.
+   ¿POR QUÉ? Los sitios web deben funcionar en dispositivos de todos los tamaños -
+   desde teléfonos de 320px hasta monitores 4K. Un enfoque mobile-first significa que
+   estilizamos para teléfonos primero, luego mejoramos progresivamente para pantallas
+   más grandes.
    
-   HOW: Media queries detect viewport width and apply different styles at
-   specific breakpoints (768px for tablets, 1024px for desktops).
+   ¿CÓMO FUNCIONA? Las media queries detectan ancho de viewport y aplican diferentes
+   estilos en breakpoints específicos (768px para tablets, 1024px para escritorios).
    
-   RESULT: A fluid, adaptive design that works beautifully on all devices.
+   ANALOGÍA FEYNMAN: Es como diseñar ropa en diferentes tallas. Primero diseñas para
+   la talla más común (móvil), luego haces versiones más grandes (tablet, desktop)
+   que aprovechan el espacio extra. Cada talla tiene ajustes pero el diseño base es
+   el mismo.
+   
+   RESULTADO: Un diseño fluido y adaptativo que funciona hermosamente en todos los dispositivos.
    ============================================================================ */
 
 /* ============================================================================
-   BASE (MOBILE) STYLES - Default for screens < 768px
+   ESTILOS BASE (MÓVIL) - Predeterminado para pantallas < 768px
    
-   WHY: Most web traffic now comes from mobile devices. By designing for mobile
-   first, we ensure the core experience works for the majority of users.
+   ¿POR QUÉ? La mayoría del tráfico web ahora viene de dispositivos móviles. Al diseñar
+   para móvil primero, aseguramos que la experiencia central funcione para la mayoría
+   de usuarios.
    
-   HOW: These styles apply by default and are overridden by media queries for
-   larger screens.
+   ¿CÓMO FUNCIONA? Estos estilos aplican por defecto y son sobrescritos por media
+   queries para pantallas más grandes.
    
-   RESULT: Mobile devices get optimized styles without downloading unnecessary
-   desktop CSS.
+   RESULTADO: Dispositivos móviles obtienen estilos optimizados sin descargar CSS
+   innecesario de desktop.
    ============================================================================ */
 
-/* WHY: On mobile, the sidebar takes up too much screen space to be permanently
-   visible. We hide it by default and show it via a toggle button.
+/* ¿POR QUÉ? En móvil, el sidebar ocupa demasiado espacio de pantalla para estar
+   permanentemente visible. Lo ocultamos por defecto y lo mostramos via un botón toggle.
    
-   HOW: transform: translateX(100%) moves it completely off-screen to the right.
+   ¿CÓMO FUNCIONA? transform: translateX(100%) lo mueve completamente fuera de pantalla
+   hacia la derecha.
    
-   RESULT: More screen space for content on mobile devices. */
+   ANALOGÍA FEYNMAN: Es como tener un cajón que se desliza fuera de vista cuando no
+   lo necesitas. En móvil, el espacio de pantalla es precioso - el cajón (sidebar)
+   se desliza fuera del camino hasta que explícitamente lo abres.
+   
+   RESULTADO: Más espacio de pantalla para contenido en dispositivos móviles. */
 .utility-sidebar {
   transform: translateX(100%) translateY(-50%);
   opacity: 0;
   pointer-events: none;
   
-  /* WHY: On mobile, we want the sidebar to overlay content (not push it aside)
-     when opened, so we adjust its positioning.
+  /* ¿POR QUÉ? En móvil, queremos que el sidebar superponga contenido (no lo empuje
+     a un lado) cuando se abra, así que ajustamos su posicionamiento.
      
-     HOW: We maintain the fixed positioning but prepare it for toggle interaction.
+     ¿CÓMO FUNCIONA? Mantenemos el posicionamiento fixed pero lo preparamos para
+     interacción toggle.
      
-     RESULT: When toggled, the sidebar slides in from the right as an overlay. */
+     RESULTADO: Cuando se hace toggle, el sidebar se desliza desde la derecha como overlay. */
 }
 
-/* WHY: The sidebar needs to be accessible on mobile, so we show a toggle button
-   that reveals/hides it.
+/* ¿POR QUÉ? El sidebar necesita ser accesible en móvil, así que mostramos un botón
+   toggle que lo revela/oculta.
    
-   HOW: Changing display from none to flex makes the button visible on mobile.
+   ¿CÓMO FUNCIONA? Cambiar display de none a flex hace el botón visible en móvil.
    
-   RESULT: Mobile users can access the sidebar via an intuitive toggle button. */
+   RESULTADO: Usuarios móviles pueden acceder al sidebar via un botón toggle intuitivo. */
 .sidebar-toggle {
   display: flex;
 }
 
-/* WHY: When users toggle the sidebar open on mobile (by adding .show class via
-   JavaScript), we slide it back onto the screen.
+/* ¿POR QUÉ? Cuando los usuarios hacen toggle del sidebar abierto en móvil (agregando
+   clase .show via JavaScript), lo deslizamos de vuelta a pantalla.
    
-   HOW: transform: translateX(0) brings it back to its original position, and
-   pointer-events: auto re-enables interaction.
+   ¿CÓMO FUNCIONA? transform: translateX(0) lo trae de vuelta a su posición original,
+   y pointer-events: auto re-habilita interacción.
    
-   RESULT: Smooth slide-in animation when the sidebar is opened. */
+   RESULTADO: Animación suave de slide-in cuando el sidebar se abre. */
 .utility-sidebar.show {
   transform: translateX(0) translateY(-50%);
   opacity: 1;
   pointer-events: auto;
 }
 
-/* WHY: On very small screens (phones), horizontal navigation doesn't fit. We need
-   to hide the main navigation and show a hamburger menu instead.
+/* ¿POR QUÉ? En pantallas muy pequeñas (teléfonos), la navegación horizontal no cabe.
+   Necesitamos ocultar la navegación principal y mostrar un menú hamburguesa en su lugar.
    
-   HOW: display: none removes the nav links, and we'll show a hamburger icon.
+   ¿CÓMO FUNCIONA? display: none remueve los enlaces nav, y mostraremos un ícono hamburguesa.
    
-   RESULT: Clean mobile interface without cramped, overlapping navigation. */
+   RESULTADO: Interfaz móvil limpia sin navegación apretada y superpuesta. */
 .nav-links {
-  /* WHY: On mobile, we transform the horizontal navigation into a vertical dropdown
-     menu that slides down from the header.
+  /* ¿POR QUÉ? En móvil, transformamos la navegación horizontal en un menú dropdown
+     vertical que se desliza desde el header.
      
-     HOW: position: absolute positions it below the header, and we transform it
-     off-screen until toggled.
+     ¿CÓMO FUNCIONA? position: absolute lo posiciona debajo del header, y lo transformamos
+     fuera de pantalla hasta que se haga toggle.
      
-     RESULT: Mobile-optimized dropdown navigation. */
+     RESULTADO: Navegación dropdown optimizada para móvil. */
   position: absolute;
   top: 100%;
   left: 0;
@@ -89,52 +102,54 @@
   padding: var(--spacing-md);
   gap: 0;
   
-  /* WHY: Initially hidden off-screen with transform: translateY(-100%), the menu
-     will slide down when opened.
+  /* ¿POR QUÉ? Inicialmente oculto fuera de pantalla con transform: translateY(-100%),
+     el menú se deslizará hacia abajo cuando se abra.
      
-     HOW: Negative translateY moves it up by 100% of its own height (completely hidden).
+     ¿CÓMO FUNCIONA? TranslateY negativo lo mueve hacia arriba por 100% de su propia
+     altura (completamente oculto).
      
-     RESULT: Hidden until the hamburger menu is clicked. */
+     RESULTADO: Oculto hasta que se haga clic en el menú hamburguesa. */
   transform: translateY(-100%);
   opacity: 0;
   pointer-events: none;
   transition: transform var(--transition-normal) var(--easing-default),
               opacity var(--transition-normal) var(--easing-default);
   
-  /* WHY: box-shadow creates depth, making the dropdown feel like it's layered
-     above the content.
+  /* ¿POR QUÉ? box-shadow crea profundidad, haciendo que el dropdown se sienta como
+     si estuviera en capas sobre el contenido.
      
-     HOW: 0 4px 12px creates a soft shadow below the menu.
+     ¿CÓMO FUNCIONA? 0 4px 12px crea una sombra suave debajo del menú.
      
-     RESULT: Clear visual separation from content below. */
+     RESULTADO: Separación visual clara del contenido debajo. */
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
 }
 
-/* WHY: When the mobile menu is opened (via .show class from JavaScript), we slide
-   it down into view.
+/* ¿POR QUÉ? Cuando el menú móvil se abre (via clase .show de JavaScript), lo deslizamos
+   a vista.
    
-   HOW: transform: translateY(0) returns it to its natural position, making it visible.
+   ¿CÓMO FUNCIONA? transform: translateY(0) lo retorna a su posición natural, haciéndolo visible.
    
-   RESULT: Smooth dropdown animation when the hamburger menu is clicked. */
+   RESULTADO: Animación dropdown suave cuando se hace clic en el menú hamburguesa. */
 .nav-links.show {
   transform: translateY(0);
   opacity: 1;
   pointer-events: auto;
 }
 
-/* WHY: Each link in the mobile menu needs full-width touch targets with clear
-   visual separation.
+/* ¿POR QUÉ? Cada enlace en el menú móvil necesita targets táctiles de ancho completo
+   con separación visual clara.
    
-   HOW: display: block makes each link full-width, and we add borders between them.
+   ¿CÓMO FUNCIONA? display: block hace cada enlace de ancho completo, y agregamos
+   bordes entre ellos.
    
-   RESULT: Easy-to-tap navigation links optimized for touch screens. */
+   RESULTADO: Enlaces de navegación fáciles de tap optimizados para pantallas táctiles. */
 .nav-links li {
-  /* WHY: border-bottom creates visual separation between menu items, making them
-     easier to distinguish.
+  /* ¿POR QUÉ? border-bottom crea separación visual entre ítems del menú, haciéndolos
+     más fáciles de distinguir.
      
-     HOW: 1px solid border with subtle rgba color.
+     ¿CÓMO FUNCIONA? Borde sólido de 1px con color rgba sutil.
      
-     RESULT: Clear menu structure with defined items. */
+     RESULTADO: Estructura de menú clara con ítems definidos. */
   border-bottom: 1px solid rgba(255, 255, 255, 0.1);
 }
 
@@ -142,85 +157,85 @@
   border-bottom: none;
 }
 
-/* WHY: Mobile links need larger padding for comfortable finger tapping. Apple's
-   HIG recommends minimum 44x44px touch targets.
+/* ¿POR QUÉ? Los enlaces móviles necesitan padding más grande para tapping cómodo
+   con los dedos. El HIG de Apple recomienda targets táctiles mínimos de 44x44px.
    
-   HOW: We increase vertical padding to create taller, easier-to-tap links.
+   ¿CÓMO FUNCIONA? Aumentamos padding vertical para crear enlaces más altos y fáciles de tap.
    
-   RESULT: Mobile-optimized navigation that's easy to use with thumbs. */
+   RESULTADO: Navegación optimizada para móvil que es fácil de usar con pulgares. */
 .nav-links li a {
   display: block;
   padding: var(--spacing-md) var(--spacing-sm);
   text-align: left;
 }
 
-/* WHY: The hamburger menu button needs to be visible on mobile to open the nav.
+/* ¿POR QUÉ? El botón de menú hamburguesa necesita ser visible en móvil para abrir la nav.
    
-   HOW: Changing display from none to flex makes it appear.
+   ¿CÓMO FUNCIONA? Cambiar display de none a flex lo hace aparecer.
    
-   RESULT: Clear, recognizable menu button on mobile devices. */
+   RESULTADO: Botón de menú claro y reconocible en dispositivos móviles. */
 .mobile-menu-toggle {
   display: flex;
 }
 
-/* WHY: On mobile, the hero section can be slightly shorter (90vh instead of 100vh)
-   to hint that there's content below, encouraging scrolling.
+/* ¿POR QUÉ? En móvil, la sección hero puede ser ligeramente más corta (90vh en lugar
+   de 100vh) para insinuar que hay contenido debajo, animando scrolling.
    
-   HOW: Reducing height from 100vh to 90vh leaves 10% of the screen for content peek.
+   ¿CÓMO FUNCIONA? Reducir altura de 100vh a 90vh deja 10% de la pantalla para peek de contenido.
    
-   RESULT: Users are more likely to scroll down and explore. */
+   RESULTADO: Los usuarios son más propensos a hacer scroll hacia abajo y explorar. */
 .hero {
   height: 90vh;
 }
 
-/* WHY: Hero title needs to be smaller on mobile to prevent line breaks and
-   maintain readability on narrow screens.
+/* ¿POR QUÉ? El título hero necesita ser más pequeño en móvil para prevenir saltos de
+   línea y mantener legibilidad en pantallas estrechas.
    
-   HOW: We reduce from 48px (3rem) to 32px (2rem).
+   ¿CÓMO FUNCIONA? Reducimos de 48px (3rem) a 32px (2rem).
    
-   RESULT: Title fits comfortably on phone screens without awkward breaks. */
+   RESULTADO: El título cabe cómodamente en pantallas de teléfono sin saltos extraños. */
 .hero-title {
   font-size: var(--font-size-xl);
-  /* WHY: Letter-spacing can be reduced on smaller screens because the title is
-     smaller and doesn't need as much spacing.
+  /* ¿POR QUÉ? Letter-spacing puede reducirse en pantallas más pequeñas porque el
+     título es más pequeño y no necesita tanto espaciado.
      
-     HOW: We reduce from 0.05em to 0.03em.
+     ¿CÓMO FUNCIONA? Reducimos de 0.05em a 0.03em.
      
-     RESULT: Better use of limited mobile screen space. */
+     RESULTADO: Mejor uso del espacio de pantalla móvil limitado. */
   letter-spacing: 0.03em;
 }
 
-/* WHY: Tagline text also needs to be slightly smaller on mobile for optimal
-   readability and space management.
+/* ¿POR QUÉ? El texto tagline también necesita ser ligeramente más pequeño en móvil
+   para legibilidad óptima y gestión de espacio.
    
-   HOW: We reduce from 18px to 16px (base font size).
+   ¿CÓMO FUNCIONA? Reducimos de 18px a 16px (tamaño de fuente base).
    
-   RESULT: Comfortable reading experience on small screens. */
+   RESULTADO: Experiencia de lectura cómoda en pantallas pequeñas. */
 .hero-tagline {
   font-size: var(--font-size-base);
 }
 
-/* WHY: CTA buttons on mobile should be slightly smaller to fit better, but still
-   large enough to tap easily.
+/* ¿POR QUÉ? Los botones CTA en móvil deben ser ligeramente más pequeños para encajar
+   mejor, pero aún lo suficientemente grandes para tap fácil.
    
-   HOW: We reduce font size and adjust padding proportionally.
+   ¿CÓMO FUNCIONA? Reducimos tamaño de fuente y ajustamos padding proporcionalmente.
    
-   RESULT: Well-proportioned button that's easy to tap on mobile. */
+   RESULTADO: Botón bien proporcionado que es fácil de tap en móvil. */
 .hero-cta {
   font-size: var(--font-size-base);
   padding: var(--spacing-sm) var(--spacing-lg);
 }
 
-/* WHY: MOBILE SYMMETRY - On mobile, we need perfectly symmetric padding since
-   the Floating Glass Dock is hidden. We also maximize content space while
-   preventing edge-touching.
+/* ¿POR QUÉ? SIMETRÍA MÓVIL - En móvil, necesitamos padding perfectamente simétrico
+   ya que el Dock de Vidrio Flotante está oculto. También maximizamos espacio de
+   contenido mientras prevenimos tocar bordes.
    
-   HOW: Smaller, uniform padding on both sides. width: 95% (instead of 90%)
-   uses more of the available mobile screen space.
+   ¿CÓMO FUNCIONA? Padding más pequeño y uniforme en ambos lados. width: 95% (en lugar
+   de 90%) usa más del espacio de pantalla móvil disponible.
    
-   RESULT: Maximum usable space on small screens with perfect balance. */
+   RESULTADO: Máximo espacio usable en pantallas pequeñas con balance perfecto. */
 .container {
-  width: 95%; /* Use more screen space on mobile */
+  width: 95%; /* Usa más espacio de pantalla en móvil */
   padding-left: var(--spacing-sm);
   padding-right: var(--spacing-sm);
 }
@@ -231,24 +246,28 @@
 }
 
 /* ============================================================================
-   TABLET STYLES - 768px to 1023px
+   ESTILOS TABLET - 768px a 1023px
    
-   WHY: Tablets have more screen space than phones but less than desktops. They
-   need a middle-ground layout that takes advantage of the extra space.
+   ¿POR QUÉ? Las tablets tienen más espacio de pantalla que teléfonos pero menos que
+   escritorios. Necesitan un layout de término medio que aproveche el espacio extra.
    
-   HOW: Media query with min-width: 768px applies these styles only when the
-   viewport is at least 768px wide.
+   ¿CÓMO FUNCIONA? Media query con min-width: 768px aplica estos estilos solo cuando
+   el viewport es al menos 768px de ancho.
    
-   RESULT: Optimized experience for iPad, Android tablets, and small laptops.
+   GLOSARIO: min-width = "ancho mínimo". @media (min-width: 768px) significa "aplica
+   estos estilos cuando la pantalla sea AL MENOS 768px de ancho".
+   
+   RESULTADO: Experiencia optimizada para iPad, tablets Android, y laptops pequeñas.
    ============================================================================ */
 
 @media (min-width: 768px) {
-  /* WHY: On tablet, we have enough space to show the navigation links horizontally
-     in the header instead of a dropdown menu.
+  /* ¿POR QUÉ? En tablet, tenemos suficiente espacio para mostrar los enlaces de
+     navegación horizontalmente en el header en lugar de un menú dropdown.
      
-     HOW: We reset the mobile styles, changing back to horizontal flex layout.
+     ¿CÓMO FUNCIONA? Reseteamos los estilos móviles, cambiando de vuelta a layout
+     flex horizontal.
      
-     RESULT: Traditional horizontal navigation that fits comfortably. */
+     RESULTADO: Navegación horizontal tradicional que cabe cómodamente. */
   .nav-links {
     position: static;
     flex-direction: row;
@@ -261,31 +280,31 @@
     box-shadow: none;
   }
   
-  /* WHY: With horizontal navigation working, we no longer need the hamburger menu.
+  /* ¿POR QUÉ? Con navegación horizontal funcionando, ya no necesitamos el menú hamburguesa.
      
-     HOW: display: none hides it.
+     ¿CÓMO FUNCIONA? display: none lo oculta.
      
-     RESULT: Cleaner header without unnecessary mobile controls. */
+     RESULTADO: Header más limpio sin controles móviles innecesarios. */
   .mobile-menu-toggle {
     display: none;
   }
   
-  /* WHY: Tablets have more vertical space, so we can use full viewport height
-     for the hero again.
+  /* ¿POR QUÉ? Las tablets tienen más espacio vertical, así que podemos usar altura
+     completa de viewport para el hero nuevamente.
      
-     HOW: Restoring height: 100vh from the mobile 90vh.
+     ¿CÓMO FUNCIONA? Restaurando height: 100vh del 90vh móvil.
      
-     RESULT: Dramatic, full-screen hero on tablets. */
+     RESULTADO: Hero dramático de pantalla completa en tablets. */
   .hero {
     height: 100vh;
   }
   
-  /* WHY: On tablet, we can increase text sizes back toward desktop values for
-     better visual hierarchy and impact.
+  /* ¿POR QUÉ? En tablet, podemos aumentar tamaños de texto de vuelta hacia valores
+     desktop para mejor jerarquía visual e impacto.
      
-     HOW: Increasing font-size progressively as screen size grows.
+     ¿CÓMO FUNCIONA? Aumentando font-size progresivamente a medida que crece el tamaño de pantalla.
      
-     RESULT: Appropriately scaled typography for medium-sized screens. */
+     RESULTADO: Tipografía apropiadamente escalada para pantallas de tamaño medio. */
   .hero-title {
     font-size: calc(var(--font-size-2xl) * 0.85); /* ~40px */
     letter-spacing: 0.04em;
@@ -300,40 +319,42 @@
     padding: var(--spacing-md) var(--spacing-xl);
   }
   
-  /* WHY: On tablets, the Floating Glass Dock still takes space that could be
-     better used for content. We keep it hidden and accessible via toggle button.
+  /* ¿POR QUÉ? En tablets, el Dock de Vidrio Flotante aún toma espacio que podría
+     usarse mejor para contenido. Lo mantenemos oculto y accesible via botón toggle.
      
-     HOW: We maintain the mobile behavior - hidden by default, shown via .show class.
+     ¿CÓMO FUNCIONA? Mantenemos el comportamiento móvil - oculto por defecto, mostrado
+     via clase .show.
      
-     RESULT: Tablet users can access the dock without sacrificing precious screen space. */
+     RESULTADO: Usuarios de tablet pueden acceder al dock sin sacrificar espacio de
+     pantalla precioso. */
   .utility-sidebar {
-    /* WHY: When toggled open on tablet, the dock should be slightly narrower
-       than desktop to better fit medium-width screens.
+    /* ¿POR QUÉ? Cuando se hace toggle abierto en tablet, el dock debe ser ligeramente
+       más estrecho que desktop para encajar mejor en pantallas de ancho medio.
        
-       HOW: When shown, it displays at 240px width (expanded state).
+       ¿CÓMO FUNCIONA? Cuando se muestra, se despliega a 240px de ancho (estado expandido).
        
-       RESULT: Dock fits better on tablet screens without blocking too much content. */
+       RESULTADO: El dock encaja mejor en pantallas tablet sin bloquear demasiado contenido. */
     width: 240px;
   }
   
-  /* WHY: The sidebar toggle remains visible on tablets for showing/hiding the
-     sidebar overlay.
+  /* ¿POR QUÉ? El toggle del sidebar permanece visible en tablets para mostrar/ocultar
+     el sidebar overlay.
      
-     HOW: We maintain display: flex from mobile styles.
+     ¿CÓMO FUNCIONA? Mantenemos display: flex de los estilos móviles.
      
-     RESULT: Consistent sidebar access pattern across mobile and tablet. */
+     RESULTADO: Patrón consistente de acceso al sidebar entre móvil y tablet. */
   .sidebar-toggle {
     display: flex;
   }
   
-  /* WHY: TABLET BALANCE - On tablets, we restore standard padding and width
-     proportions for better use of the medium-sized screen space.
+  /* ¿POR QUÉ? BALANCE TABLET - En tablets, restauramos proporciones estándar de padding
+     y width para mejor uso del espacio de pantalla de tamaño medio.
      
-     HOW: width: 90% provides comfortable margins. Standard padding (24px) creates
-     breathing room without wasting space.
+     ¿CÓMO FUNCIONA? width: 90% proporciona márgenes cómodos. Padding estándar (24px)
+     crea espacio de respiración sin desperdiciar espacio.
      
-     RESULT: Well-proportioned layout that takes advantage of tablet screen size
-     while maintaining perfect centering. */
+     RESULTADO: Layout bien proporcionado que aprovecha el tamaño de pantalla tablet
+     mientras mantiene centrado perfecto. */
   .container {
     width: 90%;
     padding-left: var(--spacing-md);
@@ -345,77 +366,79 @@
     padding-right: var(--spacing-md);
   }
   
-  /* WHY: On tablet, borders between mobile menu items are no longer needed since
-     we're back to horizontal navigation.
+  /* ¿POR QUÉ? En tablet, los bordes entre ítems del menú móvil ya no se necesitan
+     ya que volvimos a navegación horizontal.
      
-     HOW: Removing border-bottom from list items.
+     ¿CÓMO FUNCIONA? Removiendo border-bottom de ítems de lista.
      
-     RESULT: Clean horizontal navigation without distracting dividers. */
+     RESULTADO: Navegación horizontal limpia sin divisores que distraen. */
   .nav-links li {
     border-bottom: none;
   }
   
-  /* WHY: Tablet link padding can be reduced from mobile's large touch targets
-     since the links are horizontal again.
+  /* ¿POR QUÉ? El padding de enlaces tablet puede reducirse de los targets táctiles
+     grandes de móvil ya que los enlaces son horizontales nuevamente.
      
-     HOW: Reverting to original desktop padding.
+     ¿CÓMO FUNCIONA? Revirtiendo a padding desktop original.
      
-     RESULT: Properly proportioned horizontal navigation. */
+     RESULTADO: Navegación horizontal apropiadamente proporcionada. */
   .nav-links li a {
     padding: var(--spacing-xs) var(--spacing-sm);
   }
 }
 
 /* ============================================================================
-   DESKTOP STYLES - 1024px and above
+   ESTILOS DESKTOP - 1024px y más
    
-   WHY: Desktop screens have abundant space for sidebars, larger text, and
-   complex layouts. We can show everything at once without compromises.
+   ¿POR QUÉ? Las pantallas desktop tienen espacio abundante para sidebars, texto más
+   grande y layouts complejos. Podemos mostrar todo a la vez sin compromisos.
    
-   HOW: Media query with min-width: 1024px applies these styles only on
-   laptops, monitors, and larger displays.
+   ¿CÓMO FUNCIONA? Media query con min-width: 1024px aplica estos estilos solo en
+   laptops, monitores y displays más grandes.
    
-   RESULT: Full-featured, rich experience that takes advantage of large screens.
+   RESULTADO: Experiencia full-featured y rica que aprovecha pantallas grandes.
    ============================================================================ */
 
 @media (min-width: 1024px) {
-  /* WHY: On desktop, we have enough space for the Floating Glass Dock to be
-     permanently visible on the right side. It starts collapsed (60px, icons only)
-     and expands on hover (260px) to reveal full text.
+  /* ¿POR QUÉ? En desktop, tenemos suficiente espacio para que el Dock de Vidrio
+     Flotante esté permanentemente visible en el lado derecho. Comienza colapsado
+     (60px, solo íconos) y se expande en hover (260px) para revelar texto completo.
      
-     HOW: We reset all the mobile hiding transforms and make it fully visible.
+     ¿CÓMO FUNCIONA? Reseteamos todos los transforms de ocultamiento móvil y lo hacemos
+     completamente visible.
      
-     RESULT: Always-accessible utility navigation that doesn't obstruct content. */
+     RESULTADO: Navegación de utilidad siempre accesible que no obstruye contenido. */
   .utility-sidebar {
     transform: translateY(-50%);
     opacity: 1;
     pointer-events: auto;
-    /* WHY: COLLAPSED WIDTH - 60px shows only icons in the default state. This
-       minimal footprint ensures the dock is present but unobtrusive. The dock
-       will expand to 260px on hover (defined in sidebar.css).
+    /* ¿POR QUÉ? ANCHO COLAPSADO - 60px muestra solo íconos en el estado predeterminado.
+       Esta huella mínima asegura que el dock esté presente pero no sea intrusivo. El
+       dock se expandirá a 260px en hover (definido en sidebar.css).
        
-       HOW: We restore the collapsed width from sidebar.css.
+       ¿CÓMO FUNCIONA? Restauramos el ancho colapsado de sidebar.css.
        
-       RESULT: Minimal floating dock that expands on demand, never blocking content. */
+       RESULTADO: Dock flotante mínimo que se expande bajo demanda, nunca bloqueando contenido. */
     width: 60px;
   }
   
-  /* WHY: With the sidebar permanently visible, we don't need the toggle button.
+  /* ¿POR QUÉ? Con el sidebar permanentemente visible, no necesitamos el botón toggle.
      
-     HOW: display: none hides it completely.
+     ¿CÓMO FUNCIONA? display: none lo oculta completamente.
      
-     RESULT: Cleaner interface without unnecessary controls. */
+     RESULTADO: Interfaz más limpia sin controles innecesarios. */
   .sidebar-toggle {
     display: none;
   }
   
-  /* WHY: Desktop can show full-size typography for maximum impact and readability.
+  /* ¿POR QUÉ? Desktop puede mostrar tipografía de tamaño completo para máximo impacto
+     y legibilidad.
      
-     HOW: Using the original design values from variables.
+     ¿CÓMO FUNCIONA? Usando los valores de diseño originales de variables.
      
-     RESULT: Dramatic, attention-grabbing hero section. */
+     RESULTADO: Sección hero dramática y que atrapa la atención. */
   .hero-title {
-    font-size: var(--font-size-2xl); /* Full 48px */
+    font-size: var(--font-size-2xl); /* 48px completo */
     letter-spacing: 0.05em;
   }
   
@@ -428,19 +451,19 @@
     padding: var(--spacing-md) var(--spacing-xl);
   }
   
-  /* WHY: DESKTOP SAFE ZONE - On desktop, the Floating Glass Dock is visible,
-     so we need to ensure content stays centered while avoiding collision with
-     the dock (positioned 20px from right edge).
+  /* ¿POR QUÉ? ZONA SEGURA DESKTOP - En desktop, el Dock de Vidrio Flotante es visible,
+     así que necesitamos asegurar que el contenido permanezca centrado mientras evita
+     colisión con el dock (posicionado a 20px del borde derecho).
      
-     STRATEGIC LAYOUT: The container max-width of 1100px combined with 90% width
-     and margin-inline: auto creates perfect centering with natural space for the
-     dock to float without obstruction.
+     ESTRATEGIA DE LAYOUT: El max-width del contenedor de 1100px combinado con 90% de
+     width y margin-inline: auto crea centrado perfecto con espacio natural para que
+     el dock flote sin obstrucción.
      
-     HOW: We maintain the max-width set in layout.css (1100px) and ensure proper
-     centering with margin-inline: auto.
+     ¿CÓMO FUNCIONA? Mantenemos el max-width establecido en layout.css (1100px) y
+     aseguramos centrado apropiado con margin-inline: auto.
      
-     RESULT: Perfectly centered content that never collides with the Floating
-     Glass Dock, with equal spacing on both sides creating visual harmony. */
+     RESULTADO: Contenido perfectamente centrado que nunca colisiona con el Dock de
+     Vidrio Flotante, con espaciado igual en ambos lados creando armonía visual. */
   .container {
     width: 90%;
     max-width: 1100px;
@@ -449,113 +472,115 @@
     padding-right: var(--spacing-md);
   }
   
-  /* WHY: Hero content on desktop gets slightly more width since it's designed
-     to be impactful and the text is larger, but still constrained for readability.
+  /* ¿POR QUÉ? El contenido hero en desktop obtiene ligeramente más width ya que está
+     diseñado para ser impactante y el texto es más grande, pero aún restringido para legibilidad.
      
-     HOW: max-width: 850px provides a bit more room than the original 800px.
+     ¿CÓMO FUNCIONA? max-width: 850px proporciona un poco más de espacio que los 800px originales.
      
-     RESULT: Balanced hero section that looks great on large screens. */
+     RESULTADO: Sección hero balanceada que se ve genial en pantallas grandes. */
   .hero-content {
     max-width: 850px;
   }
   
-  /* WHY: Desktop users expect hover effects since they have precise mouse control.
-     We can add more sophisticated hover animations that wouldn't work on touch.
+  /* ¿POR QUÉ? Los usuarios desktop esperan efectos hover ya que tienen control preciso
+     del mouse. Podemos agregar animaciones hover más sofisticadas que no funcionarían en touch.
      
-     HOW: Enhanced transitions and transforms on hover.
+     ¿CÓMO FUNCIONA? Transiciones y transforms mejorados en hover.
      
-     RESULT: Rich, interactive experience that feels polished and professional. */
+     RESULTADO: Experiencia interactiva rica que se siente pulida y profesional. */
 }
 
 /* ============================================================================
-   LARGE DESKTOP STYLES - 1440px and above
+   ESTILOS DESKTOP GRANDE - 1440px y más
    
-   WHY: Extra-large screens (like 27" monitors and 4K displays) have so much
-   space that default styles can look small and lonely.
+   ¿POR QUÉ? Pantallas extra grandes (como monitores de 27" y displays 4K) tienen
+   tanto espacio que los estilos predeterminados pueden verse pequeños y solitarios.
    
-   HOW: Media query with min-width: 1440px applies enhanced spacing and sizing.
+   ¿CÓMO FUNCIONA? Media query con min-width: 1440px aplica espaciado y dimensionamiento mejorados.
    
-   RESULT: Design scales gracefully to fill large displays without looking lost.
+   RESULTADO: El diseño escala grácilmente para llenar displays grandes sin verse perdido.
    ============================================================================ */
 
 @media (min-width: 1440px) {
-  /* WHY: On huge screens, we can afford slightly larger fonts without sacrificing
-     readability, and it helps fill the space.
+  /* ¿POR QUÉ? En pantallas enormes, podemos permitirnos fuentes ligeramente más grandes
+     sin sacrificar legibilidad, y ayuda a llenar el espacio.
      
-     HOW: We increase the hero title to an even larger size.
+     ¿CÓMO FUNCIONA? Aumentamos el título hero a un tamaño incluso más grande.
      
-     RESULT: Impactful typography that commands attention on large displays. */
+     RESULTADO: Tipografía impactante que comanda atención en displays grandes. */
   .hero-title {
     font-size: calc(var(--font-size-2xl) * 1.2); /* ~57px */
   }
   
-  /* WHY: LARGE DESKTOP OPTIMIZATION - On ultra-wide screens (1440px+), we can
-     afford to increase max-width slightly while still maintaining perfect centering
-     and safe distance from the Floating Glass Dock.
+  /* ¿POR QUÉ? OPTIMIZACIÓN DESKTOP GRANDE - En pantallas ultra anchas (1440px+), podemos
+     permitirnos aumentar max-width ligeramente mientras aún mantenemos centrado perfecto
+     y distancia segura del Dock de Vidrio Flotante.
      
-     CALCULATION: On a 1920px screen with max-width: 1250px:
-     - Content: 1250px (centered)
-     - Left space: ~335px
-     - Right space: ~335px (plenty of room for 60-280px dock + margins)
+     CÁLCULO: En una pantalla de 1920px con max-width: 1250px:
+     - Contenido: 1250px (centrado)
+     - Espacio izquierdo: ~335px
+     - Espacio derecho: ~335px (mucho espacio para dock de 60-280px + márgenes)
      
-     HOW: Slightly increased max-width (1250px) takes advantage of large screens
-     while maintaining the centering strategy.
+     ¿CÓMO FUNCIONA? Max-width ligeramente aumentado (1250px) aprovecha pantallas
+     grandes mientras mantiene la estrategia de centrado.
      
-     RESULT: Content uses screen space efficiently on large monitors while
-     remaining perfectly centered with ample room for the Floating Glass Dock. */
+     RESULTADO: El contenido usa el espacio de pantalla eficientemente en monitores
+     grandes mientras permanece perfectamente centrado con espacio amplio para el
+     Dock de Vidrio Flotante. */
   .container {
     max-width: 1250px;
   }
   
-  /* WHY: Hero content can also expand slightly on large screens for more
-     dramatic impact without losing readability.
+  /* ¿POR QUÉ? El contenido hero también puede expandirse ligeramente en pantallas
+     grandes para impacto más dramático sin perder legibilidad.
      
-     HOW: Increased max-width to 900px (from 850px).
+     ¿CÓMO FUNCIONA? Max-width aumentado a 900px (de 850px).
      
-     RESULT: More impactful hero section on large displays. */
+     RESULTADO: Sección hero más impactante en displays grandes. */
   .hero-content {
     max-width: 900px;
   }
   
-  /* WHY: On ultra-large screens, the Floating Glass Dock maintains its collapsed
-     state (60px) by default. We don't need to increase its size - the hover
-     expansion to 260px is already generous.
+  /* ¿POR QUÉ? En pantallas ultra grandes, el Dock de Vidrio Flotante mantiene su
+     estado colapsado (60px) por defecto. No necesitamos aumentar su tamaño - la
+     expansión hover a 260px ya es generosa.
      
-     HOW: We keep the collapsed width consistent across all desktop sizes.
+     ¿CÓMO FUNCIONA? Mantenemos el ancho colapsado consistente entre todos los tamaños desktop.
      
-     RESULT: Consistent, minimal dock presence that works perfectly on all screens. */
+     RESULTADO: Presencia de dock consistente y mínima que funciona perfectamente en
+     todas las pantallas. */
   .utility-sidebar {
     width: 60px;
   }
   
-  /* WHY: On huge screens, the hover-expanded state can be slightly wider for
-     more comfortable reading without blocking content.
+  /* ¿POR QUÉ? En pantallas enormes, el estado hover-expandido puede ser ligeramente
+     más ancho para lectura más cómoda sin bloquear contenido.
      
-     HOW: We increase the hover width from 260px to 280px on extra-large displays.
+     ¿CÓMO FUNCIONA? Aumentamos el ancho hover de 260px a 280px en displays extra grandes.
      
-     RESULT: More spacious expanded dock on large monitors. */
+     RESULTADO: Dock expandido más espacioso en monitores grandes. */
   .utility-sidebar:hover {
     width: 280px;
   }
 }
 
 /* ============================================================================
-   PRINT STYLES
+   ESTILOS DE IMPRESIÓN
    
-   WHY: If users print the page, we need to hide interactive elements (navigation,
-   buttons) and optimize for paper/PDF.
+   ¿POR QUÉ? Si los usuarios imprimen la página, necesitamos ocultar elementos
+   interactivos (navegación, botones) y optimizar para papel/PDF.
    
-   HOW: @media print applies styles only when printing.
+   ¿CÓMO FUNCIONA? @media print aplica estilos solo cuando se imprime.
    
-   RESULT: Clean, printer-friendly output. */
+   RESULTADO: Salida limpia y amigable para impresora. */
 
 @media print {
-  /* WHY: Navigation, sidebars, and buttons are useless in print. We hide them
-     to save ink and paper.
+  /* ¿POR QUÉ? Navegación, sidebars y botones son inútiles en impresión. Los ocultamos
+     para ahorrar tinta y papel.
      
-     HOW: display: none removes them from print layout entirely.
+     ¿CÓMO FUNCIONA? display: none los remueve del layout de impresión completamente.
      
-     RESULT: Clean printed page with only content. */
+     RESULTADO: Página impresa limpia con solo contenido. */
   .main-header,
   .utility-sidebar,
   .sidebar-toggle,
@@ -564,34 +589,35 @@
     display: none;
   }
   
-  /* WHY: The hero section doesn't need to be full-screen in print - it should
-     just be tall enough to contain its content.
+  /* ¿POR QUÉ? La sección hero no necesita ser de pantalla completa en impresión -
+     debe ser solo lo suficientemente alta para contener su contenido.
      
-     HOW: Changing from 100vh to auto allows natural content height.
+     ¿CÓMO FUNCIONA? Cambiar de 100vh a auto permite altura de contenido natural.
      
-     RESULT: Efficient use of printed pages. */
+     RESULTADO: Uso eficiente de páginas impresas. */
   .hero {
     height: auto;
     min-height: 300px;
     page-break-inside: avoid;
   }
   
-  /* WHY: Background images consume lots of ink and often print poorly. We remove
-     them for cost and quality reasons.
+  /* ¿POR QUÉ? Las imágenes de fondo consumen mucha tinta y a menudo se imprimen mal.
+     Las removemos por razones de costo y calidad.
      
-     HOW: background-image: none strips the image.
+     ¿CÓMO FUNCIONA? background-image: none quita la imagen.
      
-     RESULT: Clean, ink-efficient printed pages. */
+     RESULTADO: Páginas impresas limpias y eficientes en tinta. */
   .hero {
     background-image: none;
   }
   
-  /* WHY: Print needs black text on white paper for maximum readability and
-     minimum ink usage.
+  /* ¿POR QUÉ? La impresión necesita texto negro sobre papel blanco para máxima
+     legibilidad y uso mínimo de tinta.
      
-     HOW: We override all color styles with print-friendly values.
+     ¿CÓMO FUNCIONA? Sobrescribimos todos los estilos de color con valores amigables
+     para impresión.
      
-     RESULT: Readable, ink-efficient printed output. */
+     RESULTADO: Salida impresa legible y eficiente en tinta. */
   body {
     background: white;
     color: black;
@@ -599,23 +625,30 @@
 }
 
 /* ============================================================================
-   ACCESSIBILITY - Reduced Motion
+   ACCESIBILIDAD - Movimiento Reducido
    
-   WHY: Some users experience motion sickness from animations. We must respect
-   the "prefers-reduced-motion" accessibility setting.
+   ¿POR QUÉ? Algunos usuarios experimentan mareo por movimiento de animaciones.
+   Debemos respetar la configuración "prefers-reduced-motion" de accesibilidad.
    
-   HOW: Media query detects the OS setting and disables animations.
+   ¿CÓMO FUNCIONA? Media query detecta la configuración del OS y deshabilita animaciones.
    
-   RESULT: Accessible experience for users with vestibular disorders.
+   ANALOGÍA FEYNMAN: Es como tener un interruptor en tu casa para luces estroboscópicas.
+   Algunas personas están bien con ellas, otras se marean. Este CSS respeta esa
+   preferencia - si alguien dice "sin animaciones rápidas por favor", las desactivamos.
+   
+   RESULTADO: Experiencia accesible para usuarios con trastornos vestibulares.
    ============================================================================ */
 
 @media (prefers-reduced-motion: reduce) {
-  /* WHY: For users who've enabled reduced motion in their OS settings, we disable
-     all animations and transitions that could cause discomfort.
+  /* ¿POR QUÉ? Para usuarios que han habilitado movimiento reducido en sus configuraciones
+     de OS, deshabilitamos todas las animaciones y transiciones que podrían causar incomodidad.
      
-     HOW: Setting transitions and animations to none or very short durations.
+     ¿CÓMO FUNCIONA? Estableciendo transiciones y animaciones a none o duraciones muy cortas.
      
-     RESULT: Accessible experience that respects user preferences. */
+     GLOSARIO: prefers-reduced-motion = configuración de accesibilidad del OS que los
+     usuarios pueden habilitar si las animaciones les causan mareo o distracción.
+     
+     RESULTADO: Experiencia accesible que respeta preferencias del usuario. */
   *,
   *::before,
   *::after {
@@ -625,14 +658,13 @@
     scroll-behavior: auto !important;
   }
   
-  /* WHY: The bounce animation on the scroll indicator can be particularly
-     problematic for motion-sensitive users.
+  /* ¿POR QUÉ? La animación bounce en el indicador de scroll puede ser particularmente
+     problemática para usuarios sensibles al movimiento.
      
-     HOW: We completely disable the animation.
+     ¿CÓMO FUNCIONA? Deshabilitamos completamente la animación.
      
-     RESULT: Static scroll indicator that doesn't trigger motion sickness. */
+     RESULTADO: Indicador de scroll estático que no activa mareo por movimiento. */
   .scroll-indicator {
     animation: none;
   }
 }
-

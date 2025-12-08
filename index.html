@@ -1,234 +1,243 @@
 <!DOCTYPE html>
-<!-- WHY: DOCTYPE tells the browser to use modern HTML5 standards. Without it, 
-     browsers enter "quirks mode" where they try to be compatible with very old 
-     websites, causing inconsistent behavior.
+<!-- ¿POR QUÉ? DOCTYPE le dice al navegador que use est estándares modernos de HTML5. Sin
+     esto, los navegadores entran en "modo quirks" (modo raro) donde intentan ser compatibles
+     con páginas web MUY antiguas, causando comportamientos inconsistentes.
      
-     HOW: <!DOCTYPE html> is the simplest, most modern doctype declaration.
+     ¿CÓMO FUNCIONA? <!DOCTYPE html> es la declaración doctype más simple y moderna.
      
-     RESULT: The browser renders the page using current web standards. -->
+     RESULTADO: El navegador renderiza la página usando estándares web actuales. -->
 
 <html lang="en">
-<!-- WHY: The lang attribute tells browsers and screen readers what language the
-     content is in. This is crucial for accessibility (screen readers pronounce
-     words correctly) and SEO (search engines understand the content language).
+<!-- ¿POR QUÉ? El atributo lang le dice a los navegadores y lectores de pantalla en qué idioma
+     está el contenido. Esto es crucial para accesibilidad (lectores de pantalla pronuncian
+     las palabras correctamente) y SEO (buscadores entienden el idioma del contenido).
      
-     HOW: lang="en" declares English as the primary language.
+     ¿CÓMO FUNCIONA? lang="en" declara inglés como idioma principal.
      
-     RESULT: Better accessibility and search engine optimization. -->
+     RESULTADO: Mejor accesibilidad y optimización para motores de búsqueda. -->
 
 <head>
-  <!-- WHY: The <meta charset> declaration must come first in the head to ensure
-       the browser correctly interprets special characters (é, ñ, 中, etc.) before
-       reading any other content.
+  <!-- ¿POR QUÉ? La declaración <meta charset> debe ir primero en el head para asegurar que
+       el navegador interprete correctamente caracteres especiales (é, ñ, 中, etc.) antes
+       de leer cualquier otro contenido.
        
-       HOW: UTF-8 is the universal character encoding that supports all languages
-       and symbols. It's the web standard.
+       ¿CÓMO FUNCIONA? UTF-8 es la codificación universal de caracteres que soporta todos
+       los idiomas y símbolos. Es el estándar web.
        
-       RESULT: Text displays correctly regardless of language or special characters. -->
+       RESULTADO: El texto se muestra correctamente sin importar el idioma o caracteres especiales. -->
   <meta charset="UTF-8">
   
-  <!-- WHY: The viewport meta tag is critical for responsive design. Without it,
-       mobile browsers render the page at desktop width (usually ~980px) and zoom
-       out, making everything tiny.
+  <!-- ¿POR QUÉ? El meta tag viewport es CRÍTICO para diseño responsivo. Sin él, los
+       navegadores móviles renderizan la página al ancho de escritorio (usualmente ~980px)
+       y hacen zoom out, haciendo todo tiny.
        
-       HOW: width=device-width tells the browser to use the actual device width
-       (e.g., 375px on iPhone) instead of pretending to be desktop width. 
-       initial-scale=1.0 prevents automatic zooming.
+       ¿CÓMO FUNCIONA? width=device-width le dice al navegador que use el ancho real del
+       dispositivo (ej. 375px en iPhone) en vez de pretender ser ancho de escritorio.
+       initial-scale=1.0 previene zoom automático.
        
-       RESULT: The page renders at the correct size on mobile devices, making our
-       responsive CSS work properly. -->
+       RESULTADO: La página se renderiza al tamaño correcto en dispositivos móviles, haciendo
+       que nuestro CSS responsivo funcione correctamente. -->
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <!-- WHY: The title appears in browser tabs, bookmarks, and search results. It's
-       the first thing users see and is crucial for SEO.
+  <!-- ¿POR QUÉ? El título aparece en las pestañas del navegador, marcadores y resultados
+       de búsqueda. Es lo primero que los usuarios ven y es crucial para SEO.
        
-       HOW: We use a descriptive, branded title that clearly identifies the page.
+       ¿CÓMO FUNCIONA? Usamos un título descriptivo y con marca que identifica claramente la página.
        
-       RESULT: Clear identification in tabs and better search engine visibility. -->
+       RESULTADO: Identificación clara en pestañas y mejor visibilidad en motores de búsqueda. -->
   <title>Tomorrowland 2018: The Story of Planaxis | Enter the Deep Ocean Kingdom</title>
   
-  <!-- WHY: Meta description appears in search results below the title. It's the
-       first impression users get of your site and affects click-through rates.
+  <!-- ¿POR QUÉ? La meta descripción aparece en resultados de búsqueda debajo del título.
+       Es la primera impresión que los usuarios tienen de tu sitio y afecta las tasas de clics.
        
-       HOW: We write a compelling 150-160 character summary of the page content.
+       ¿CÓMO FUNCIONA? Escribimos un resumen convincente de 150-160 caracteres del contenido.
        
-       RESULT: Better search result appearance and higher click-through rates. -->
+       RESULTADO: Mejor apariencia en resultados de búsqueda y mayores tasas de clics. -->
   <meta name="description" content="Dive into the mystical underwater kingdom of Planaxis. Discover the legend of the golden seahorses and experience Tomorrowland 2018's most immersive story yet.">
   
-  <!-- WHY: These meta tags control how the page appears when shared on social media
-       (Facebook, Twitter, LinkedIn, etc.). Without them, social platforms show
-       generic, ugly previews.
+  <!-- ¿POR QUÉ? Estos meta tags controlan cómo aparece la página cuando se comparte en redes
+       sociales (Facebook, Twitter, LinkedIn, etc.). Sin ellos, las plataformas sociales muestran
+       vistas previas genéricas y feas.
        
-       HOW: Open Graph (og:) tags are recognized by most social platforms. We define
-       the title, description, image, and URL.
+       ¿CÓMO FUNCIONA? Los tags Open Graph (og:) son reconocidos por la mayoría de plataformas
+       sociales. Definimos título, descripción, imagen y URL.
        
-       RESULT: Beautiful, engaging previews when the page is shared on social media. -->
+       RESULTADO: Vistas previas hermosas y atractivas cuando la página se comparte en redes. -->
   <meta property="og:title" content="Tomorrowland 2018: The Story of Planaxis">
   <meta property="og:description" content="Dive into the mystical underwater kingdom of Planaxis and discover the legend of the golden seahorses.">
+  <!-- ⚠️ PERSONALIZA ESTA IMAGEN: Cambia placeholder-hero.jpg por tu imagen del festival -->
   <meta property="og:image" content="assets/images/placeholder-hero.jpg">
   <meta property="og:url" content="https://tomorrowland.com/planaxis">
   <meta property="og:type" content="website">
   
-  <!-- WHY: Twitter uses its own card system for previews. By specifying a card type
-       and image, we ensure tweets with this link look professional.
+  <!-- ¿POR QUÉ? Twitter usa su propio sistema de tarjetas para vistas previas. Al especificar
+       un tipo de tarjeta e imagen, aseguramos que los tweets con este enlace se vean profesionales.
        
-       HOW: summary_large_image creates a large, eye-catching preview card.
+       ¿CÓMO FUNCIONA? summary_large_image crea una tarjeta de vista previa grande y llamativa.
        
-       RESULT: Engaging Twitter previews that drive more clicks. -->
+       RESULTADO: Vistas previas atractivas en Twitter que generan más clics. -->
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="Tomorrowland 2018: The Story of Planaxis">
   <meta name="twitter:description" content="Dive into the mystical underwater kingdom of Planaxis.">
+  <!-- ⚠️ PERSONALIZA ESTA IMAGEN: Cambia placeholder-hero.jpg por tu imagen del festival -->
   <meta name="twitter:image" content="assets/images/placeholder-hero.jpg">
   
-  <!-- WHY: The theme-color meta tag colors the browser UI (address bar, status bar)
-       on mobile devices to match your site's design, creating a seamless experience.
+  <!-- ¿POR QUÉ? El meta tag theme-color colorea la interfaz del navegador (barra de direcciones,
+       barra de estado) en dispositivos móviles para que coincida con el diseño de tu sitio,
+       creando una experiencia integrada.
        
-       HOW: We use our primary background color (deep ocean blue-black).
+       ¿CÓMO FUNCIONA? Usamos nuestro color de fondo principal (azul oscuro del océano profundo).
        
-       RESULT: The browser UI blends with the site design on mobile, looking polished. -->
+       RESULTADO: La interfaz del navegador se mezcla con el diseño del sitio en móviles, luciendo pulido. -->
   <meta name="theme-color" content="#050a14">
   
-  <!-- WHY: CSS files are loaded in a specific order because later styles override
-       earlier ones (the "cascade" in Cascading Style Sheets). We load foundational
-       styles first, then specific component styles.
+  <!-- ¿POR QUÉ? Los archivos CSS se cargan en un orden específico porque los estilos posteriores
+       sobrescriben a los anteriores (la "cascada" en Hojas de Estilo en Cascada). Cargamos
+       estilos fundamentales primero, luego estilos de componentes específicos.
        
-       HOW: Each <link> tag loads a CSS file. rel="stylesheet" tells the browser
-       it's CSS, not an icon or other resource type.
+       ¿CÓMO FUNCIONA? Cada tag <link> carga un archivo CSS. rel="stylesheet" le dice al
+       navegador que es CSS, no un ícono u otro tipo de recurso.
        
-       RESULT: Styles apply in the correct order, with specific styles overriding
-       general ones as intended. -->
+       RESULTADO: Los estilos se aplican en el orden correcto, con estilos específicos
+       sobrescribiendo los generales como se pretende. -->
   
-  <!-- WHY: reset.css must load first to normalize browser defaults before we apply
-       any custom styles. If it loads later, it might override our intentional styles.
+  <!-- ¿POR QUÉ? reset.css DEBE cargar primero para normalizar los valores predeterminados del
+       navegador antes de aplicar cualquier estilo personalizado. Si carga después, podría
+       sobrescribir nuestros estilos intencionales.
        
-       HOW: Simple link tag pointing to the file.
+       ¿CÓMO FUNCIONA? Simple tag link apuntando al archivo.
        
-       RESULT: Clean slate for all browsers before applying custom styles. -->
+       RESULTADO: Base limpia para todos los navegadores antes de aplicar estilos personalizados. -->
   <link rel="stylesheet" href="css/reset.css">
   
-  <!-- WHY: variables.css defines our design tokens (colors, spacing, fonts). It
-       loads second so all subsequent stylesheets can use these variables.
+  <!-- ¿POR QUÉ? variables.css define nuestros tokens de diseño (colores, espaciado, fuentes).
+       Carga segundo para que todas las hojas de estilo subsecuentes puedan usar estas variables.
        
-       HOW: CSS custom properties (variables) become available once this file loads.
+       ¿CÓMO FUNCIONA? Las propiedades personalizadas CSS (variables) se vuelven disponibles
+       una vez que este archivo carga.
        
-       RESULT: Consistent design system across all stylesheets. -->
+       RESULTADO: Sistema de diseño consistente en todas las hojas de estilo. -->
   <link rel="stylesheet" href="css/variables.css">
   
-  <!-- WHY: layout.css establishes the structural foundation (grid, flexbox, utilities).
-       It loads before component styles so components can build on this foundation.
+  <!-- ¿POR QUÉ? layout.css establece la base estructural (grid, flexbox, utilidades). Carga
+       antes de los estilos de componentes para que los componentes puedan construir sobre
+       esta base.
        
-       HOW: Layout utilities become available for use.
+       ¿CÓMO FUNCIONA? Las utilidades de layout se vuelven disponibles para uso.
        
-       RESULT: Solid structural foundation for all components. -->
+       RESULTADO: Base estructural sólida para todos los componentes. -->
   <link rel="stylesheet" href="css/layout.css">
   
-  <!-- WHY: Component-specific stylesheets (header, hero, sidebar) load next. The
-       order doesn't matter much here since they style different elements.
+  <!-- ¿POR QUÉ? Las hojas de estilo específicas de componentes (header, hero, sidebar) cargan
+       después. El orden no importa mucho aquí ya que estilizan elementos diferentes.
        
-       HOW: Each file targets specific components.
+       ¿CÓMO FUNCIONA? Cada archivo apunta a componentes específicos.
        
-       RESULT: Modular, maintainable CSS where each file has a clear purpose. -->
+       RESULTADO: CSS modular y mantenible donde cada archivo tiene un propósito claro. -->
   <link rel="stylesheet" href="css/header.css">
   <link rel="stylesheet" href="css/hero.css">
   <link rel="stylesheet" href="css/sidebar.css">
   
-  <!-- WHY: responsive.css loads last so its media queries can override any previous
-       styles at specific breakpoints. If it loaded earlier, other styles might
-       override the responsive adjustments.
+  <!-- ¿POR QUÉ? responsive.css carga al FINAL para que sus media queries puedan sobrescribir
+       cualquier estilo previo en breakpoints específicos. Si cargara antes, otros estilos
+       podrían sobrescribir los ajustes responsivos.
        
-       HOW: Media queries in this file have the final say on layout at each breakpoint.
+       ¿CÓMO FUNCIONA? Las media queries en este archivo tienen la última palabra sobre el
+       layout en cada breakpoint.
        
-       RESULT: Responsive adjustments work correctly across all screen sizes. -->
+       RESULTADO: Los ajustes responsivos funcionan correctamente en todos los tamaños de pantalla. -->
   <link rel="stylesheet" href="css/responsive.css">
   
-  <!-- WHY: Preconnect hints tell the browser to establish early connections to
-       external domains we'll use later (like Google Fonts, CDNs). This reduces
-       latency when we actually request resources from those domains.
+  <!-- ¿POR QUÉ? Los hints de preconnect le dicen al navegador que establezca conexiones
+       tempranas a dominios externos que usaremos después (como Google Fonts, CDNs). Esto
+       reduce la latencia cuando realmente solicitamos recursos de esos dominios.
        
-       HOW: rel="preconnect" establishes a connection before resources are requested.
+       ¿CÓMO FUNCIONA? rel="preconnect" establece una conexión antes de que se soliciten recursos.
        
-       RESULT: Faster loading of external resources by eliminating connection delay. -->
+       RESULTADO: Carga más rápida de recursos externos al eliminar el retraso de conexión. -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 </head>
 
 <body>
-  <!-- WHY: The <header> element is a semantic HTML5 tag that identifies the main
-       navigation area. Search engines and screen readers recognize this as the
-       primary navigation, improving SEO and accessibility.
+  <!-- ¿POR QUÉ? El elemento <header> es un tag HTML5 semántico que identifica el área de
+       navegación principal. Los motores de búsqueda y lectores de pantalla reconocen esto
+       como la navegación primaria, mejorando SEO y accesibilidad.
        
-       HOW: Semantic tags replace generic <div> elements with meaningful names.
+       ¿CÓMO FUNCIONA? Los tags semánticos reemplazan elementos <div> genéricos con nombres
+       significativos.
        
-       RESULT: Better structured HTML that's easier to understand for both humans
-       and machines (search engines, screen readers). -->
+       RESULTADO: HTML mejor estructurado que es más fácil de entender tanto para humanos
+       como para máquinas (buscadores, lectores de pantalla). -->
   <header class="main-header">
-    <!-- WHY: The <nav> element specifically identifies navigation links. Screen
-         readers announce "navigation" when entering this section, helping users
-         orient themselves.
+    <!-- ¿POR QUÉ? El elemento <nav> específicamente identifica enlaces de navegación. Los
+         lectores de pantalla anuncian "navegación" al entrar a esta sección, ayudando a
+         los usuarios a orientarse.
          
-         HOW: Any group of navigation links should be wrapped in <nav>.
+         ¿CÓMO FUNCIONA? Cualquier grupo de enlaces de navegación debe envolverse en <nav>.
          
-         RESULT: Enhanced accessibility for screen reader users. -->
+         RESULTADO: Accesibilidad mejorada para usuarios de lectores de pantalla. -->
     <nav>
-      <!-- WHY: The logo should be a link to the homepage, following web conventions.
-           When users click a logo, they expect to return to the home page.
+      <!-- ¿POR QUÉ? El logo debe ser un enlace a la página de inicio, siguiendo convenciones
+           web. Cuando los usuarios hacen clic en un logo, esperan volver a la página principal.
            
-           HOW: We wrap the logo text in an <a> tag with href pointing to the root.
+           ¿CÓMO FUNCIONA? Envolvemos el texto del logo en un tag <a> con href apuntando a la raíz.
            
-           RESULT: Intuitive navigation that matches user expectations. -->
+           RESULTADO: Navegación intuitiva que coincide con las expectativas del usuario. -->
       <a href="/" class="logo" aria-label="Tomorrowland Planaxis Home" data-i18n="nav.logo">
-        <!-- WHY: The logo text is wrapped in a span for styling flexibility. We might
-             want to style "Planaxis" differently from "Tomorrowland" later.
+        <!-- ¿POR QUÉ? El texto del logo está envuelto en un span para flexibilidad de estilo.
+             Podríamos querer estilizar "Planaxis" diferente a "Tomorrowland" más tarde.
              
-             HOW: Spans are inline containers that don't affect layout but allow styling.
+             ¿CÓMO FUNCIONA? Los spans son contenedores inline que no afectan el layout pero
+             permiten estilizado.
              
-             RESULT: Flexible logo styling options. -->
+             RESULTADO: Opciones de estilizado de logo flexibles. -->
         Planaxis
       </a>
       
-      <!-- WHY: The hamburger button is hidden on desktop but appears on mobile to
-           toggle the navigation menu. It needs an aria-label for accessibility since
-           the icon alone doesn't describe its purpose to screen readers.
+      <!-- ¿POR QUÉ? El botón hamburguesa está oculto en escritorio pero aparece en móviles
+           para toggle el menú de navegación. Necesita un aria-label para accesibilidad ya que
+           el ícono solo no describe su propósito a lectores de pantalla.
            
-           HOW: Button with aria-label and aria-expanded to communicate state to
-           assistive technology. The class is styled in responsive.css.
+           ¿CÓMO FUNCIONA? Botón con aria-label y aria-expanded para comunicar estado a
+           tecnología asistiva. La clase se estiliza en responsive.css.
            
-           RESULT: Accessible mobile menu toggle that works for all users. -->
+           RESULTADO: Toggle de menú móvil accesible que funciona para todos los usuarios. -->
       <button class="mobile-menu-toggle" aria-label="Toggle navigation menu" aria-expanded="false">
-        <!-- WHY: We use simple span elements to create the hamburger icon (three lines)
-             rather than an image or icon font. This is faster, more maintainable,
-             and easier to animate.
+        <!-- ¿POR QUÉ? Usamos elementos span simples para crear el ícono hamburguesa (tres líneas)
+             en lugar de una imagen o fuente de íconos. Esto es más rápido, más mantenible y
+             más fácil de animar.
              
-             HOW: Three horizontal spans styled with CSS to look like stacked lines.
+             ¿CÓMO FUNCIONA? Tres spans horizontales estilizados con CSS para parecer líneas apiladas.
              
-             RESULT: Lightweight, customizable hamburger icon. -->
+             RESULTADO: Ícono hamburguesa liviano y personalizable. -->
         <span style="display:block;width:25px;height:3px;background:white;margin:5px 0;"></span>
         <span style="display:block;width:25px;height:3px;background:white;margin:5px 0;"></span>
         <span style="display:block;width:25px;height:3px;background:white;margin:5px 0;"></span>
       </button>
       
-      <!-- WHY: The <ul> (unordered list) is the semantic way to mark up a list of
-           navigation links. Screen readers announce "list, 4 items" to help users
-           understand the structure.
+      <!-- ¿POR QUÉ? El <ul> (lista desordenada) es la forma semántica de marcar una lista de
+           enlaces de navegación. Los lectores de pantalla anuncian "lista, 4 elementos" para
+           ayudar a usuarios a entender la estructura.
            
-           HOW: Each link is an <li> (list item) containing an <a> (anchor/link).
+           ¿CÓMO FUNCIONA? Cada enlace es un <li> (elemento de lista) conteniendo un <a> (ancla/enlace).
            
-           RESULT: Semantic HTML that's accessible and SEO-friendly. -->
+           RESULTADO: HTML semántico que es accesible y amigable con SEO. -->
       <ul class="nav-links">
         <li>
-          <!-- WHY: The aria-current="page" attribute tells screen readers which link
-               represents the current page. It's more semantic than just a class.
+          <!-- ¿POR QUÉ? El atributo aria-current="page" le dice a los lectores de pantalla
+               qué enlace representa la página actual. Es más semántico que solo una clase.
                
-               HOW: Add aria-current="page" to the active/current page link.
+               ¿CÓMO FUNCIONA? Agrega aria-current="page" al enlace de la página activa/actual.
                
-               RESULT: Screen readers announce "current page" for better navigation. -->
+               RESULTADO: Los lectores de pantalla anuncian "página actual" para mejor navegación. -->
           <a href="#festival" class="active" aria-current="page" data-i18n="nav.festival">Festival</a>
         </li>
         <li><a href="#brand-activation" data-i18n="nav.brand">Brand Activation</a></li>
         <li><a href="#cultural-events" data-i18n="nav.cultural">Cultural Events</a></li>
         <li><a href="contact.html" data-i18n="nav.contact">Contact</a></li>
         
-        <!-- Language Selector -->
+        <!-- Selector de Idioma -->
         <li class="language-selector">
           <a href="#" data-lang="en" class="lang-link active">EN</a>
           <span class="lang-separator">|</span>
@@ -238,103 +247,109 @@
     </nav>
   </header>
   
-  <!-- WHY: The <section> element represents a thematic grouping of content. The hero
-       is a distinct section with its own purpose (introducing the site), so it deserves
-       its own semantic tag.
+  <!-- ¿POR QUÉ? El elemento <section> representa una agrupación temática de contenido. El hero
+       es una sección distinta con su propio propósito (introducir el sitio), por lo que merece
+       su propio tag semántico.
        
-       HOW: Section with descriptive class and inline background image.
+       ¿CÓMO FUNCIONA? Section con clase descriptiva e imagen de fondo inline.
        
-       RESULT: Clear document structure with semantic meaning. -->
+       RESULTADO: Estructura de documento clara con significado semántico. -->
   <section class="hero" style="background-image: linear-gradient(135deg, #0a1e3c 0%, #050a14 100%);">
-    <!-- WHY: We use a gradient as a placeholder instead of a solid color to make the
-         hero more visually interesting until a real image is added.
+    <!-- ¿POR QUÉ? Usamos un gradiente como placeholder en lugar de un color sólido para hacer
+         el hero más visualmente interesante hasta que se agregue una imagen real.
          
-         HOW: CSS linear-gradient creates a smooth color transition from blue to black.
+         ¿CÓMO FUNCIONA? CSS linear-gradient crea una transición suave de color de azul a negro.
          
-         RESULT: Attractive placeholder that suggests ocean depths. -->
+         ⚠️ PERSONALIZA ESTE FONDO: Reemplaza el gradiente con tu imagen del festival:
+         style="background-image: url('assets/images/tu-imagen-festival.jpg');"
+         
+         RESULTADO: Placeholder atractivo que sugiere profundidades oceánicas. -->
     
-    <!-- WHY: The hero-content div wraps all the text and buttons, allowing us to
-         control their layout as a group (centering, max-width, etc.).
+    <!-- ¿POR QUÉ? El div hero-content envuelve todo el texto y botones, permitiéndonos
+         controlar su layout como un grupo (centrado, max-width, etc.).
          
-         HOW: A simple div with a class that's styled in hero.css.
+         ¿CÓMO FUNCIONA? Un div simple con una clase que se estiliza en hero.css.
          
-         RESULT: Easy-to-center, easy-to-constrain content group. -->
+         RESULTADO: Grupo de contenido fácil de centrar y restringir. -->
     <div class="hero-content">
-      <!-- WHY: The <h1> is the most important heading on the page. There should only
-           be ONE <h1> per page, and it should describe the main content. Search engines
-           use this as the primary indicator of page topic.
+      <!-- ¿POR QUÉ? El <h1> es el encabezado más importante de la página. Debe haber solo
+           UN <h1> por página, y debe describir el contenido principal. Los motores de búsqueda
+           usan esto como el indicador principal del tema de la página.
            
-           HOW: h1 with descriptive text that includes key terms (Tomorrowland, Planaxis).
+           ¿CÓMO FUNCIONA? h1 con texto descriptivo que incluye términos clave (Tomorrowland, Planaxis).
            
-           RESULT: Better SEO and clear page hierarchy for screen readers. -->
+           RESULTADO: Mejor SEO y jerarquía clara de página para lectores de pantalla. -->
       <h1 class="hero-title" data-i18n="hero.title">The Story of Planaxis</h1>
       
-      <!-- WHY: The <p> tag represents a paragraph of text. Using it (instead of a div)
-           adds semantic meaning - this is a text paragraph, not just a container.
+      <!-- ¿POR QUÉ? El tag <p> representa un párrafo de texto. Usarlo (en lugar de un div)
+           agrega significado semántico - esto es un párrafo de texto, no solo un contenedor.
            
-           HOW: Simple paragraph with class for styling.
+           ¿CÓMO FUNCIONA? Párrafo simple con clase para estilizado.
            
-           RESULT: Semantic HTML that communicates intent. -->
+           ⚠️ PERSONALIZA ESTE TEXTO: Cambia este párrafo para contar la historia de TU festival
+           
+           RESULTADO: HTML semántico que comunica intención. -->
       <p class="hero-tagline" data-i18n="hero.tagline">
         Dive deep into the mystical underwater kingdom where golden seahorses guard ancient secrets
         and bioluminescent creatures light the way through forgotten coral palaces.
       </p>
       
-      <!-- WHY: Call-to-action buttons should be <a> tags (not <button>) if they navigate
-           to another page. Buttons are for in-page actions (submit forms, toggle menus),
-           links are for navigation. This is important for keyboard users and screen readers.
+      <!-- ¿POR QUÉ? Los botones call-to-action deben ser tags <a> (no <button>) si navegan
+           a otra página. Los botones son para acciones en la página (enviar formularios, toggle
+           menús), los enlaces son para navegación. Esto es importante para usuarios de teclado
+           y lectores de pantalla.
            
-           HOW: We use an anchor tag styled to look like a button.
+           ¿CÓMO FUNCIONA? Usamos un tag ancla estilizado para parecer un botón.
            
-           RESULT: Proper semantics that work correctly with browser navigation and
-           accessibility tools. -->
+           RESULTADO: Semántica adecuada que funciona correctamente con navegación del navegador
+           y herramientas de accesibilidad. -->
       <a href="#discover" class="hero-cta" data-i18n="hero.cta">Discover the Legend</a>
     </div>
     
-    <!-- WHY: The scroll indicator is a decorative element that hints at more content
-         below. aria-hidden="true" tells screen readers to ignore it since it's purely
-         visual and doesn't add meaningful content.
+    <!-- ¿POR QUÉ? El indicador de scroll es un elemento decorativo que sugiere más contenido
+         abajo. aria-hidden="true" le dice a los lectores de pantalla que lo ignoren ya que es
+         puramente visual y no agrega contenido significativo.
          
-         HOW: aria-hidden removes the element from the accessibility tree.
+         ¿CÓMO FUNCIONA? aria-hidden remueve el elemento del árbol de accesibilidad.
          
-         RESULT: Screen readers don't announce the decorative icon, reducing clutter. -->
+         RESULTADO: Los lectores de pantalla no anuncian el ícono decorativo, reduciendo desorden. -->
     <div class="scroll-indicator" aria-hidden="true" data-i18n="hero.scroll">
-      <!-- WHY: We use a simple Unicode character (↓) for the scroll arrow rather than
-           an image or icon font. This loads instantly with no HTTP request.
+      <!-- ¿POR QUÉ? Usamos un carácter Unicode simple (↓) para la flecha de scroll en lugar de
+           una imagen o fuente de íconos. Esto carga instantáneamente sin solicitud HTTP.
            
-           HOW: HTML entity or Unicode character for down arrow.
+           ¿CÓMO FUNCIONA? Entidad HTML o carácter Unicode para flecha abajo.
            
-           RESULT: Instant-loading, lightweight icon. -->
+           RESULTADO: Ícono de carga instantánea y liviano. -->
       ↓ Scroll Down
     </div>
   </section>
   
-  <!-- WHY: The <aside> element represents content that's tangentially related to the
-       main content (sidebar navigation, related links, ads). Using it helps screen
-       readers understand this isn't primary content.
+  <!-- ¿POR QUÉ? El elemento <aside> representa contenido que está tangencialmente relacionado
+       al contenido principal (navegación lateral, enlaces relacionados, anuncios). Usarlo ayuda
+       a los lectores de pantalla a entender que esto no es contenido primario.
        
-       HOW: Aside with class for styling.
+       ¿CÓMO FUNCIONA? Aside con clase para estilizado.
        
-       RESULT: Semantic structure that helps assistive technology navigate the page. -->
+       RESULTADO: Estructura semántica que ayuda a tecnología asistiva a navegar la página. -->
   <aside class="utility-sidebar" aria-label="Quick navigation" data-i18n-aria="sidebar.label">
-    <!-- WHY: The aria-label describes the purpose of this navigation section for screen
-         reader users, since there are multiple navigation areas on the page (header
-         and sidebar).
+    <!-- ¿POR QUÉ? El aria-label describe el propósito de esta sección de navegación para usuarios
+         de lectores de pantalla, ya que hay múltiples áreas de navegación en la página (header
+         y sidebar).
          
-         HOW: Descriptive label that distinguishes this nav from the main header nav.
+         ¿CÓMO FUNCIONA? Label descriptivo que distingue esta nav de la nav principal del header.
          
-         RESULT: Screen reader users can differentiate between navigation sections. -->
+         RESULTADO: Los usuarios de lectores de pantalla pueden diferenciar entre secciones de navegación. -->
     <nav aria-label="Utility navigation">
       <ul class="sidebar-links">
         <li>
           <a href="festival-guide.html#lineup">
-            <!-- WHY: The span.icon creates a container for an icon. We could add an SVG
-                 or icon font character here. The span allows us to style the icon
-                 independently from the text.
+            <!-- ¿POR QUÉ? El span.icon crea un contenedor para un ícono. Podríamos agregar un SVG
+                 o carácter de fuente de íconos aquí. El span nos permite estilizar el ícono
+                 independientemente del texto.
                  
-                 HOW: Inline span with class that's styled in sidebar.css.
+                 ¿CÓMO FUNCIONA? Span inline con clase que se estiliza en sidebar.css.
                  
-                 RESULT: Flexible icon container that works with any icon system. -->
+                 RESULTADO: Contenedor de ícono flexible que funciona con cualquier sistema de íconos. -->
             <span class="icon" aria-hidden="true">🎵</span>
             <span data-i18n="sidebar.lineup">Line-Up</span>
           </a>
@@ -367,65 +382,71 @@
     </nav>
   </aside>
   
-  <!-- WHY: The sidebar toggle button appears on mobile/tablet to show/hide the sidebar.
-       It's positioned as a floating action button in the bottom-right corner.
+  <!-- ¿POR QUÉ? El botón de toggle del sidebar aparece en móvil/tablet para mostrar/ocultar el sidebar.
+       Está posicionado como un botón de acción flotante en la esquina inferior derecha.
        
-       HOW: Button with aria-label for accessibility and aria-expanded to indicate state.
+       ¿CÓMO FUNCIONA? Botón con aria-label para accesibilidad y aria-expanded para indicar estado.
        
-       RESULT: Mobile-friendly sidebar access that's accessible to all users. -->
+       RESULTADO: Acceso amigable al sidebar en móviles que es accesible para todos los usuarios. -->
   <button class="sidebar-toggle" aria-label="Toggle sidebar" aria-expanded="false" data-i18n-aria="sidebar.toggle">
-    <!-- WHY: A simple "+" icon (or equivalent) indicates the button will reveal something.
-         We could use "☰" (hamburger) or a custom SVG here.
+    <!-- ¿POR QUÉ? Un ícono "+" simple (o equivalente) indica que el botón revelará algo.
+         Podríamos usar "☰" (hamburguesa) o un SVG personalizado aquí.
          
-         HOW: Unicode character that looks like a menu or plus icon.
+         ¿CÓMO FUNCIONA? Carácter Unicode que parece un ícono de menú o más.
          
-         RESULT: Universal icon that's understood across cultures. -->
+         RESULTADO: Ícono universal que se entiende en todas las culturas. -->
     ☰
   </button>
   
-  <!-- WHY: The <main> element identifies the primary content of the page. There should
-       be only ONE <main> per page, and it should contain the unique content (not
-       headers, footers, or sidebars that repeat across pages).
+  <!-- ¿POR QUÉ? El elemento <main> identifica el contenido primario de la página. Debe haber
+       solo UN <main> por página, y debe contener el contenido único (no headers, footers o
+       sidebars que se repiten en todas las páginas).
        
-       HOW: Main tag wrapping the primary content sections.
+       ¿CÓMO FUNCIONA? Tag main envolviendo las secciones de contenido principal.
        
-       RESULT: Screen readers can jump directly to main content, skipping navigation.
-       This is crucial for keyboard and screen reader users. -->
+       RESULTADO: Los lectores de pantalla pueden saltar directamente al contenido principal,
+       omitiendo la navegación. Esto es crucial para usuarios de teclado y lectores de pantalla. -->
   <main id="discover">
-    <!-- WHY: This content placeholder section shows where future content will go. Using
-         semantic HTML even for placeholders maintains good structure.
+    <!-- ¿POR QUÉ? Esta sección placeholder de contenido muestra dónde irá el contenido futuro.
+         Usar HTML semántico incluso para placeholders mantiene buena estructura.
          
-         HOW: Section with heading and placeholder text.
+         ¿CÓMO FUNCIONA? Section con encabezado y texto placeholder.
          
-         RESULT: Clear document structure ready for real content. -->
+         ⚠️ PERSONALIZA ESTE CONTENIDO: Reemplaza este texto con la historia real de tu festival
+         
+         RESULTADO: Estructura de documento clara lista para contenido real. -->
     <section class="section-spacing container">
-      <!-- WHY: The <h2> creates a heading hierarchy under the main <h1>. Proper heading
-           order (h1 → h2 → h3) is crucial for accessibility - screen readers use headings
-           to navigate and understand page structure.
+      <!-- ¿POR QUÉ? El <h2> crea una jerarquía de encabezados bajo el <h1> principal. El orden
+           adecuado de encabezados (h1 → h2 → h3) es crucial para accesibilidad - los lectores
+           de pantalla usan encabezados para navegar y entender la estructura de la página.
            
-           HOW: h2 for section headings, h3 for subsections, etc.
+           ¿CÓMO FUNCIONA? h2 para encabezados de sección, h3 para subsecciones, etc.
            
-           RESULT: Logical document outline that's easy to navigate with assistive technology. -->
+           RESULTADO: Esquema de documento lógico que es fácil de navegar con tecnología asistiva. -->
       <h2 class="text-center" data-i18n="section.discover.title">Discover the Kingdom</h2>
       
       <p class="text-center text-muted" style="margin-top: var(--spacing-lg);" data-i18n="section.discover.text">
-        <!-- WHY: We include placeholder text to demonstrate layout and typography, making
-             it easier to visualize how real content will look.
+        <!-- ⚠️ PERSONALIZA ESTE CONTENIDO: Escribe aquí la historia completa de tu festival
+        
+             ¿POR QUÉ? Incluimos texto placeholder para demostrar layout y tipografía, haciendo
+             más fácil visualizar cómo se verá el contenido real.
              
-             HOW: Simple lorem ipsum or descriptive placeholder text.
+             ¿CÓMO FUNCIONA? Simple lorem ipsum o texto placeholder descriptivo.
              
-             RESULT: Complete layout preview that helps with design decisions. -->
+             RESULTADO: Vista previa completa del layout que ayuda con decisiones de diseño. -->
         More content coming soon... This is where we'll tell the complete story of Planaxis,
         the ancient underwater kingdom that existed long before the surface world knew of its wonders.
       </p>
     </section>
     
-    <!-- WHY: Multiple content sections help organize the page into digestible chunks.
-         Each section should have a clear purpose and heading.
+    <!-- ¿POR QUÉ? Múltiples secciones de contenido ayudan a organizar la página en pedazos
+         digeribles. Cada sección debe tener un propósito y encabezado claro.
          
-         HOW: Separate section tags with appropriate spacing and structure.
+         ¿CÓMO FUNCIONA? Tags section separados con espaciado y estructura apropiados.
          
-         RESULT: Scannable, well-organized content that's easy to navigate. -->
+         ⚠️ AGREGA TU CONTENIDO: Expande estas secciones con tu propio contenido del festival
+         
+         RESULTADO: Contenido escaneable y bien organizado que es fácil de navegar. -->
     <section id="festival" class="section-spacing container">
       <h2 class="text-center" data-i18n="section.festival.title">Festival Experience</h2>
       <p class="text-center text-muted" style="margin-top: var(--spacing-lg);" data-i18n="section.festival.text">
@@ -451,30 +472,32 @@
     </section>
   </main>
   
-  <!-- WHY: The <footer> element marks the page footer, typically containing copyright,
-       legal links, and secondary navigation. Like <header>, it's semantic HTML that
-       helps with structure and accessibility.
+  <!-- ¿POR QUÉ? El elemento <footer> marca el pie de página, típicamente conteniendo copyright,
+       enlaces legales y navegación secundaria. Como <header>, es HTML semántico que ayuda
+       con estructura y accesibilidad.
        
-       HOW: Footer tag with appropriate content.
+       ¿CÓMO FUNCIONA? Tag footer con contenido apropiado.
        
-       RESULT: Clear document structure with semantic meaning. -->
+       RESULTADO: Estructura de documento clara con significado semántico. -->
   <footer style="background-color: var(--color-bg-secondary); padding: var(--spacing-2xl); text-align: center;">
-    <!-- WHY: Copyright information typically goes in the footer. The &copy; entity
-         displays the copyright symbol (©).
+    <!-- ¿POR QUÉ? La información de copyright típicamente va en el footer. La entidad &copy;
+         muestra el símbolo de copyright (©).
          
-         HOW: HTML entity &copy; renders as ©.
+         ¿CÓMO FUNCIONA? La entidad HTML &copy; se renderiza como ©.
          
-         RESULT: Proper copyright notice with the correct symbol. -->
+         ⚠️ PERSONALIZA: Cambia el año y el nombre a tu proyecto
+         
+         RESULTADO: Aviso de copyright adecuado con el símbolo correcto. -->
     <p class="text-muted" data-i18n="footer.copyright">
       &copy; 2024 Tomorrowland - The Story of Planaxis. All rights reserved.
     </p>
     
-    <!-- WHY: Footer navigation provides quick access to important pages (privacy policy,
-         terms, etc.) without cluttering the main header.
+    <!-- ¿POR QUÉ? La navegación del footer proporciona acceso rápido a páginas importantes
+         (política de privacidad, términos, etc.) sin saturar el header principal.
          
-         HOW: Simple unordered list of links with inline styling for horizontal layout.
+         ¿CÓMO FUNCIONA? Lista simple desordenada de enlaces con estilizado inline para layout horizontal.
          
-         RESULT: Convenient access to secondary pages. -->
+         RESULTADO: Acceso conveniente a páginas secundarias. -->
     <nav aria-label="Footer navigation" data-i18n-aria="footer.nav.label" style="margin-top: var(--spacing-md);">
       <ul style="display: flex; justify-content: center; gap: var(--spacing-lg); flex-wrap: wrap;">
         <li><a href="#privacy" class="text-muted" data-i18n="footer.privacy">Privacy Policy</a></li>
@@ -485,16 +508,15 @@
     </nav>
   </footer>
   
-  <!-- WHY: JavaScript goes at the end of the body (not in the head) so the entire
-       HTML structure loads and renders before scripts execute. This improves perceived
-       performance - users see content faster.
+  <!-- ¿POR QUÉ? JavaScript va al final del body (no en el head) para que toda la estructura
+       HTML cargue y renderice antes de que los scripts se ejecuten. Esto mejora el rendimiento
+       percibido - los usuarios ven contenido más rápido.
        
-       HOW: We now use a modular JavaScript approach with ES6 modules. The main.js
-       file handles all interactive functionality including i18n and the old inline
-       functionality.
+       ¿CÓMO FUNCIONA? Ahora usamos un enfoque modular de JavaScript con módulos ES6. El archivo
+       main.js maneja toda la funcionalidad interactiva incluyendo i18n y la funcionalidad inline
+       antigua.
        
-       RESULT: Cleaner, more maintainable code with separation of concerns. -->
+       RESULTADO: Código más limpio y mantenible con separación de preocupaciones. -->
   <script src="js/main.js" type="module"></script>
 </body>
 </html>
-

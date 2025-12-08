@@ -1,12 +1,12 @@
-// WHY: This translations object is the SINGLE SOURCE OF TRUTH for all text in the
-// application. By centralizing translations, we avoid scattered hardcoded text and
-// make it easy to add new languages in the future.
+// POR QUÉ: Este objeto de traducciones es la ÚNICA FUENTE DE VERDAD para todo el texto de la
+// aplicación. Al centralizar las traducciones, evitamos el texto codificado de forma dispersa y
+// facilitamos la incorporación de nuevos idiomas en el futuro.
 //
-// HOW: We use a JavaScript object with language codes (en, es) as keys, and nested
-// objects containing all translatable text identified by unique keys.
+// CÓMO: Utilizamos un objeto JavaScript con códigos de idioma (en, es) como claves y objetos anidados
+// que contienen todo el texto traducible identificado por claves únicas.
 //
-// RESULT: Easy to maintain, easy to extend with new languages, and ensures
-// consistency across the entire application.
+// RESULTADO: Fácil de mantener, fácil de ampliar con nuevos idiomas y garantiza la
+// coherencia en toda la aplicación.
 
 export const translations = {
   // English translations
