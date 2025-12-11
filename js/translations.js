@@ -168,7 +168,35 @@ export const translations = {
     'faq_q7': 'How do I get to the festival from Brussels?',
     'faq_a7': 'Official Shuttle Buses: Book via the Tomorrowland website. Buses run continuously between Brussels city center and the festival from 12:00 PM to 2:00 AM. Train: Take a train to Boom station (20 minutes from Brussels Central). Then walk 20 minutes or take a shuttle bus to the festival entrance. Taxi/Uber: Direct ride costs €50-70. Drop-off zone is 1km from the entrance (security reasons). Organized Bus Tours: Many companies offer round-trip packages. Check the official Tomorrowland website for verified partners.',
     'faq_q8': 'Can I transfer my ticket to someone else?',
-    'faq_a8': 'Yes, but only through the official Tomorrowland Ticket Exchange Platform (opens 4 weeks before the festival). Process: List your ticket on the official exchange platform, set your price (cannot exceed original price + service fees), wait for someone to purchase it, Tomorrowland transfers the ticket to the new owner, you receive your refund within 14 days. ⚠️ Warning: Tickets sold outside the official platform are invalid and will not grant entry.'
+    'faq_a8': 'Yes, but only through the official Tomorrowland Ticket Exchange Platform (opens 4 weeks before the festival). Process: List your ticket on the official exchange platform, set your price (cannot exceed original price + service fees), wait for someone to purchase it, Tomorrowland transfers the ticket to the new owner, you receive your refund within 14 days. ⚠️ Warning: Tickets sold outside the official platform are invalid and will not grant entry.',
+    
+    // Line-Up Filters Section (Index Page)
+    'lineup.filter.title': 'Line-Up 2018',
+    'lineup.filter.subtitle': 'Filter by stage or day to find your favorite artists.',
+    'filter.stage.label': 'Stage:',
+    'filter.stage.all': 'All Stages',
+    'filter.stage.mainstage': '🎪 Mainstage',
+    'filter.stage.atmosphere': '🌊 Atmosphere',
+    'filter.stage.freedom': '🦋 Freedom',
+    'filter.day.label': 'Day:',
+    'filter.day.all': 'All Days',
+    'filter.day.friday': 'Friday',
+    'filter.day.saturday': 'Saturday',
+    'filter.day.sunday': 'Sunday',
+    'filter.aria.stage': 'Filter by stage',
+    'filter.aria.day': 'Filter by day',
+    'lineup.no_results': 'No artists found for the selected filters. Try a different combination.',
+    'lineup.view_artist': 'View Artist',
+    
+    // Experience Gallery Section (Index Page)
+    'gallery.title': 'Experience Gallery',
+    'gallery.subtitle': 'Discover the visual spectacle of Planaxis through our curated gallery.',
+    'gallery.mainstage.title': 'The Planaxis Main Stage',
+    'gallery.mainstage.description': 'Where the underwater kingdom comes alive',
+    'gallery.crowd.title': 'People of Tomorrow',
+    'gallery.crowd.description': 'United under the sea',
+    'gallery.seahorses.title': 'Golden Seahorses',
+    'gallery.bioluminescence.title': 'Bioluminescence'
   },
   
   // Spanish translations
@@ -330,7 +358,35 @@ export const translations = {
     'faq_q7': '¿Cómo llego desde Bruselas?',
     'faq_a7': 'Hay trenes especiales hacia la estación de Boom. Desde ahí, sigue las señales de \'A Tomorrowland\' (30 min a pie).',
     'faq_q8': '¿Puedo transferir mi entrada?',
-    'faq_a8': 'No. Las entradas son nominativas. Solo se pueden cambiar a través del Exchange Desk oficial.'
+    'faq_a8': 'No. Las entradas son nominativas. Solo se pueden cambiar a través del Exchange Desk oficial.',
+    
+    // Sección de Filtros Line-Up (Página Index)
+    'lineup.filter.title': 'Line-Up 2018',
+    'lineup.filter.subtitle': 'Filtra por escenario o día para encontrar a tus artistas favoritos.',
+    'filter.stage.label': 'Escenario:',
+    'filter.stage.all': 'Todos los Escenarios',
+    'filter.stage.mainstage': '🎪 Escenario Principal',
+    'filter.stage.atmosphere': '🌊 Atmosphere',
+    'filter.stage.freedom': '🦋 Freedom',
+    'filter.day.label': 'Día:',
+    'filter.day.all': 'Todos los Días',
+    'filter.day.friday': 'Viernes',
+    'filter.day.saturday': 'Sábado',
+    'filter.day.sunday': 'Domingo',
+    'filter.aria.stage': 'Filtrar por escenario',
+    'filter.aria.day': 'Filtrar por día',
+    'lineup.no_results': 'No se encontraron artistas para los filtros seleccionados. Prueba una combinación diferente.',
+    'lineup.view_artist': 'Ver Artista',
+    
+    // Sección Galería de Experiencia (Página Index)
+    'gallery.title': 'Galería de Experiencia',
+    'gallery.subtitle': 'Descubre el espectáculo visual de Planaxis a través de nuestra galería curada.',
+    'gallery.mainstage.title': 'El Escenario Principal de Planaxis',
+    'gallery.mainstage.description': 'Donde el reino submarino cobra vida',
+    'gallery.crowd.title': 'Gente del Mañana',
+    'gallery.crowd.description': 'Unidos bajo el mar',
+    'gallery.seahorses.title': 'Caballitos de Mar Dorados',
+    'gallery.bioluminescence.title': 'Bioluminiscencia'
   }
 };
 

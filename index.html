@@ -404,7 +404,7 @@
            RESULTADO: Esquema de documento lógico que es fácil de navegar con tecnología asistiva. -->
       <h2 class="text-center" data-i18n="section.discover.title">Discover the Kingdom</h2>
       
-      <p class="text-center text-muted" style="margin-top: var(--spacing-lg);" data-i18n="section.discover.text">
+      <p class="text-center text-muted mt-lg" data-i18n="section.discover.text">
         <!-- ⚠️ PERSONALIZA ESTE CONTENIDO: Escribe aquí la historia completa de tu festival
         
              ¿POR QUÉ? Incluimos texto placeholder para demostrar layout y tipografía, haciendo
@@ -428,7 +428,7 @@
          RESULTADO: Contenido escaneable y bien organizado que es fácil de navegar. -->
     <section id="festival" class="section-spacing container">
       <h2 class="text-center" data-i18n="section.festival.title">Festival Experience</h2>
-      <p class="text-center text-muted" style="margin-top: var(--spacing-lg);" data-i18n="section.festival.text">
+      <p class="text-center text-muted mt-lg" data-i18n="section.festival.text">
         Immerse yourself in the magic of Tomorrowland 2018, where the story of Planaxis
         comes alive through spectacular stages, world-class performances, and unforgettable moments.
       </p>
@@ -502,7 +502,7 @@
     
     <section id="brand-activation" class="section-spacing container">
       <h2 class="text-center" data-i18n="section.brand.title">Brand Activation</h2>
-      <p class="text-center text-muted" style="margin-top: var(--spacing-lg);" data-i18n="section.brand.text">
+      <p class="text-center text-muted mt-lg" data-i18n="section.brand.text">
         Experience innovative brand partnerships that enhance the Planaxis story through
         interactive installations and immersive experiences.
       </p>
@@ -526,11 +526,14 @@
          4. Anima la transición entre los dos estados automáticamente
          
          Es como "morph" en PowerPoint, pero para el DOM. ¡Sin librerías!
+         
+         NOTA: Esta sección usa el background primario del body (--color-bg-primary)
+         que ya está definido en los estilos base. No necesita inline styles.
          ==================================================================== -->
-    <section id="lineup" class="section-spacing" style="background-color: var(--color-bg-primary);">
+    <section id="lineup" class="section-spacing">
       <div class="container">
-        <h2 class="text-center">Line-Up 2018</h2>
-        <p class="text-center text-muted mt-md">
+        <h2 class="text-center" data-i18n="lineup.filter.title">Line-Up 2018</h2>
+        <p class="text-center text-muted mt-md" data-i18n="lineup.filter.subtitle">
           Filter by stage or day to find your favorite artists.
         </p>
         
@@ -540,27 +543,31 @@
              Usamos botones en lugar de <select> para mejor UX y accesibilidad.
              Los botones son más fáciles de tap en móvil y permiten selección
              múltiple visual más clara.
+             
+             ¿POR QUÉ data-i18n en los botones?
+             Permite traducir las etiquetas de los filtros automáticamente
+             cuando el usuario cambia de idioma.
              ================================================================ -->
         <div class="filter-controls mt-lg mb-xl">
           <!-- Filtro por Escenario -->
           <div class="filter-group">
-            <span class="filter-label">Stage:</span>
-            <div class="filter-buttons" role="group" aria-label="Filter by stage">
-              <button class="filter-btn active" data-filter-stage="all">All Stages</button>
-              <button class="filter-btn" data-filter-stage="mainstage">🎪 Mainstage</button>
-              <button class="filter-btn" data-filter-stage="atmosphere">🌊 Atmosphere</button>
-              <button class="filter-btn" data-filter-stage="freedom">🦋 Freedom</button>
+            <span class="filter-label" data-i18n="filter.stage.label">Stage:</span>
+            <div class="filter-buttons" role="group" aria-label="Filter by stage" data-i18n-aria="filter.aria.stage">
+              <button class="filter-btn active" data-filter-stage="all" data-i18n="filter.stage.all">All Stages</button>
+              <button class="filter-btn" data-filter-stage="mainstage" data-i18n="filter.stage.mainstage">🎪 Mainstage</button>
+              <button class="filter-btn" data-filter-stage="atmosphere" data-i18n="filter.stage.atmosphere">🌊 Atmosphere</button>
+              <button class="filter-btn" data-filter-stage="freedom" data-i18n="filter.stage.freedom">🦋 Freedom</button>
             </div>
           </div>
           
           <!-- Filtro por Día -->
           <div class="filter-group">
-            <span class="filter-label">Day:</span>
-            <div class="filter-buttons" role="group" aria-label="Filter by day">
-              <button class="filter-btn active" data-filter-day="all">All Days</button>
-              <button class="filter-btn" data-filter-day="friday">Friday</button>
-              <button class="filter-btn" data-filter-day="saturday">Saturday</button>
-              <button class="filter-btn" data-filter-day="sunday">Sunday</button>
+            <span class="filter-label" data-i18n="filter.day.label">Day:</span>
+            <div class="filter-buttons" role="group" aria-label="Filter by day" data-i18n-aria="filter.aria.day">
+              <button class="filter-btn active" data-filter-day="all" data-i18n="filter.day.all">All Days</button>
+              <button class="filter-btn" data-filter-day="friday" data-i18n="filter.day.friday">Friday</button>
+              <button class="filter-btn" data-filter-day="saturday" data-i18n="filter.day.saturday">Saturday</button>
+              <button class="filter-btn" data-filter-day="sunday" data-i18n="filter.day.sunday">Sunday</button>
             </div>
           </div>
         </div>
@@ -587,7 +594,7 @@
               <p class="card__description">Friday 22:00 - 00:00 • Electro House legends bringing explosive energy.</p>
             </div>
             <footer class="card__footer">
-              <a href="festival-guide.html#lineup" class="btn btn--outline">View Artist</a>
+              <a href="festival-guide.html#lineup" class="btn btn--outline" data-i18n="lineup.view_artist">View Artist</a>
             </footer>
           </article>
           
@@ -602,7 +609,7 @@
               <p class="card__description">Saturday 20:00 - 22:00 • Deep house master creating melodic journeys.</p>
             </div>
             <footer class="card__footer">
-              <a href="festival-guide.html#lineup" class="btn btn--outline">View Artist</a>
+              <a href="festival-guide.html#lineup" class="btn btn--outline" data-i18n="lineup.view_artist">View Artist</a>
             </footer>
           </article>
           
@@ -617,7 +624,7 @@
               <p class="card__description">Sunday 18:00 - 20:00 • Techno queen with hypnotic dark rhythms.</p>
             </div>
             <footer class="card__footer">
-              <a href="festival-guide.html#lineup" class="btn btn--outline">View Artist</a>
+              <a href="festival-guide.html#lineup" class="btn btn--outline" data-i18n="lineup.view_artist">View Artist</a>
             </footer>
           </article>
           
@@ -632,7 +639,7 @@
               <p class="card__description">Saturday 22:00 - 00:00 • EDM superstar with chart-topping anthems.</p>
             </div>
             <footer class="card__footer">
-              <a href="festival-guide.html#lineup" class="btn btn--outline">View Artist</a>
+              <a href="festival-guide.html#lineup" class="btn btn--outline" data-i18n="lineup.view_artist">View Artist</a>
             </footer>
           </article>
           
@@ -647,7 +654,7 @@
               <p class="card__description">Friday 18:00 - 20:00 • Ethereal melodic techno duo.</p>
             </div>
             <footer class="card__footer">
-              <a href="festival-guide.html#lineup" class="btn btn--outline">View Artist</a>
+              <a href="festival-guide.html#lineup" class="btn btn--outline" data-i18n="lineup.view_artist">View Artist</a>
             </footer>
           </article>
           
@@ -662,7 +669,7 @@
               <p class="card__description">Sunday 22:00 - 00:00 • Trance legend closing the weekend.</p>
             </div>
             <footer class="card__footer">
-              <a href="festival-guide.html#lineup" class="btn btn--outline">View Artist</a>
+              <a href="festival-guide.html#lineup" class="btn btn--outline" data-i18n="lineup.view_artist">View Artist</a>
             </footer>
           </article>
           
@@ -677,7 +684,7 @@
               <p class="card__description">Friday 20:00 - 22:00 • Belgian techno powerhouse.</p>
             </div>
             <footer class="card__footer">
-              <a href="festival-guide.html#lineup" class="btn btn--outline">View Artist</a>
+              <a href="festival-guide.html#lineup" class="btn btn--outline" data-i18n="lineup.view_artist">View Artist</a>
             </footer>
           </article>
           
@@ -692,7 +699,7 @@
               <p class="card__description">Saturday 16:00 - 18:00 • High-tech minimal maestro.</p>
             </div>
             <footer class="card__footer">
-              <a href="festival-guide.html#lineup" class="btn btn--outline">View Artist</a>
+              <a href="festival-guide.html#lineup" class="btn btn--outline" data-i18n="lineup.view_artist">View Artist</a>
             </footer>
           </article>
           
@@ -707,20 +714,20 @@
               <p class="card__description">Sunday 20:00 - 22:00 • Underground techno innovator.</p>
             </div>
             <footer class="card__footer">
-              <a href="festival-guide.html#lineup" class="btn btn--outline">View Artist</a>
+              <a href="festival-guide.html#lineup" class="btn btn--outline" data-i18n="lineup.view_artist">View Artist</a>
             </footer>
           </article>
         </div>
         
         <!-- Mensaje cuando no hay resultados -->
-        <p class="no-results text-center text-muted mt-xl" hidden>
+        <p class="no-results text-center text-muted mt-xl" hidden data-i18n="lineup.no_results">
           No artists found for the selected filters. Try a different combination.
         </p>
       </div>
     </section>
     <section id="cultural-events" class="section-spacing container">
       <h2 class="text-center" data-i18n="section.cultural.title">Cultural Events</h2>
-      <p class="text-center text-muted" style="margin-top: var(--spacing-lg);" data-i18n="section.cultural.text">
+      <p class="text-center text-muted mt-lg" data-i18n="section.cultural.text">
         Beyond the music, discover art installations, theatrical performances, and cultural
         celebrations that bring the underwater kingdom to life.
       </p>
@@ -745,8 +752,8 @@
          ==================================================================== -->
     <section id="gallery" class="section-spacing">
       <div class="container">
-        <h2 class="text-center">Experience Gallery</h2>
-        <p class="text-center text-muted mt-md mb-xl">
+        <h2 class="text-center" data-i18n="gallery.title">Experience Gallery</h2>
+        <p class="text-center text-muted mt-md mb-xl" data-i18n="gallery.subtitle">
           Discover the visual spectacle of Planaxis through our curated gallery.
         </p>
       </div>
@@ -759,8 +766,8 @@
             <!-- ⚠️ PERSONALIZA: Reemplaza con tu imagen del main stage -->
             <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='800' height='400'%3E%3Cdefs%3E%3ClinearGradient id='g1' x1='0%25' y1='0%25' x2='100%25' y2='100%25'%3E%3Cstop offset='0%25' stop-color='%230a1e3c'/%3E%3Cstop offset='100%25' stop-color='%23050a14'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect fill='url(%23g1)' width='800' height='400'/%3E%3Ctext fill='%23ffd700' x='50%25' y='50%25' text-anchor='middle' dy='.3em' font-family='system-ui' font-size='24'%3EMain Stage%3C/text%3E%3C/svg%3E" alt="Planaxis Main Stage at sunset" loading="lazy">
             <figcaption class="bento-item__overlay">
-              <h3 class="bento-item__title">The Planaxis Main Stage</h3>
-              <p class="bento-item__description">Where the underwater kingdom comes alive</p>
+              <h3 class="bento-item__title" data-i18n="gallery.mainstage.title">The Planaxis Main Stage</h3>
+              <p class="bento-item__description" data-i18n="gallery.mainstage.description">Where the underwater kingdom comes alive</p>
             </figcaption>
           </figure>
           
@@ -768,8 +775,8 @@
           <figure class="bento-item bento-item--sidebar">
             <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='500'%3E%3Crect fill='%230a1e3c' width='400' height='500'/%3E%3Ctext fill='%2300bcd4' x='50%25' y='50%25' text-anchor='middle' dy='.3em' font-family='system-ui'%3ECrowd Shot%3C/text%3E%3C/svg%3E" alt="Festival crowd at night" loading="lazy">
             <figcaption class="bento-item__overlay">
-              <h3 class="bento-item__title">People of Tomorrow</h3>
-              <p class="bento-item__description">United under the sea</p>
+              <h3 class="bento-item__title" data-i18n="gallery.crowd.title">People of Tomorrow</h3>
+              <p class="bento-item__description" data-i18n="gallery.crowd.description">United under the sea</p>
             </figcaption>
           </figure>
           
@@ -777,14 +784,14 @@
           <figure class="bento-item bento-item--1">
             <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='300'%3E%3Crect fill='%230a1e3c' width='400' height='300'/%3E%3Ctext fill='%23a0b3c5' x='50%25' y='50%25' text-anchor='middle' dy='.3em' font-family='system-ui'%3EStage Details%3C/text%3E%3C/svg%3E" alt="Stage decoration details" loading="lazy">
             <figcaption class="bento-item__overlay">
-              <h3 class="bento-item__title">Golden Seahorses</h3>
+              <h3 class="bento-item__title" data-i18n="gallery.seahorses.title">Golden Seahorses</h3>
             </figcaption>
           </figure>
           
           <figure class="bento-item bento-item--2">
             <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='300'%3E%3Crect fill='%230a1e3c' width='400' height='300'/%3E%3Ctext fill='%23a0b3c5' x='50%25' y='50%25' text-anchor='middle' dy='.3em' font-family='system-ui'%3ELight Show%3C/text%3E%3C/svg%3E" alt="Bioluminescent light show" loading="lazy">
             <figcaption class="bento-item__overlay">
-              <h3 class="bento-item__title">Bioluminescence</h3>
+              <h3 class="bento-item__title" data-i18n="gallery.bioluminescence.title">Bioluminescence</h3>
             </figcaption>
           </figure>
           
@@ -805,14 +812,21 @@
     </section>
   </main>
   
-  <!-- ¿POR QUÉ? El elemento <footer> marca el pie de página, típicamente conteniendo copyright,
-       enlaces legales y navegación secundaria. Como <header>, es HTML semántico que ayuda
-       con estructura y accesibilidad.
+  <!-- ========================================================================
+       FOOTER
        
-       ¿CÓMO FUNCIONA? Tag footer con contenido apropiado.
+       ¿POR QUÉ? El elemento <footer> marca el pie de página, típicamente conteniendo
+       copyright, enlaces legales y navegación secundaria. Como <header>, es HTML
+       semántico que ayuda con estructura y accesibilidad.
        
-       RESULTADO: Estructura de documento clara con significado semántico. -->
-  <footer class="site-footer text-center">
+       ¿CÓMO FUNCIONA? Usamos clases semánticas (.site-footer, .section-spacing) para
+       mantener consistencia con la arquitectura de capas CSS. Los estilos están
+       definidos en style.css dentro de la sección de footer.
+       
+       RESULTADO: Estructura de documento clara con significado semántico y estilos
+       mantenibles sin inline styles.
+       ======================================================================== -->
+  <footer class="site-footer section-spacing text-center">
     <!-- Copyright -->
     <p class="text-muted" data-i18n="footer.copyright">
       &copy; 2024 Tomorrowland - The Story of Planaxis. All rights reserved.

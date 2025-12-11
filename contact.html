@@ -58,15 +58,34 @@
         Planaxis
       </a>
       
-      <!-- Toggle del Menú Móvil -->
-      <button class="mobile-menu-toggle" aria-label="Toggle navigation menu" aria-expanded="false" data-i18n-aria="nav.toggle.menu">
-        <span style="display:block;width:25px;height:3px;background:white;margin:5px 0;"></span>
-        <span style="display:block;width:25px;height:3px;background:white;margin:5px 0;"></span>
-        <span style="display:block;width:25px;height:3px;background:white;margin:5px 0;"></span>
+      <!-- ========================================================================
+           BOTÓN HAMBURGUESA - Menú Móvil Accesible
+           
+           ¿POR QUÉ .hamburger-line en vez de inline styles?
+           Los estilos están centralizados en style.css para consistencia.
+           La clase permite la animación de transformación a "X" cuando el
+           menú está abierto (vía data-menu-open attribute).
+           ======================================================================== -->
+      <button 
+        class="mobile-menu-toggle" 
+        aria-label="Toggle navigation menu" 
+        aria-expanded="false"
+        aria-controls="main-navigation"
+        data-menu-open="false"
+        data-i18n-aria="nav.toggle.menu"
+      >
+        <span class="hamburger-line"></span>
+        <span class="hamburger-line"></span>
+        <span class="hamburger-line"></span>
       </button>
       
-      <!-- Enlaces de Navegación -->
-      <ul class="nav-links">
+      <!-- ========================================================================
+           MENÚ DE NAVEGACIÓN
+           
+           id="main-navigation" conecta con aria-controls del botón.
+           data-visible controla el estado de visibilidad para CSS y JS.
+           ======================================================================== -->
+      <ul class="nav-links" id="main-navigation" data-visible="false">
         <li><a href="index.html#festival" data-i18n="nav.festival">Festival</a></li>
         <li><a href="index.html#lineup" data-i18n="nav.lineup">Line-Up</a></li>
         <li><a href="index.html#brand-activation" data-i18n="nav.brand">Brand Activation</a></li>
@@ -272,14 +291,18 @@
   
   <!-- ========================================================================
        FOOTER
+       
+       ¿POR QUÉ? Usamos clases semánticas (.site-footer) en lugar de estilos
+       inline para mantener consistencia con la arquitectura de capas CSS.
+       Los estilos están definidos en style.css dentro de @layer components.
        ======================================================================== -->
-  <footer style="background-color: var(--color-bg-secondary); padding: var(--spacing-2xl); text-align: center;">
+  <footer class="site-footer section-spacing text-center">
     <p class="text-muted" data-i18n="footer.copyright">
       &copy; 2024 Tomorrowland - The Story of Planaxis. All rights reserved.
     </p>
     
-    <nav aria-label="Footer navigation" data-i18n-aria="footer.nav.label" style="margin-top: var(--spacing-md);">
-      <ul style="display: flex; justify-content: center; gap: var(--spacing-lg); flex-wrap: wrap;">
+    <nav aria-label="Footer navigation" data-i18n-aria="footer.nav.label">
+      <ul>
         <li><a href="#privacy" class="text-muted" data-i18n="footer.privacy">Privacy Policy</a></li>
         <li><a href="#terms" class="text-muted" data-i18n="footer.terms">Terms of Service</a></li>
         <li><a href="contact.html" class="text-muted" data-i18n="footer.contact">Contact Us</a></li>
