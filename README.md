@@ -10,6 +10,38 @@ Este glosario explica los términos técnicos más importantes del proyecto usan
 
 ### 🎨 **CSS & DISEÑO**
 
+#### **CSS Layers (@layer) - NUEVA ARQUITECTURA**
+**¿Qué es?** Un sistema moderno de CSS que permite controlar EXPLÍCITAMENTE el orden de prioridad de los estilos, independientemente de dónde aparezcan en el código.
+
+**¿Por qué usarlo?** Resuelve la "guerra de especificidad" - ese problema molesto donde estilos se sobrescriben inesperadamente porque un selector es "más específico" que otro.
+
+**Analogía:** Imagina un edificio de 5 pisos. Sin @layer, cualquier oficina puede tener más "autoridad" que otra dependiendo de cuántas puertas tenga. Con @layer, cada piso tiene una jerarquía clara: el piso 5 (utilities) SIEMPRE gana sobre el piso 1 (reset), sin importar cuántas puertas tenga cada oficina.
+
+**Arquitectura del proyecto:**
+```css
+/* Orden de menor a mayor prioridad */
+@layer reset,      /* 1. Normalización de navegadores */
+       base,       /* 2. Tipografía, colores, elementos HTML */
+       layout,     /* 3. Contenedores, grids, estructura */
+       components, /* 4. Botones, cards, navegación, hero */
+       utilities;  /* 5. Clases helper de alta prioridad */
+```
+
+**Estructura de archivos:**
+```
+css/
+├── style.css          # Archivo principal con todas las capas
+├── components/        # Componentes modulares
+│   ├── header.css     # @layer components
+│   ├── hero.css       # @layer components  
+│   └── sidebar.css    # @layer components
+├── contact.css        # @layer components (página específica)
+├── guide.css          # @layer components (página específica)
+└── responsive.css     # FUERA de capas (máxima prioridad)
+```
+
+---
+
 #### **CSS Custom Properties (Variables CSS)**
 **¿Qué es?** Como tener un "libro de recetas" para tu diseño. Defines un valor una vez (ej. `--color-gold: #ffd700`) y lo usas en todo el sitio.
 
@@ -77,6 +109,60 @@ Este glosario explica los términos técnicos más importantes del proyecto usan
 - `--z-content: 1` → Contenido normal (abajo)
 - `--z-sidebar: 900` → Sidebar flotante
 - `--z-header: 1000` → Header (arriba de todo)
+
+---
+
+#### **Utilidades CSS Inteligentes**
+El proyecto incluye clases utilitarias en la capa `utilities` que siempre tienen la prioridad más alta:
+
+**`.wrapper` - Contenedor con Variantes:**
+```html
+<div class="wrapper">...</div>                    <!-- Ancho estándar (1100px) -->
+<div class="wrapper" data-width="narrow">...</div> <!-- Ancho estrecho (720px) -->
+<div class="wrapper" data-width="wide">...</div>   <!-- Ancho amplio (1400px) -->
+```
+
+**`.flow` - Espaciado Vertical (Lobotomized Owl):**
+```html
+<div class="flow">                    <!-- Espaciado default -->
+  <h2>Título</h2>
+  <p>Párrafo 1</p>                    <!-- margin-top automático -->
+  <p>Párrafo 2</p>                    <!-- margin-top automático -->
+</div>
+
+<div class="flow" data-space="lg">   <!-- Espaciado grande -->
+  ...
+</div>
+```
+
+**`.visually-hidden` - Accesibilidad:**
+```html
+<button>
+  <span class="visually-hidden">Cerrar menú</span>
+  <span aria-hidden="true">×</span>
+</button>
+<!-- El texto está oculto visualmente pero accesible para lectores de pantalla -->
+```
+
+---
+
+#### **Propiedades Lógicas CSS**
+**¿Qué son?** Propiedades CSS que funcionan independientemente de la dirección del texto (LTR/RTL).
+
+**¿Por qué usarlas?** Hacen tu CSS automáticamente compatible con idiomas como árabe o hebreo que se leen de derecha a izquierda.
+
+**Ejemplos:**
+```css
+/* Antiguo (solo funciona en LTR) */
+margin-left: auto;
+margin-right: auto;
+padding-left: 1rem;
+
+/* Moderno (funciona en cualquier dirección) */
+margin-inline: auto;      /* izquierda/derecha */
+padding-inline-start: 1rem; /* inicio del texto */
+padding-block: 1rem;      /* arriba/abajo */
+```
 
 ---
 

@@ -8,17 +8,22 @@
   <title>Tomorrowland 2018: Festival Guide | Planaxis Edition</title>
   <meta name="description" content="Complete festival guide for Tomorrowland 2018: Line-up, DreamVille camping, tickets, Global Journey packages, and FAQ.">
   
-  <!-- ¿POR QUÉ? Mismos archivos CSS que index.html para mantener consistencia visual entre páginas -->
-  <link rel="stylesheet" href="css/reset.css">
-  <link rel="stylesheet" href="css/variables.css">
-  <link rel="stylesheet" href="css/layout.css">
-  <link rel="stylesheet" href="css/header.css">
-  <link rel="stylesheet" href="css/hero.css">
-  <link rel="stylesheet" href="css/sidebar.css">
-  <link rel="stylesheet" href="css/responsive.css">
-  
-  <!-- ¿POR QUÉ? Nuevo archivo CSS para componentes específicos de la guía (grids, cards, accordions) -->
+  <!-- ============================================================================
+       ARQUITECTURA CSS CON @layer
+       
+       ORDEN DE CASCADA (de menor a mayor prioridad):
+       1. reset → 2. base → 3. layout → 4. components → 5. utilities
+       
+       style.css contiene las capas principales.
+       Los componentes usan @layer internamente.
+       responsive.css está FUERA de capas para máxima prioridad.
+       ============================================================================ -->
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/components/header.css">
+  <link rel="stylesheet" href="css/components/hero.css">
+  <link rel="stylesheet" href="css/components/sidebar.css">
   <link rel="stylesheet" href="css/guide.css">
+  <link rel="stylesheet" href="css/responsive.css">
   
   <meta name="theme-color" content="#050a14">
 </head>
@@ -39,8 +44,9 @@
       
       <ul class="nav-links">
         <li>
-          <a href="index.html#festival" class="active" aria-current="page" data-i18n="nav.festival">Festival</a>
+          <a href="index.html#festival" data-i18n="nav.festival">Festival</a>
         </li>
+        <li><a href="#lineup" class="active" aria-current="page" data-i18n="nav.lineup">Line-Up</a></li>
         <li><a href="index.html#brand-activation" data-i18n="nav.brand">Brand Activation</a></li>
         <li><a href="index.html#cultural-events" data-i18n="nav.cultural">Cultural Events</a></li>
         <li><a href="contact.html" data-i18n="nav.contact">Contact</a></li>
@@ -111,14 +117,14 @@
     ☰
   </button>
   
-  <main>
+  <main class="wrapper flow" data-space="xl">
     <!-- ========================================================================
          SECCIÓN 1: LINE-UP
          ¿POR QUÉ? Muestra los 3 escenarios principales con tarjetas descriptivas
          ======================================================================== -->
-    <section id="lineup" class="section-spacing container">
+    <section id="lineup" class="section-spacing">
       <h2 class="text-center" data-i18n="lineup_title">Line-Up 2018</h2>
-      <p class="text-center text-muted" style="margin-top: var(--spacing-lg); margin-bottom: var(--spacing-xl);" data-i18n="lineup_subtitle">
+      <p class="text-center text-muted mt-lg mb-xl" data-i18n="lineup_subtitle">
         Three legendary stages, hundreds of world-class artists, one unforgettable experience.
       </p>
       
@@ -126,47 +132,59 @@
       
            ⚠️ PERSONALIZA ESTE CONTENIDO: Cambia nombres de escenarios, artistas y horarios por
            los de tu festival -->
-      <div class="guide-grid">
-        <article class="guide-card">
-          <div class="card-icon">🎪</div>
-          <h3 class="card-title" data-i18n="stage_mainstage">Mainstage</h3>
-          <p class="card-description" data-i18n="mainstage_desc">
-            The heart of Tomorrowland. Experience the most spectacular production in festival history
-            with the world's biggest DJs performing on our legendary underwater kingdom stage design.
-          </p>
-          <ul class="card-features">
-            <li data-i18n="mainstage_capacity">Capacity: 80,000 attendees</li>
-            <li data-i18n="mainstage_artists">Artists: Martin Garrix, Armin van Buuren, David Guetta</li>
-            <li data-i18n="mainstage_hours">Hours: 4:00 PM - 12:00 AM</li>
-          </ul>
+      <div class="grid-auto-fit">
+        <article class="card">
+          <div class="card__content">
+            <div class="card-icon">🎪</div>
+            <h3 class="card__title" data-i18n="stage_mainstage">Mainstage</h3>
+            <p class="card__description" data-i18n="mainstage_desc">
+              The heart of Tomorrowland. Experience the most spectacular production in festival history
+              with the world's biggest DJs performing on our legendary underwater kingdom stage design.
+            </p>
+          </div>
+          <footer class="card__footer">
+            <ul class="card-features">
+              <li data-i18n="mainstage_capacity">Capacity: 80,000 attendees</li>
+              <li data-i18n="mainstage_artists">Artists: Martin Garrix, Armin van Buuren, Dimitri Vegas & Like Mike</li>
+              <li data-i18n="mainstage_hours">Hours: 10:00 PM - 12:00 AM</li>
+            </ul>
+          </footer>
         </article>
         
-        <article class="guide-card">
-          <div class="card-icon">🌊</div>
-          <h3 class="card-title" data-i18n="stage_atmosphere">Atmosphere</h3>
-          <p class="card-description" data-i18n="atmosphere_desc">
-            Dive deeper into electronic sounds. This intimate stage brings you closer to underground
-            house and techno legends in an immersive bioluminescent coral reef setting.
-          </p>
-          <ul class="card-features">
-            <li data-i18n="atmosphere_capacity">Capacity: 15,000 attendees</li>
-            <li data-i18n="atmosphere_artists">Artists: Tale Of Us, Solomun, Maceo Plex</li>
-            <li data-i18n="atmosphere_hours">Hours: 2:00 PM - 1:00 AM</li>
-          </ul>
+        <article class="card">
+          <div class="card__content">
+            <div class="card-icon">🌊</div>
+            <h3 class="card__title" data-i18n="stage_atmosphere">Atmosphere</h3>
+            <p class="card__description" data-i18n="atmosphere_desc">
+              Dive deeper into electronic sounds. This intimate stage brings you closer to underground
+              house and techno legends in an immersive bioluminescent coral reef setting.
+            </p>
+          </div>
+          <footer class="card__footer">
+            <ul class="card-features">
+              <li data-i18n="atmosphere_capacity">Capacity: 15,000 attendees</li>
+              <li data-i18n="atmosphere_artists">Artists: Tale Of Us, Solomun, Maceo Plex</li>
+              <li data-i18n="atmosphere_hours">Hours: 2:00 PM - 1:00 AM</li>
+            </ul>
+          </footer>
         </article>
         
-        <article class="guide-card">
-          <div class="card-icon">⚡</div>
-          <h3 class="card-title" data-i18n="stage_core">Core</h3>
-          <p class="card-description" data-i18n="core_desc">
-            Hard-hitting bass and electrifying energy. The Core stage delivers raw power with
-            hardstyle and bass music acts in an electric deep-sea trench atmosphere.
-          </p>
-          <ul class="card-features">
-            <li data-i18n="core_capacity">Capacity: 25,000 attendees</li>
-            <li data-i18n="core_artists">Artists: Dimitri Vegas & Like Mike, Hardwell, Excision</li>
-            <li data-i18n="core_hours">Hours: 3:00 PM - 12:00 AM</li>
-          </ul>
+        <article class="card">
+          <div class="card__content">
+            <div class="card-icon">🦋</div>
+            <h3 class="card__title" data-i18n="stage_core">Freedom</h3>
+            <p class="card__description" data-i18n="core_desc">
+              Hard-hitting bass and electrifying energy. The Core stage delivers raw power with
+              hardstyle and bass music acts in an electric deep-sea trench atmosphere.
+            </p>
+          </div>
+          <footer class="card__footer">
+            <ul class="card-features">
+              <li data-i18n="core_capacity">Capacity: 25,000 attendees</li>
+              <li data-i18n="core_artists">Artists: Dimitri Vegas & Like Mike, Hardwell, Excision</li>
+              <li data-i18n="core_hours">Hours: 3:00 PM - 12:00 AM</li>
+            </ul>
+          </footer>
         </article>
       </div>
     </section>
@@ -177,57 +195,69 @@
          
          ⚠️ PERSONALIZA: Actualiza nombres de paquetes, precios y características
          ======================================================================== -->
-    <section id="dreamville" class="section-spacing container">
+    <section id="dreamville" class="section-spacing">
       <h2 class="text-center" data-i18n="camping_title">DreamVille Camping</h2>
-      <p class="text-center text-muted" style="margin-top: var(--spacing-lg); margin-bottom: var(--spacing-xl);" data-i18n="camping_subtitle">
+      <p class="text-center text-muted mt-lg mb-xl" data-i18n="camping_subtitle">
         Stay at the most magical campground in the world. Choose your accommodation level.
       </p>
       
-      <div class="guide-grid">
-        <article class="guide-card guide-card-price">
-          <div class="price-badge">€295</div>
-          <h3 class="card-title" data-i18n="camping_mag_greens">Magnificent Greens</h3>
-          <p class="card-description" data-i18n="mag_greens_desc">
-            Bring your own tent and camp under the stars. Access to showers, toilets, and all
-            DreamVille activities including pool parties, yoga sessions, and cinema.
-          </p>
-          <ul class="card-features">
-            <li data-i18n="feature_bring_tent">✓ Bring your own tent</li>
-            <li data-i18n="feature_shared_facilities">✓ Shared facilities</li>
-            <li data-i18n="feature_all_activities">✓ All DreamVille activities</li>
-            <li data-i18n="feature_festival_pass">✓ Weekend festival pass included</li>
-          </ul>
+      <div class="grid-auto-fit">
+        <article class="card">
+          <div class="card__content">
+            <div class="price-badge">€295</div>
+            <h3 class="card__title" data-i18n="camping_mag_greens">Magnificent Greens</h3>
+            <p class="card__description" data-i18n="mag_greens_desc">
+              Bring your own tent and camp under the stars. Access to showers, toilets, and all
+              DreamVille activities including pool parties, yoga sessions, and cinema.
+            </p>
+          </div>
+          <footer class="card__footer">
+            <ul class="card-features">
+              <li data-i18n="feature_bring_tent">✓ Bring your own tent</li>
+              <li data-i18n="feature_shared_facilities">✓ Shared facilities</li>
+              <li data-i18n="feature_all_activities">✓ All DreamVille activities</li>
+              <li data-i18n="feature_festival_pass">✓ Weekend festival pass included</li>
+            </ul>
+          </footer>
         </article>
         
-        <article class="guide-card guide-card-price featured">
-          <div class="price-badge">€695</div>
-          <div class="featured-badge" data-i18n="badge_popular">Popular</div>
-          <h3 class="card-title" data-i18n="camping_easy_tent">Easy Tent</h3>
-          <p class="card-description" data-i18n="easy_tent_desc">
-            Pre-pitched 2-person tent with sleeping bags, mattresses, and camping chairs.
-            Just arrive and relax. Perfect for hassle-free festival camping.
-          </p>
-          <ul class="card-features">
-            <li data-i18n="feature_pre_pitched">✓ Pre-pitched tent for 2</li>
-            <li data-i18n="feature_sleeping_bags">✓ Sleeping bags & mattresses included</li>
-            <li data-i18n="feature_chairs_lights">✓ Camping chairs & lights</li>
-            <li data-i18n="feature_festival_pass">✓ Weekend festival pass included</li>
-          </ul>
+        <article class="card card--featured">
+          <div class="card__content">
+            <div class="price-badge">€695</div>
+            <div class="featured-badge" data-i18n="badge_popular">Popular</div>
+            <h3 class="card__title" data-i18n="camping_easy_tent">Easy Tent</h3>
+            <p class="card__description" data-i18n="easy_tent_desc">
+              Pre-pitched 2-person tent with sleeping bags, mattresses, and camping chairs.
+              Just arrive and relax. Perfect for hassle-free festival camping.
+            </p>
+          </div>
+          <footer class="card__footer">
+            <ul class="card-features">
+              <li data-i18n="feature_pre_pitched">✓ Pre-pitched tent for 2</li>
+              <li data-i18n="feature_sleeping_bags">✓ Sleeping bags & mattresses included</li>
+              <li data-i18n="feature_chairs_lights">✓ Camping chairs & lights</li>
+              <li data-i18n="feature_festival_pass">✓ Weekend festival pass included</li>
+            </ul>
+          </footer>
         </article>
         
-        <article class="guide-card guide-card-price">
-          <div class="price-badge">€1,850</div>
-          <h3 class="card-title" data-i18n="camping_dreamlodge">DreamLodge</h3>
-          <p class="card-description" data-i18n="dreamlodge_desc">
-            Luxury camping at its finest. Spacious lodges with real beds, electricity, private
-            bathrooms, and dedicated lounge areas. VIP festival access included.
-          </p>
-          <ul class="card-features">
-            <li data-i18n="feature_luxury">✓ Luxury lodge for 2-4 people</li>
-            <li data-i18n="feature_real_beds">✓ Real beds & private bathroom</li>
-            <li data-i18n="feature_electricity">✓ Electricity & air conditioning</li>
-            <li data-i18n="feature_vip_pass">✓ VIP festival pass included</li>
-          </ul>
+        <article class="card">
+          <div class="card__content">
+            <div class="price-badge">€1,850</div>
+            <h3 class="card__title" data-i18n="camping_dreamlodge">DreamLodge</h3>
+            <p class="card__description" data-i18n="dreamlodge_desc">
+              Luxury camping at its finest. Spacious lodges with real beds, electricity, private
+              bathrooms, and dedicated lounge areas. VIP festival access included.
+            </p>
+          </div>
+          <footer class="card__footer">
+            <ul class="card-features">
+              <li data-i18n="feature_luxury">✓ Luxury lodge for 2-4 people</li>
+              <li data-i18n="feature_real_beds">✓ Real beds & private bathroom</li>
+              <li data-i18n="feature_electricity">✓ Electricity & air conditioning</li>
+              <li data-i18n="feature_vip_pass">✓ VIP festival pass included</li>
+            </ul>
+          </footer>
         </article>
       </div>
     </section>
@@ -236,7 +266,7 @@
          SECCIÓN 3: TICKETS (BANNER DE AGOTADO)
          ¿POR QUÉ? Mensaje de estado importante para disponibilidad de tickets
          ======================================================================== -->
-    <section id="tickets" class="section-spacing container">
+    <section id="tickets" class="section-spacing">
       <h2 class="text-center" data-i18n="tickets_title">Ticket Sale</h2>
       
       <!-- ¿POR QUÉ? Banner grande y llamativo comunica el estado de agotado -->
@@ -264,55 +294,67 @@
          
          ⚠️ PERSONALIZA: Ajusta precios y ciudades según tu evento
          ======================================================================== -->
-    <section id="global-journey" class="section-spacing container">
+    <section id="global-journey" class="section-spacing">
       <h2 class="text-center" data-i18n="gj_title">Global Journey</h2>
-      <p class="text-center text-muted" style="margin-top: var(--spacing-lg); margin-bottom: var(--spacing-xl);" data-i18n="gj_subtitle">
+      <p class="text-center text-muted mt-lg mb-xl" data-i18n="gj_subtitle">
         Travel packages from over 300 cities worldwide. Festival ticket, transportation, and accommodation in one package.
       </p>
       
       <!-- ¿POR QUÉ? Grid basado en íconos mostrando diferentes opciones de viaje -->
-      <div class="guide-grid guide-grid-journey">
-        <article class="guide-card guide-card-journey">
-          <div class="journey-icon">✈️</div>
-          <h3 class="card-title" data-i18n="gj_flight_title">Flight Packages</h3>
-          <p class="card-description" data-i18n="gj_flight_desc">
-            Direct flights from major cities worldwide. Includes airport transfers, hotel accommodation
-            near the festival grounds, and full weekend pass.
-          </p>
-          <div class="journey-details">
-            <span class="journey-badge" data-i18n="gj_flight_price">From €1,200</span>
-            <span class="journey-cities" data-i18n="gj_flight_cities">150+ departure cities</span>
+      <div class="grid-auto-fit" data-min-width="narrow">
+        <article class="card">
+          <div class="card__content">
+            <div class="journey-icon">✈️</div>
+            <h3 class="card__title" data-i18n="gj_flight_title">Flight Packages</h3>
+            <p class="card__description" data-i18n="gj_flight_desc">
+              Direct flights from major cities worldwide. Includes airport transfers, hotel accommodation
+              near the festival grounds, and full weekend pass.
+            </p>
           </div>
+          <footer class="card__footer">
+            <div class="journey-details">
+              <span class="journey-badge" data-i18n="gj_flight_price">From €1,200</span>
+              <span class="journey-cities" data-i18n="gj_flight_cities">150+ departure cities</span>
+            </div>
+          </footer>
         </article>
         
-        <article class="guide-card guide-card-journey">
-          <div class="journey-icon">🚆</div>
-          <h3 class="card-title" data-i18n="gj_train_title">Train Packages</h3>
-          <p class="card-description" data-i18n="gj_train_desc">
-            Eco-friendly train journeys from European cities. Enjoy scenic routes to Belgium with
-            hotel accommodation and festival pass included in your package.
-          </p>
-          <div class="journey-details">
-            <span class="journey-badge" data-i18n="gj_train_price">From €750</span>
-            <span class="journey-cities" data-i18n="gj_train_cities">50+ European cities</span>
+        <article class="card">
+          <div class="card__content">
+            <div class="journey-icon">🚆</div>
+            <h3 class="card__title" data-i18n="gj_train_title">Train Packages</h3>
+            <p class="card__description" data-i18n="gj_train_desc">
+              Eco-friendly train journeys from European cities. Enjoy scenic routes to Belgium with
+              hotel accommodation and festival pass included in your package.
+            </p>
           </div>
+          <footer class="card__footer">
+            <div class="journey-details">
+              <span class="journey-badge" data-i18n="gj_train_price">From €750</span>
+              <span class="journey-cities" data-i18n="gj_train_cities">50+ European cities</span>
+            </div>
+          </footer>
         </article>
         
-        <article class="guide-card guide-card-journey">
-          <div class="journey-icon">🚌</div>
-          <h3 class="card-title" data-i18n="gj_bus_title">Bus Packages</h3>
-          <p class="card-description" data-i18n="gj_bus_desc">
-            Budget-friendly bus travel from neighboring countries. Meet fellow festival-goers on the
-            journey. Includes accommodation and festival pass.
-          </p>
-          <div class="journey-details">
-            <span class="journey-badge" data-i18n="gj_bus_price">From €550</span>
-            <span class="journey-cities" data-i18n="gj_bus_cities">100+ European cities</span>
+        <article class="card">
+          <div class="card__content">
+            <div class="journey-icon">🚌</div>
+            <h3 class="card__title" data-i18n="gj_bus_title">Bus Packages</h3>
+            <p class="card__description" data-i18n="gj_bus_desc">
+              Budget-friendly bus travel from neighboring countries. Meet fellow festival-goers on the
+              journey. Includes accommodation and festival pass.
+            </p>
           </div>
+          <footer class="card__footer">
+            <div class="journey-details">
+              <span class="journey-badge" data-i18n="gj_bus_price">From €550</span>
+              <span class="journey-cities" data-i18n="gj_bus_cities">100+ European cities</span>
+            </div>
+          </footer>
         </article>
       </div>
       
-      <div class="info-callout">
+      <div class="info-callout mt-xl">
         <div class="callout-icon">ℹ️</div>
         <div class="callout-content" data-i18n="gj_important">
           <strong>Important:</strong> All Global Journey packages include guaranteed festival access,
@@ -330,9 +372,9 @@
          respuesta que buscas. El elemento <details> de HTML5 hace esto automáticamente
          sin necesidad de JavaScript - ¡el navegador lo maneja por ti!
          ======================================================================== -->
-    <section id="faq" class="section-spacing container">
+    <section id="faq" class="section-spacing">
       <h2 class="text-center">Frequently Asked Questions</h2>
-      <p class="text-center text-muted" style="margin-top: var(--spacing-lg); margin-bottom: var(--spacing-xl);">
+      <p class="text-center text-muted mt-lg mb-xl">
         Find answers to the most common questions about Tomorrowland 2018.
       </p>
       

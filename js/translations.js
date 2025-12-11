@@ -14,8 +14,10 @@ export const translations = {
     // Header / Navigation
     'nav.logo': 'Planaxis',
     'nav.festival': 'Festival',
+    'nav.lineup': 'Line-Up',
     'nav.brand': 'Brand Activation',
     'nav.cultural': 'Cultural Events',
+    'nav.gallery': 'Experience Gallery',
     'nav.contact': 'Contact',
     'nav.toggle.menu': 'Toggle navigation menu',
     
@@ -43,6 +45,17 @@ export const translations = {
     'section.brand.text': 'Experience innovative brand partnerships that enhance the Planaxis story through interactive installations and immersive experiences.',
     'section.cultural.title': 'Cultural Events',
     'section.cultural.text': 'Beyond the music, discover art installations, theatrical performances, and cultural celebrations that bring the underwater kingdom to life.',
+    
+    // Festival Experience Cards
+    'card.artists.title': 'Main Stage Artists',
+    'card.artists.description': 'Experience world-renowned DJs and producers on the iconic Planaxis main stage, featuring cutting-edge visuals and sound design.',
+    'card.artists.button': 'View Line-Up',
+    'card.stage.title': 'The Planaxis Stage',
+    'card.stage.description': 'A breathtaking underwater kingdom rises from the ground, featuring giant seahorses, bioluminescent creatures, and immersive theatrical elements.',
+    'card.stage.button': 'Explore Stages',
+    'card.experience.title': 'Immersive Experience',
+    'card.experience.description': 'Beyond music: art installations, theatrical performances, and interactive elements bring the Planaxis legend to life.',
+    'card.experience.button': 'Learn More',
     
     // Contact page
     'contact.title': 'Contact Us',
@@ -163,8 +176,10 @@ export const translations = {
     // Encabezado / Navegación
     'nav.logo': 'Planaxis',
     'nav.festival': 'Festival',
+    'nav.lineup': 'Line-Up',
     'nav.brand': 'Activación de Marca',
     'nav.cultural': 'Eventos Culturales',
+    'nav.gallery': 'Galería de Experiencia',
     'nav.contact': 'Contacto',
     'nav.toggle.menu': 'Alternar menú de navegación',
     
@@ -192,6 +207,17 @@ export const translations = {
     'section.brand.text': 'Experimenta asociaciones innovadoras de marcas que enriquecen la historia de Planaxis a través de instalaciones interactivas y experiencias inmersivas.',
     'section.cultural.title': 'Eventos Culturales',
     'section.cultural.text': 'Más allá de la música, descubre instalaciones artísticas, actuaciones teatrales y celebraciones culturales que dan vida al reino submarino.',
+    
+    // Tarjetas de Experiencia del Festival
+    'card.artists.title': 'Artistas del Escenario Principal',
+    'card.artists.description': 'Experimenta DJs y productores de renombre mundial en el icónico escenario principal de Planaxis, con visuales de vanguardia y diseño de sonido.',
+    'card.artists.button': 'Ver Line-Up',
+    'card.stage.title': 'El Escenario Planaxis',
+    'card.stage.description': 'Un impresionante reino submarino emerge del suelo, con caballitos de mar gigantes, criaturas bioluminiscentes y elementos teatrales inmersivos.',
+    'card.stage.button': 'Explorar Escenarios',
+    'card.experience.title': 'Experiencia Inmersiva',
+    'card.experience.description': 'Más allá de la música: instalaciones artísticas, actuaciones teatrales y elementos interactivos dan vida a la leyenda de Planaxis.',
+    'card.experience.button': 'Saber Más',
     
     // Página de contacto
     'contact.title': 'Contáctanos',
@@ -227,17 +253,17 @@ export const translations = {
     'stage_mainstage': 'Escenario Principal',
     'mainstage_desc': 'El corazón de Tomorrowland. Experimenta la producción más espectacular en la historia del festival con los DJs más grandes del mundo actuando en nuestro legendario diseño del reino submarino.',
     'mainstage_capacity': 'Capacidad: 80,000 asistentes',
-    'mainstage_artists': 'Artistas: Martin Garrix, Armin van Buuren, David Guetta',
-    'mainstage_hours': 'Horario: 4:00 PM - 12:00 AM',
+    'mainstage_artists': 'Artistas: Dimitri Vegas & Like Mike, Martin Garrix, Armin van Buuren',
+    'mainstage_hours': 'Horario: 10:00 PM - 12:00 AM',
     'stage_atmosphere': 'Atmosphere',
     'atmosphere_desc': 'Sumérgete en sonidos electrónicos. Este escenario íntimo te acerca a las leyendas del house y techno underground en un arrecife de coral bioluminiscente inmersivo.',
     'atmosphere_capacity': 'Capacidad: 15,000 asistentes',
     'atmosphere_artists': 'Artistas: Tale Of Us, Solomun, Maceo Plex',
     'atmosphere_hours': 'Horario: 2:00 PM - 1:00 AM',
-    'stage_core': 'Core',
+    'stage_core': 'Freedom',
     'core_desc': 'Bajos contundentes y energía electrizante. El escenario Core ofrece poder puro con actos de hardstyle y bass music en una atmósfera de trinchera marina profunda.',
     'core_capacity': 'Capacidad: 25,000 asistentes',
-    'core_artists': 'Artistas: Dimitri Vegas & Like Mike, Hardwell, Excision',
+    'core_artists': 'Artistas: Charlotte de Witte, Amelie Lens, Boris Brejcha',
     'core_hours': 'Horario: 3:00 PM - 12:00 AM',
     
     // Festival Guide - Sección Camping

@@ -1,0 +1,285 @@
+/* ============================================================================
+   HERO.CSS - Sección Hero de Pantalla Completa con CSS Grid
+   
+   ¿POR QUÉ @layer components?
+   El hero es un componente de página completo con su propia lógica de layout
+   y estilizado. Pertenece a la capa components para mayor prioridad sobre
+   estilos base y layout.
+   
+   TÉCNICA CLAVE: CSS Grid para Centrado
+   =====================================
+   En lugar de Flexbox, usamos CSS Grid con `place-items: center` que es una
+   forma más elegante y moderna de centrar contenido. Grid nos permite además
+   superponer elementos fácilmente usando grid-area compartidas.
+   ============================================================================ */
+
+@layer components {
+  /* ========================================================================
+     HERO SECTION - Pantalla Completa con CSS Grid
+     
+     ¿POR QUÉ 100vh / 100dvh?
+     -----------------------
+     vh = viewport height. 100vh significa "100% de la altura visible del
+     navegador". Esto crea el efecto "above the fold" donde el hero llena
+     toda la pantalla inicial sin necesidad de scroll.
+     
+     dvh (dynamic viewport height) es la versión moderna que se ajusta en
+     móviles cuando la barra de navegación del browser aparece/desaparece.
+     
+     ¿POR QUÉ CSS GRID en lugar de Flexbox?
+     --------------------------------------
+     1. `place-items: center` centra en ambos ejes con UNA sola propiedad
+     2. Permite superponer el header usando la misma celda del grid
+     3. Más control sobre el posicionamiento vertical del contenido
+     
+     ANALOGÍA FEYNMAN: Imagina una hoja cuadriculada gigante del tamaño de
+     tu pantalla, pero con solo una celda. El contenido se coloca exactamente
+     en el centro de esa celda, como si tuvieras un imán en el centro de la
+     hoja atrayendo todo hacia él.
+     ======================================================================== */
+  .hero {
+    /* Posición relativa para que el header absoluto se posicione respecto a esto */
+    position: relative;
+    
+    /* ========================================================================
+       ALTURA: 100vh → 100dvh (Progressive Enhancement)
+       
+       ¿CÓMO FUNCIONA?
+       Primero declaramos 100vh (soporte universal), luego 100dvh que los
+       navegadores modernos entienden. Los navegadores antiguos ignoran dvh
+       y usan vh. Esto es "graceful degradation" o "progressive enhancement".
+       ======================================================================== */
+    min-height: 100vh;
+    min-height: 100dvh; /* Dynamic Viewport Height - para móviles modernos */
+    
+    /* ========================================================================
+       CSS GRID para Centrado Perfecto
+       
+       ¿POR QUÉ display: grid?
+       Grid es superior a Flexbox para centrado de contenedor único porque:
+       1. place-items: center = justify-items + align-items en una línea
+       2. No necesitamos flex-direction: column
+       3. El contenido se centra naturalmente sin wrapper adicional
+       
+       TRUCO AVANZADO: grid-template-rows con 1fr crea una fila que ocupa
+       todo el espacio disponible, asegurando centrado vertical perfecto.
+       ======================================================================== */
+    display: grid;
+    grid-template-rows: 1fr;  /* Una fila que ocupa todo el alto */
+    place-items: center;      /* Centrado horizontal Y vertical */
+    
+    /* Padding para que el contenido no toque los bordes en móviles */
+    padding: var(--space-md);
+    /* Padding top extra para dejar espacio al header superpuesto */
+    padding-block-start: var(--space-3xl);
+    
+    /* ========================================================================
+       BACKGROUND - Imagen de Fondo Responsiva
+       
+       ¿POR QUÉ estas propiedades juntas?
+       - background-size: cover → La imagen siempre cubre todo el contenedor
+       - background-position: center → La parte central siempre es visible
+       - background-repeat: no-repeat → Sin mosaico/repetición
+       ======================================================================== */
+    background-position: center center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-color: var(--color-bg-primary);
+    
+    /* Previene scroll horizontal accidental por contenido overflow */
+    overflow: hidden;
+  }
+
+  /* ========================================================================
+     OVERLAY OSCURO
+     
+     ¿POR QUÉ un overlay?
+     Las imágenes de fondo varían en luminosidad. El overlay oscuro asegura
+     que el texto SIEMPRE sea legible, sin importar los colores de la imagen.
+     
+     Técnica: pseudo-elemento ::before posicionado absolutamente sobre toda
+     la sección, con z-index menor que el contenido.
+     ======================================================================== */
+  .hero::before {
+    content: '';
+    position: absolute;
+    inset: 0;  /* top: 0; right: 0; bottom: 0; left: 0; */
+    
+    background-color: rgba(5, 10, 20, 0.6);
+    z-index: 1;
+  }
+
+  /* ========================================================================
+     HERO CONTENT
+     
+     El contenedor principal del contenido del hero. Debe estar SOBRE el
+     overlay (z-index > 1) para ser visible e interactivo.
+     ======================================================================== */
+  .hero-content {
+    position: relative;
+    z-index: 10;
+    
+    width: 90%;
+    max-width: 800px;
+    margin-inline: auto;
+    
+    text-align: center;
+  }
+
+  /* ========================================================================
+     HERO TITLE
+     
+     El título principal de la página. Debe ser grande, impactante y
+     legible sobre cualquier fondo.
+     ======================================================================== */
+  .hero-title {
+    font-size: var(--font-size-2xl);
+    font-weight: var(--font-weight-bold);
+    line-height: var(--line-height-tight);
+    color: var(--color-text-main);
+    
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    
+    /* Sombra para mejorar legibilidad sobre imágenes */
+    text-shadow: 2px 4px 10px rgba(0, 0, 0, 0.7);
+    
+    margin-block-end: var(--space-md);
+  }
+
+  /* ========================================================================
+     HERO TAGLINE
+     
+     Subtítulo que complementa el título principal con más contexto.
+     ======================================================================== */
+  .hero-tagline {
+    font-size: var(--font-size-md);
+    font-weight: var(--font-weight-medium);
+    line-height: var(--line-height-normal);
+    color: var(--color-text-muted);
+    
+    max-width: 600px;
+    margin-inline: auto;
+    margin-block-end: var(--space-xl);
+  }
+
+  /* ========================================================================
+     HERO CTA (Call to Action)
+     
+     El botón principal que invita a la acción. Debe ser prominente
+     y claramente interactivo.
+     ======================================================================== */
+  .hero-cta {
+    display: inline-block;
+    
+    padding: var(--space-md) var(--space-xl);
+    
+    font-size: var(--font-size-md);
+    font-weight: var(--font-weight-bold);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    
+    background-color: var(--color-accent-gold);
+    color: var(--color-bg-primary);
+    
+    border: none;
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    
+    transition: 
+      background-color var(--transition-normal) var(--easing-default),
+      transform var(--transition-normal) var(--easing-default),
+      box-shadow var(--transition-normal) var(--easing-default);
+  }
+
+  .hero-cta:hover {
+    background-color: var(--color-accent-teal);
+    transform: scale(1.05);
+    box-shadow: 0 0 25px rgba(0, 188, 212, 0.6);
+  }
+
+  .hero-cta:active {
+    transform: scale(0.98);
+  }
+
+  /* ========================================================================
+     SCROLL INDICATOR
+     
+     Indica al usuario que hay más contenido debajo. Usa una animación
+     de rebote para llamar la atención.
+     ======================================================================== */
+  .scroll-indicator {
+    position: absolute;
+    bottom: var(--space-lg);
+    left: 50%;
+    transform: translateX(-50%);
+    
+    z-index: 10;
+    
+    color: var(--color-text-main);
+    font-size: var(--font-size-sm);
+    opacity: 0.8;
+    
+    animation: bounce 2s infinite;
+  }
+
+  /* Animación de rebote */
+  @keyframes bounce {
+    0%, 100% {
+      transform: translateX(-50%) translateY(0);
+    }
+    50% {
+      transform: translateX(-50%) translateY(10px);
+    }
+  }
+}
+
+
+/* ============================================================================
+   RESPONSIVE STYLES - Hero
+   
+   Ajustes específicos para el hero en diferentes tamaños de pantalla.
+   Fuera de @layer para mayor prioridad.
+   ============================================================================ */
+
+/* Móvil */
+@media (max-width: 767px) {
+  .hero {
+    min-height: 90vh;
+    min-height: 90dvh;
+  }
+
+  .hero-title {
+    font-size: var(--font-size-xl);
+    letter-spacing: 0.03em;
+  }
+
+  .hero-tagline {
+    font-size: var(--font-size-base);
+  }
+
+  .hero-cta {
+    font-size: var(--font-size-base);
+    padding: var(--space-sm) var(--space-lg);
+  }
+}
+
+/* Tablet */
+@media (min-width: 768px) and (max-width: 1023px) {
+  .hero-title {
+    font-size: calc(var(--font-size-2xl) * 0.85);
+    letter-spacing: 0.04em;
+  }
+}
+
+/* Desktop Grande */
+@media (min-width: 1440px) {
+  .hero-title {
+    font-size: calc(var(--font-size-2xl) * 1.2);
+  }
+
+  .hero-content {
+    max-width: 900px;
+  }
+}
+

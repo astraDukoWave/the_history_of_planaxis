@@ -1,0 +1,244 @@
+/* ============================================================================
+   SIDEBAR.CSS - Dock de Vidrio Flotante
+   
+   ¿POR QUÉ @layer components?
+   El sidebar es un componente complejo de navegación con comportamiento
+   de hover y animaciones. Pertenece a la capa components.
+   
+   PATRÓN: "Hover to Reveal" - El dock está colapsado por defecto (solo
+   íconos) y se expande en hover para revelar texto.
+   ============================================================================ */
+
+@layer components {
+  /* ========================================================================
+     UTILITY SIDEBAR - Dock Flotante
+     
+     ¿POR QUÉ este diseño?
+     Los sidebars tradicionales ocupan 20-30% del ancho permanentemente.
+     Este dock flotante ocupa ~60px colapsado y flota sobre espacio blanco,
+     maximizando el área de contenido.
+     ======================================================================== */
+  .utility-sidebar {
+    position: fixed;
+    right: 20px;
+    top: 50%;
+    transform: translateY(-50%);
+    
+    z-index: var(--z-modal);
+    
+    /* ESTADO COLAPSADO */
+    width: 60px;
+    height: auto;
+    
+    /* GLASSMORPHISM */
+    background: rgba(5, 10, 20, 0.4);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    
+    /* FORMA DE CÁPSULA */
+    border-radius: var(--radius-xl);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+    
+    padding-block: 15px;
+    
+    overflow: hidden;
+    white-space: nowrap;
+    
+    /* ANIMACIÓN TIPO RESORTE */
+    transition: 
+      width 0.4s cubic-bezier(0.25, 0.8, 0.25, 1),
+      background 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+  }
+
+  /* ESTADO EXPANDIDO (hover) */
+  .utility-sidebar:hover {
+    width: 260px;
+    background: rgba(5, 10, 20, 0.85);
+  }
+
+  /* ========================================================================
+     SIDEBAR LINKS
+     ======================================================================== */
+  .sidebar-links {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  /* Texto oculto en estado colapsado */
+  .sidebar-links li a span:not(.icon) {
+    opacity: 0;
+    transition: opacity 0.2s ease;
+  }
+
+  /* Texto visible en estado expandido */
+  .utility-sidebar:hover .sidebar-links li a span:not(.icon) {
+    opacity: 1;
+    transition-delay: 0.15s;
+  }
+
+  /* Enlaces individuales */
+  .sidebar-links li a {
+    display: flex;
+    align-items: center;
+    
+    padding: 12px 16px;
+    
+    color: var(--color-text-primary);
+    font-size: var(--font-size-base);
+    font-weight: var(--font-weight-medium);
+    
+    border-radius: var(--radius-md);
+    
+    transition: 
+      background-color 0.2s ease,
+      color 0.2s ease,
+      transform 0.2s ease;
+  }
+
+  .sidebar-links li a:hover {
+    background-color: var(--color-bg-secondary);
+    color: var(--color-accent-gold);
+    transform: scale(1.05);
+  }
+
+  .sidebar-links li a.active {
+    background-color: var(--color-bg-secondary);
+    color: var(--color-accent-gold);
+  }
+
+  /* ========================================================================
+     ÍCONOS
+     ======================================================================== */
+  .sidebar-links li a .icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    
+    margin-inline-end: 8px;
+    
+    width: 24px;
+    height: 24px;
+    
+    color: var(--color-accent-teal);
+    
+    transition: color 0.2s ease;
+  }
+
+  .sidebar-links li a:hover .icon,
+  .sidebar-links li a.active .icon {
+    color: var(--color-accent-gold);
+  }
+
+  /* ========================================================================
+     ESTADO OCULTO (para móvil)
+     ======================================================================== */
+  .utility-sidebar.hidden {
+    transform: translateX(100%) translateY(-50%);
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  .utility-sidebar.show {
+    transform: translateX(0) translateY(-50%);
+    opacity: 1;
+    pointer-events: auto;
+  }
+
+  /* ========================================================================
+     BOTÓN TOGGLE (móvil)
+     
+     Floating Action Button (FAB) para mostrar/ocultar el sidebar en móvil.
+     ======================================================================== */
+  .sidebar-toggle {
+    display: none;  /* Mostrado en móvil via responsive */
+    
+    position: fixed;
+    bottom: 32px;
+    right: 32px;
+    z-index: calc(var(--z-modal) + 1);
+    
+    width: 56px;
+    height: 56px;
+    border-radius: var(--radius-full);
+    
+    background-color: var(--color-accent-gold);
+    color: var(--color-bg-primary);
+    
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    
+    border: none;
+    cursor: pointer;
+    
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    
+    transition: 
+      transform 0.2s ease,
+      box-shadow 0.2s ease,
+      background-color 0.2s ease;
+  }
+
+  .sidebar-toggle:hover {
+    transform: scale(1.1);
+    background-color: var(--color-accent-teal);
+    box-shadow: 0 6px 20px rgba(0, 188, 212, 0.4);
+  }
+
+  .sidebar-toggle:active {
+    transform: scale(0.95);
+  }
+}
+
+
+/* ============================================================================
+   RESPONSIVE STYLES - Sidebar
+   ============================================================================ */
+
+/* Móvil y Tablet: Sidebar oculto, toggle visible */
+@media (max-width: 1023px) {
+  .utility-sidebar {
+    transform: translateX(100%) translateY(-50%);
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  .utility-sidebar.show {
+    transform: translateX(0) translateY(-50%);
+    opacity: 1;
+    pointer-events: auto;
+    width: 240px;
+  }
+
+  .sidebar-toggle {
+    display: flex;
+  }
+}
+
+/* Desktop: Sidebar visible, toggle oculto */
+@media (min-width: 1024px) {
+  .utility-sidebar {
+    transform: translateY(-50%);
+    opacity: 1;
+    pointer-events: auto;
+    width: 60px;
+  }
+
+  .sidebar-toggle {
+    display: none;
+  }
+}
+
+/* Desktop Grande */
+@media (min-width: 1440px) {
+  .utility-sidebar:hover {
+    width: 280px;
+  }
+}
+

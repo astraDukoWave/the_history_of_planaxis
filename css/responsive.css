@@ -1,654 +1,385 @@
 /* ============================================================================
    RESPONSIVE.CSS - Media Queries Mobile-First
    
-   ¿POR QUÉ? Los sitios web deben funcionar en dispositivos de todos los tamaños -
-   desde teléfonos de 320px hasta monitores 4K. Un enfoque mobile-first significa que
-   estilizamos para teléfonos primero, luego mejoramos progresivamente para pantallas
-   más grandes.
+   ¿POR QUÉ FUERA DE @layer?
+   Los media queries están INTENCIONALMENTE fuera de las capas CSS para
+   tener la MÁXIMA prioridad. Esto permite sobrescribir cualquier estilo
+   de cualquier capa basado en el tamaño del viewport.
    
-   ¿CÓMO FUNCIONA? Las media queries detectan ancho de viewport y aplican diferentes
-   estilos en breakpoints específicos (768px para tablets, 1024px para escritorios).
+   ENFOQUE MOBILE-FIRST: Escribimos estilos base para móviles, luego
+   usamos min-width para agregar complejidad en pantallas más grandes.
+   Esto resulta en CSS más eficiente y una mejor experiencia móvil.
    
-   ANALOGÍA FEYNMAN: Es como diseñar ropa en diferentes tallas. Primero diseñas para
-   la talla más común (móvil), luego haces versiones más grandes (tablet, desktop)
-   que aprovechan el espacio extra. Cada talla tiene ajustes pero el diseño base es
-   el mismo.
-   
-   RESULTADO: Un diseño fluido y adaptativo que funciona hermosamente en todos los dispositivos.
+   PROPIEDADES LÓGICAS: Usamos propiedades como margin-inline, padding-block
+   en lugar de margin-left, padding-top. Esto hace el CSS agnóstico a la
+   dirección del texto (LTR/RTL), mejorando la internacionalización.
    ============================================================================ */
 
 /* ============================================================================
-   ESTILOS BASE (MÓVIL) - Predeterminado para pantallas < 768px
+   ESTILOS MÓVIL (< 768px)
    
-   ¿POR QUÉ? La mayoría del tráfico web ahora viene de dispositivos móviles. Al diseñar
-   para móvil primero, aseguramos que la experiencia central funcione para la mayoría
-   de usuarios.
-   
-   ¿CÓMO FUNCIONA? Estos estilos aplican por defecto y son sobrescritos por media
-   queries para pantallas más grandes.
-   
-   RESULTADO: Dispositivos móviles obtienen estilos optimizados sin descargar CSS
-   innecesario de desktop.
+   Estos son los estilos BASE que aplican por defecto. Las media queries
+   con min-width agregan/sobrescriben para pantallas más grandes.
    ============================================================================ */
 
-/* ¿POR QUÉ? En móvil, el sidebar ocupa demasiado espacio de pantalla para estar
-   permanentemente visible. Lo ocultamos por defecto y lo mostramos via un botón toggle.
-   
-   ¿CÓMO FUNCIONA? transform: translateX(100%) lo mueve completamente fuera de pantalla
-   hacia la derecha.
-   
-   ANALOGÍA FEYNMAN: Es como tener un cajón que se desliza fuera de vista cuando no
-   lo necesitas. En móvil, el espacio de pantalla es precioso - el cajón (sidebar)
-   se desliza fuera del camino hasta que explícitamente lo abres.
-   
-   RESULTADO: Más espacio de pantalla para contenido en dispositivos móviles. */
+/* Sidebar oculto por defecto en móvil */
 .utility-sidebar {
   transform: translateX(100%) translateY(-50%);
   opacity: 0;
   pointer-events: none;
-  
-  /* ¿POR QUÉ? En móvil, queremos que el sidebar superponga contenido (no lo empuje
-     a un lado) cuando se abra, así que ajustamos su posicionamiento.
-     
-     ¿CÓMO FUNCIONA? Mantenemos el posicionamiento fixed pero lo preparamos para
-     interacción toggle.
-     
-     RESULTADO: Cuando se hace toggle, el sidebar se desliza desde la derecha como overlay. */
 }
 
-/* ¿POR QUÉ? El sidebar necesita ser accesible en móvil, así que mostramos un botón
-   toggle que lo revela/oculta.
-   
-   ¿CÓMO FUNCIONA? Cambiar display de none a flex hace el botón visible en móvil.
-   
-   RESULTADO: Usuarios móviles pueden acceder al sidebar via un botón toggle intuitivo. */
+/* Toggle de sidebar visible en móvil */
 .sidebar-toggle {
   display: flex;
 }
 
-/* ¿POR QUÉ? Cuando los usuarios hacen toggle del sidebar abierto en móvil (agregando
-   clase .show via JavaScript), lo deslizamos de vuelta a pantalla.
+/* ========================================================================
+   SIDEBAR EXPANDIDO EN MÓVIL
    
-   ¿CÓMO FUNCIONA? transform: translateX(0) lo trae de vuelta a su posición original,
-   y pointer-events: auto re-habilita interacción.
+   ¿POR QUÉ width: 260px?
+   ======================
+   Cuando el usuario hace clic en el botón toggle, el sidebar se expande
+   para mostrar TANTO los íconos como el texto de los enlaces. Sin este
+   ancho explícito, el sidebar mantendría su ancho base de 60px y el
+   texto estaría oculto por overflow: hidden.
    
-   RESULTADO: Animación suave de slide-in cuando el sidebar se abre. */
+   ¿POR QUÉ background más opaco?
+   ==============================
+   En móvil, el sidebar necesita ser más legible porque no hay hover
+   para revelar contenido. Usamos 95% de opacidad para máximo contraste.
+   
+   ACCESIBILIDAD: El z-index alto (1001) asegura que el sidebar esté
+   SOBRE cualquier otro contenido flotante, incluyendo el header fijo.
+   ======================================================================== */
 .utility-sidebar.show {
   transform: translateX(0) translateY(-50%);
   opacity: 1;
   pointer-events: auto;
+  
+  /* Ancho expandido para mostrar texto de enlaces */
+  width: 260px;
+  
+  /* Fondo más opaco para legibilidad */
+  background: rgba(5, 10, 20, 0.95);
+  
+  /* Z-index alto para estar sobre el header */
+  z-index: 1001;
 }
 
-/* ¿POR QUÉ? En pantallas muy pequeñas (teléfonos), la navegación horizontal no cabe.
-   Necesitamos ocultar la navegación principal y mostrar un menú hamburguesa en su lugar.
+/* ========================================================================
+   TEXTO VISIBLE EN SIDEBAR MÓVIL EXPANDIDO
    
-   ¿CÓMO FUNCIONA? display: none remueve los enlaces nav, y mostraremos un ícono hamburguesa.
+   ¿POR QUÉ?
+   En desktop, el texto se revela con hover via CSS. En móvil, no hay
+   hover, así que cuando el sidebar está expandido (.show), el texto
+   DEBE ser visible inmediatamente.
+   ======================================================================== */
+.utility-sidebar.show .sidebar-links li a span:not(.icon),
+.utility-sidebar.show .nav-text {
+  opacity: 1;
+}
+
+/* ============================================================================
+   NAVEGACIÓN MÓVIL - Animación de Display con CSS Moderno
    
-   RESULTADO: Interfaz móvil limpia sin navegación apretada y superpuesta. */
+   ¿POR QUÉ transition-behavior: allow-discrete?
+   =============================================
+   Históricamente, CSS no podía animar la propiedad `display` porque es
+   "discreta" (solo tiene valores como none, block, flex - no hay estados
+   intermedios como 0.5). 
+   
+   La nueva propiedad `transition-behavior: allow-discrete` le dice al
+   navegador: "Sí, quiero animar display. Mantenlo visible durante la
+   transición de salida."
+   
+   ¿CÓMO FUNCIONA @starting-style?
+   ===============================
+   Define los valores INICIALES cuando un elemento aparece (display: none → block).
+   Sin esto, el elemento aparecería de golpe porque no hay "estado previo".
+   
+   @starting-style es como decir: "Cuando este elemento aparezca por primera
+   vez, empieza desde ESTOS valores y anima hacia los valores normales."
+   
+   ANALOGÍA FEYNMAN: Es como las instrucciones de una obra de teatro.
+   @starting-style dice: "El actor entra desde bambalinas (opacity: 0)".
+   Los estilos normales dicen: "Cuando esté en escena, opacity: 1".
+   La transición es el actor caminando desde bambalinas al centro del escenario.
+   ============================================================================ */
 .nav-links {
-  /* ¿POR QUÉ? En móvil, transformamos la navegación horizontal en un menú dropdown
-     vertical que se desliza desde el header.
-     
-     ¿CÓMO FUNCIONA? position: absolute lo posiciona debajo del header, y lo transformamos
-     fuera de pantalla hasta que se haga toggle.
-     
-     RESULTADO: Navegación dropdown optimizada para móvil. */
   position: absolute;
   top: 100%;
-  left: 0;
-  right: 0;
+  inset-inline: 0;
+  
   flex-direction: column;
+  
   background-color: rgba(10, 30, 60, 0.98);
-  padding: var(--spacing-md);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  padding: var(--space-md);
   gap: 0;
   
-  /* ¿POR QUÉ? Inicialmente oculto fuera de pantalla con transform: translateY(-100%),
-     el menú se deslizará hacia abajo cuando se abra.
-     
-     ¿CÓMO FUNCIONA? TranslateY negativo lo mueve hacia arriba por 100% de su propia
-     altura (completamente oculto).
-     
-     RESULTADO: Oculto hasta que se haga clic en el menú hamburguesa. */
-  transform: translateY(-100%);
-  opacity: 0;
-  pointer-events: none;
-  transition: transform var(--transition-normal) var(--easing-default),
-              opacity var(--transition-normal) var(--easing-default);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
   
-  /* ¿POR QUÉ? box-shadow crea profundidad, haciendo que el dropdown se sienta como
-     si estuviera en capas sobre el contenido.
+  /* Estado CERRADO por defecto */
+  display: none;
+  opacity: 0;
+  transform: translateY(-20px);
+  
+  /* ========================================================================
+     TRANSICIONES MODERNAS
      
-     ¿CÓMO FUNCIONA? 0 4px 12px crea una sombra suave debajo del menú.
-     
-     RESULTADO: Separación visual clara del contenido debajo. */
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+     transition-behavior: allow-discrete permite animar `display`.
+     Incluimos display en la lista de propiedades a animar.
+     ======================================================================== */
+  transition: 
+    opacity var(--transition-normal) var(--easing-default),
+    transform var(--transition-normal) var(--easing-default),
+    display var(--transition-normal) var(--easing-default) allow-discrete;
 }
 
-/* ¿POR QUÉ? Cuando el menú móvil se abre (via clase .show de JavaScript), lo deslizamos
-   a vista.
+/* ========================================================================
+   ESTADO ABIERTO - Controlado por data-visible="true"
    
-   ¿CÓMO FUNCIONA? transform: translateY(0) lo retorna a su posición natural, haciéndolo visible.
-   
-   RESULTADO: Animación dropdown suave cuando se hace clic en el menú hamburguesa. */
-.nav-links.show {
-  transform: translateY(0);
+   Usamos data-attribute en lugar de .show porque:
+   1. Es más semántico (describe el estado, no la acción)
+   2. Conecta mejor con aria-expanded del botón
+   3. Facilita queries en CSS y JS
+   ======================================================================== */
+.nav-links[data-visible="true"] {
+  display: flex;
   opacity: 1;
-  pointer-events: auto;
+  transform: translateY(0);
 }
 
-/* ¿POR QUÉ? Cada enlace en el menú móvil necesita targets táctiles de ancho completo
-   con separación visual clara.
+/* ========================================================================
+   @starting-style - Valores Iniciales de Entrada
    
-   ¿CÓMO FUNCIONA? display: block hace cada enlace de ancho completo, y agregamos
-   bordes entre ellos.
-   
-   RESULTADO: Enlaces de navegación fáciles de tap optimizados para pantallas táctiles. */
+   Cuando el menú pasa de display: none → flex, estos son los valores
+   DESDE los cuales se anima. Sin esto, aparecería de golpe.
+   ======================================================================== */
+@starting-style {
+  .nav-links[data-visible="true"] {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+}
+
+/* Fallback para navegadores sin soporte de allow-discrete */
+@supports not (transition-behavior: allow-discrete) {
+  .nav-links {
+    display: flex;
+    visibility: hidden;
+    pointer-events: none;
+  }
+  
+  .nav-links[data-visible="true"] {
+    visibility: visible;
+    pointer-events: auto;
+  }
+}
+
+/* Enlaces de nav con bordes en móvil */
 .nav-links li {
-  /* ¿POR QUÉ? border-bottom crea separación visual entre ítems del menú, haciéndolos
-     más fáciles de distinguir.
-     
-     ¿CÓMO FUNCIONA? Borde sólido de 1px con color rgba sutil.
-     
-     RESULTADO: Estructura de menú clara con ítems definidos. */
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  border-block-end: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 .nav-links li:last-child {
-  border-bottom: none;
+  border-block-end: none;
 }
 
-/* ¿POR QUÉ? Los enlaces móviles necesitan padding más grande para tapping cómodo
-   con los dedos. El HIG de Apple recomienda targets táctiles mínimos de 44x44px.
-   
-   ¿CÓMO FUNCIONA? Aumentamos padding vertical para crear enlaces más altos y fáciles de tap.
-   
-   RESULTADO: Navegación optimizada para móvil que es fácil de usar con pulgares. */
 .nav-links li a {
   display: block;
-  padding: var(--spacing-md) var(--spacing-sm);
-  text-align: left;
+  padding: var(--space-md) var(--space-sm);
+  text-align: start;
 }
 
-/* ¿POR QUÉ? El botón de menú hamburguesa necesita ser visible en móvil para abrir la nav.
-   
-   ¿CÓMO FUNCIONA? Cambiar display de none a flex lo hace aparecer.
-   
-   RESULTADO: Botón de menú claro y reconocible en dispositivos móviles. */
+/* Botón hamburguesa visible en móvil */
 .mobile-menu-toggle {
   display: flex;
 }
 
-/* ¿POR QUÉ? En móvil, la sección hero puede ser ligeramente más corta (90vh en lugar
-   de 100vh) para insinuar que hay contenido debajo, animando scrolling.
-   
-   ¿CÓMO FUNCIONA? Reducir altura de 100vh a 90vh deja 10% de la pantalla para peek de contenido.
-   
-   RESULTADO: Los usuarios son más propensos a hacer scroll hacia abajo y explorar. */
+/* Hero más corto en móvil */
 .hero {
-  height: 90vh;
+  min-height: 90vh;
+  min-height: 90dvh;
 }
 
-/* ¿POR QUÉ? El título hero necesita ser más pequeño en móvil para prevenir saltos de
-   línea y mantener legibilidad en pantallas estrechas.
-   
-   ¿CÓMO FUNCIONA? Reducimos de 48px (3rem) a 32px (2rem).
-   
-   RESULTADO: El título cabe cómodamente en pantallas de teléfono sin saltos extraños. */
+/* Tipografía ajustada para móvil */
 .hero-title {
   font-size: var(--font-size-xl);
-  /* ¿POR QUÉ? Letter-spacing puede reducirse en pantallas más pequeñas porque el
-     título es más pequeño y no necesita tanto espaciado.
-     
-     ¿CÓMO FUNCIONA? Reducimos de 0.05em a 0.03em.
-     
-     RESULTADO: Mejor uso del espacio de pantalla móvil limitado. */
   letter-spacing: 0.03em;
 }
 
-/* ¿POR QUÉ? El texto tagline también necesita ser ligeramente más pequeño en móvil
-   para legibilidad óptima y gestión de espacio.
-   
-   ¿CÓMO FUNCIONA? Reducimos de 18px a 16px (tamaño de fuente base).
-   
-   RESULTADO: Experiencia de lectura cómoda en pantallas pequeñas. */
 .hero-tagline {
   font-size: var(--font-size-base);
 }
 
-/* ¿POR QUÉ? Los botones CTA en móvil deben ser ligeramente más pequeños para encajar
-   mejor, pero aún lo suficientemente grandes para tap fácil.
-   
-   ¿CÓMO FUNCIONA? Reducimos tamaño de fuente y ajustamos padding proporcionalmente.
-   
-   RESULTADO: Botón bien proporcionado que es fácil de tap en móvil. */
 .hero-cta {
   font-size: var(--font-size-base);
-  padding: var(--spacing-sm) var(--spacing-lg);
+  padding: var(--space-sm) var(--space-lg);
 }
 
-/* ¿POR QUÉ? SIMETRÍA MÓVIL - En móvil, necesitamos padding perfectamente simétrico
-   ya que el Dock de Vidrio Flotante está oculto. También maximizamos espacio de
-   contenido mientras prevenimos tocar bordes.
-   
-   ¿CÓMO FUNCIONA? Padding más pequeño y uniforme en ambos lados. width: 95% (en lugar
-   de 90%) usa más del espacio de pantalla móvil disponible.
-   
-   RESULTADO: Máximo espacio usable en pantallas pequeñas con balance perfecto. */
+/* Contenedor móvil - Mayor uso del espacio */
 .container {
-  width: 95%; /* Usa más espacio de pantalla en móvil */
-  padding-left: var(--spacing-sm);
-  padding-right: var(--spacing-sm);
+  width: 95%;
+  padding-inline: var(--space-sm);
 }
 
 .container-fluid {
-  padding-left: var(--spacing-sm);
-  padding-right: var(--spacing-sm);
+  padding-inline: var(--space-sm);
 }
 
-/* ============================================================================
-   ESTILOS TABLET - 768px a 1023px
-   
-   ¿POR QUÉ? Las tablets tienen más espacio de pantalla que teléfonos pero menos que
-   escritorios. Necesitan un layout de término medio que aproveche el espacio extra.
-   
-   ¿CÓMO FUNCIONA? Media query con min-width: 768px aplica estos estilos solo cuando
-   el viewport es al menos 768px de ancho.
-   
-   GLOSARIO: min-width = "ancho mínimo". @media (min-width: 768px) significa "aplica
-   estos estilos cuando la pantalla sea AL MENOS 768px de ancho".
-   
-   RESULTADO: Experiencia optimizada para iPad, tablets Android, y laptops pequeñas.
-   ============================================================================ */
 
+/* ============================================================================
+   TABLET - 768px a 1023px
+   ============================================================================ */
 @media (min-width: 768px) {
-  /* ¿POR QUÉ? En tablet, tenemos suficiente espacio para mostrar los enlaces de
-     navegación horizontalmente en el header en lugar de un menú dropdown.
-     
-     ¿CÓMO FUNCIONA? Reseteamos los estilos móviles, cambiando de vuelta a layout
-     flex horizontal.
-     
-     RESULTADO: Navegación horizontal tradicional que cabe cómodamente. */
-  .nav-links {
+  /* Navegación horizontal en tablet - Siempre visible */
+  .nav-links,
+  .nav-links[data-visible="false"],
+  .nav-links[data-visible="true"] {
     position: static;
     flex-direction: row;
+    
+    display: flex;
     background-color: transparent;
+    backdrop-filter: none;
     padding: 0;
-    gap: var(--spacing-lg);
+    gap: var(--space-lg);
+    
     transform: none;
     opacity: 1;
     pointer-events: auto;
     box-shadow: none;
   }
-  
-  /* ¿POR QUÉ? Con navegación horizontal funcionando, ya no necesitamos el menú hamburguesa.
-     
-     ¿CÓMO FUNCIONA? display: none lo oculta.
-     
-     RESULTADO: Header más limpio sin controles móviles innecesarios. */
+
+  .nav-links li {
+    border-block-end: none;
+  }
+
+  .nav-links li a {
+    padding: var(--space-2xs) var(--space-sm);
+  }
+
+  /* Ocultar hamburguesa en tablet */
   .mobile-menu-toggle {
     display: none;
   }
-  
-  /* ¿POR QUÉ? Las tablets tienen más espacio vertical, así que podemos usar altura
-     completa de viewport para el hero nuevamente.
-     
-     ¿CÓMO FUNCIONA? Restaurando height: 100vh del 90vh móvil.
-     
-     RESULTADO: Hero dramático de pantalla completa en tablets. */
+
+  /* Hero a altura completa */
   .hero {
-    height: 100vh;
+    min-height: 100vh;
+    min-height: 100dvh;
   }
-  
-  /* ¿POR QUÉ? En tablet, podemos aumentar tamaños de texto de vuelta hacia valores
-     desktop para mejor jerarquía visual e impacto.
-     
-     ¿CÓMO FUNCIONA? Aumentando font-size progresivamente a medida que crece el tamaño de pantalla.
-     
-     RESULTADO: Tipografía apropiadamente escalada para pantallas de tamaño medio. */
+
+  /* Tipografía tablet */
   .hero-title {
-    font-size: calc(var(--font-size-2xl) * 0.85); /* ~40px */
+    font-size: calc(var(--font-size-2xl) * 0.85);
     letter-spacing: 0.04em;
   }
-  
+
   .hero-tagline {
     font-size: var(--font-size-md);
   }
-  
+
   .hero-cta {
     font-size: var(--font-size-md);
-    padding: var(--spacing-md) var(--spacing-xl);
+    padding: var(--space-md) var(--space-xl);
   }
-  
-  /* ¿POR QUÉ? En tablets, el Dock de Vidrio Flotante aún toma espacio que podría
-     usarse mejor para contenido. Lo mantenemos oculto y accesible via botón toggle.
-     
-     ¿CÓMO FUNCIONA? Mantenemos el comportamiento móvil - oculto por defecto, mostrado
-     via clase .show.
-     
-     RESULTADO: Usuarios de tablet pueden acceder al dock sin sacrificar espacio de
-     pantalla precioso. */
+
+  /* Sidebar aún oculto en tablet (toggle necesario) */
   .utility-sidebar {
-    /* ¿POR QUÉ? Cuando se hace toggle abierto en tablet, el dock debe ser ligeramente
-       más estrecho que desktop para encajar mejor en pantallas de ancho medio.
-       
-       ¿CÓMO FUNCIONA? Cuando se muestra, se despliega a 240px de ancho (estado expandido).
-       
-       RESULTADO: El dock encaja mejor en pantallas tablet sin bloquear demasiado contenido. */
     width: 240px;
   }
-  
-  /* ¿POR QUÉ? El toggle del sidebar permanece visible en tablets para mostrar/ocultar
-     el sidebar overlay.
-     
-     ¿CÓMO FUNCIONA? Mantenemos display: flex de los estilos móviles.
-     
-     RESULTADO: Patrón consistente de acceso al sidebar entre móvil y tablet. */
+
   .sidebar-toggle {
     display: flex;
   }
-  
-  /* ¿POR QUÉ? BALANCE TABLET - En tablets, restauramos proporciones estándar de padding
-     y width para mejor uso del espacio de pantalla de tamaño medio.
-     
-     ¿CÓMO FUNCIONA? width: 90% proporciona márgenes cómodos. Padding estándar (24px)
-     crea espacio de respiración sin desperdiciar espacio.
-     
-     RESULTADO: Layout bien proporcionado que aprovecha el tamaño de pantalla tablet
-     mientras mantiene centrado perfecto. */
+
+  /* Contenedor tablet */
   .container {
     width: 90%;
-    padding-left: var(--spacing-md);
-    padding-right: var(--spacing-md);
+    padding-inline: var(--space-md);
   }
-  
+
   .container-fluid {
-    padding-left: var(--spacing-md);
-    padding-right: var(--spacing-md);
-  }
-  
-  /* ¿POR QUÉ? En tablet, los bordes entre ítems del menú móvil ya no se necesitan
-     ya que volvimos a navegación horizontal.
-     
-     ¿CÓMO FUNCIONA? Removiendo border-bottom de ítems de lista.
-     
-     RESULTADO: Navegación horizontal limpia sin divisores que distraen. */
-  .nav-links li {
-    border-bottom: none;
-  }
-  
-  /* ¿POR QUÉ? El padding de enlaces tablet puede reducirse de los targets táctiles
-     grandes de móvil ya que los enlaces son horizontales nuevamente.
-     
-     ¿CÓMO FUNCIONA? Revirtiendo a padding desktop original.
-     
-     RESULTADO: Navegación horizontal apropiadamente proporcionada. */
-  .nav-links li a {
-    padding: var(--spacing-xs) var(--spacing-sm);
+    padding-inline: var(--space-md);
   }
 }
 
-/* ============================================================================
-   ESTILOS DESKTOP - 1024px y más
-   
-   ¿POR QUÉ? Las pantallas desktop tienen espacio abundante para sidebars, texto más
-   grande y layouts complejos. Podemos mostrar todo a la vez sin compromisos.
-   
-   ¿CÓMO FUNCIONA? Media query con min-width: 1024px aplica estos estilos solo en
-   laptops, monitores y displays más grandes.
-   
-   RESULTADO: Experiencia full-featured y rica que aprovecha pantallas grandes.
-   ============================================================================ */
 
+/* ============================================================================
+   DESKTOP - 1024px y más
+   ============================================================================ */
 @media (min-width: 1024px) {
-  /* ¿POR QUÉ? En desktop, tenemos suficiente espacio para que el Dock de Vidrio
-     Flotante esté permanentemente visible en el lado derecho. Comienza colapsado
-     (60px, solo íconos) y se expande en hover (260px) para revelar texto completo.
-     
-     ¿CÓMO FUNCIONA? Reseteamos todos los transforms de ocultamiento móvil y lo hacemos
-     completamente visible.
-     
-     RESULTADO: Navegación de utilidad siempre accesible que no obstruye contenido. */
+  /* Sidebar visible permanentemente */
   .utility-sidebar {
     transform: translateY(-50%);
     opacity: 1;
     pointer-events: auto;
-    /* ¿POR QUÉ? ANCHO COLAPSADO - 60px muestra solo íconos en el estado predeterminado.
-       Esta huella mínima asegura que el dock esté presente pero no sea intrusivo. El
-       dock se expandirá a 260px en hover (definido en sidebar.css).
-       
-       ¿CÓMO FUNCIONA? Restauramos el ancho colapsado de sidebar.css.
-       
-       RESULTADO: Dock flotante mínimo que se expande bajo demanda, nunca bloqueando contenido. */
-    width: 60px;
+    width: 60px;  /* Estado colapsado */
   }
-  
-  /* ¿POR QUÉ? Con el sidebar permanentemente visible, no necesitamos el botón toggle.
-     
-     ¿CÓMO FUNCIONA? display: none lo oculta completamente.
-     
-     RESULTADO: Interfaz más limpia sin controles innecesarios. */
+
+  /* Toggle oculto en desktop */
   .sidebar-toggle {
     display: none;
   }
-  
-  /* ¿POR QUÉ? Desktop puede mostrar tipografía de tamaño completo para máximo impacto
-     y legibilidad.
-     
-     ¿CÓMO FUNCIONA? Usando los valores de diseño originales de variables.
-     
-     RESULTADO: Sección hero dramática y que atrapa la atención. */
+
+  /* Tipografía desktop completa */
   .hero-title {
-    font-size: var(--font-size-2xl); /* 48px completo */
+    font-size: var(--font-size-2xl);
     letter-spacing: 0.05em;
   }
-  
-  .hero-tagline {
-    font-size: var(--font-size-md);
-  }
-  
-  .hero-cta {
-    font-size: var(--font-size-md);
-    padding: var(--spacing-md) var(--spacing-xl);
-  }
-  
-  /* ¿POR QUÉ? ZONA SEGURA DESKTOP - En desktop, el Dock de Vidrio Flotante es visible,
-     así que necesitamos asegurar que el contenido permanezca centrado mientras evita
-     colisión con el dock (posicionado a 20px del borde derecho).
-     
-     ESTRATEGIA DE LAYOUT: El max-width del contenedor de 1100px combinado con 90% de
-     width y margin-inline: auto crea centrado perfecto con espacio natural para que
-     el dock flote sin obstrucción.
-     
-     ¿CÓMO FUNCIONA? Mantenemos el max-width establecido en layout.css (1100px) y
-     aseguramos centrado apropiado con margin-inline: auto.
-     
-     RESULTADO: Contenido perfectamente centrado que nunca colisiona con el Dock de
-     Vidrio Flotante, con espaciado igual en ambos lados creando armonía visual. */
+
+  /* Contenedor desktop */
   .container {
     width: 90%;
     max-width: 1100px;
     margin-inline: auto;
-    padding-left: var(--spacing-md);
-    padding-right: var(--spacing-md);
+    padding-inline: var(--space-md);
   }
-  
-  /* ¿POR QUÉ? El contenido hero en desktop obtiene ligeramente más width ya que está
-     diseñado para ser impactante y el texto es más grande, pero aún restringido para legibilidad.
-     
-     ¿CÓMO FUNCIONA? max-width: 850px proporciona un poco más de espacio que los 800px originales.
-     
-     RESULTADO: Sección hero balanceada que se ve genial en pantallas grandes. */
+
+  /* Hero content más ancho */
   .hero-content {
     max-width: 850px;
   }
-  
-  /* ¿POR QUÉ? Los usuarios desktop esperan efectos hover ya que tienen control preciso
-     del mouse. Podemos agregar animaciones hover más sofisticadas que no funcionarían en touch.
-     
-     ¿CÓMO FUNCIONA? Transiciones y transforms mejorados en hover.
-     
-     RESULTADO: Experiencia interactiva rica que se siente pulida y profesional. */
 }
 
-/* ============================================================================
-   ESTILOS DESKTOP GRANDE - 1440px y más
-   
-   ¿POR QUÉ? Pantallas extra grandes (como monitores de 27" y displays 4K) tienen
-   tanto espacio que los estilos predeterminados pueden verse pequeños y solitarios.
-   
-   ¿CÓMO FUNCIONA? Media query con min-width: 1440px aplica espaciado y dimensionamiento mejorados.
-   
-   RESULTADO: El diseño escala grácilmente para llenar displays grandes sin verse perdido.
-   ============================================================================ */
 
+/* ============================================================================
+   DESKTOP GRANDE - 1440px y más
+   ============================================================================ */
 @media (min-width: 1440px) {
-  /* ¿POR QUÉ? En pantallas enormes, podemos permitirnos fuentes ligeramente más grandes
-     sin sacrificar legibilidad, y ayuda a llenar el espacio.
-     
-     ¿CÓMO FUNCIONA? Aumentamos el título hero a un tamaño incluso más grande.
-     
-     RESULTADO: Tipografía impactante que comanda atención en displays grandes. */
+  /* Tipografía más grande para pantallas amplias */
   .hero-title {
-    font-size: calc(var(--font-size-2xl) * 1.2); /* ~57px */
+    font-size: calc(var(--font-size-2xl) * 1.2);
   }
-  
-  /* ¿POR QUÉ? OPTIMIZACIÓN DESKTOP GRANDE - En pantallas ultra anchas (1440px+), podemos
-     permitirnos aumentar max-width ligeramente mientras aún mantenemos centrado perfecto
-     y distancia segura del Dock de Vidrio Flotante.
-     
-     CÁLCULO: En una pantalla de 1920px con max-width: 1250px:
-     - Contenido: 1250px (centrado)
-     - Espacio izquierdo: ~335px
-     - Espacio derecho: ~335px (mucho espacio para dock de 60-280px + márgenes)
-     
-     ¿CÓMO FUNCIONA? Max-width ligeramente aumentado (1250px) aprovecha pantallas
-     grandes mientras mantiene la estrategia de centrado.
-     
-     RESULTADO: El contenido usa el espacio de pantalla eficientemente en monitores
-     grandes mientras permanece perfectamente centrado con espacio amplio para el
-     Dock de Vidrio Flotante. */
+
+  /* Contenedor más amplio */
   .container {
     max-width: 1250px;
   }
-  
-  /* ¿POR QUÉ? El contenido hero también puede expandirse ligeramente en pantallas
-     grandes para impacto más dramático sin perder legibilidad.
-     
-     ¿CÓMO FUNCIONA? Max-width aumentado a 900px (de 850px).
-     
-     RESULTADO: Sección hero más impactante en displays grandes. */
+
   .hero-content {
     max-width: 900px;
   }
-  
-  /* ¿POR QUÉ? En pantallas ultra grandes, el Dock de Vidrio Flotante mantiene su
-     estado colapsado (60px) por defecto. No necesitamos aumentar su tamaño - la
-     expansión hover a 260px ya es generosa.
-     
-     ¿CÓMO FUNCIONA? Mantenemos el ancho colapsado consistente entre todos los tamaños desktop.
-     
-     RESULTADO: Presencia de dock consistente y mínima que funciona perfectamente en
-     todas las pantallas. */
-  .utility-sidebar {
-    width: 60px;
-  }
-  
-  /* ¿POR QUÉ? En pantallas enormes, el estado hover-expandido puede ser ligeramente
-     más ancho para lectura más cómoda sin bloquear contenido.
-     
-     ¿CÓMO FUNCIONA? Aumentamos el ancho hover de 260px a 280px en displays extra grandes.
-     
-     RESULTADO: Dock expandido más espacioso en monitores grandes. */
+
+  /* Sidebar hover más ancho */
   .utility-sidebar:hover {
     width: 280px;
   }
 }
 
-/* ============================================================================
-   ESTILOS DE IMPRESIÓN
-   
-   ¿POR QUÉ? Si los usuarios imprimen la página, necesitamos ocultar elementos
-   interactivos (navegación, botones) y optimizar para papel/PDF.
-   
-   ¿CÓMO FUNCIONA? @media print aplica estilos solo cuando se imprime.
-   
-   RESULTADO: Salida limpia y amigable para impresora. */
-
-@media print {
-  /* ¿POR QUÉ? Navegación, sidebars y botones son inútiles en impresión. Los ocultamos
-     para ahorrar tinta y papel.
-     
-     ¿CÓMO FUNCIONA? display: none los remueve del layout de impresión completamente.
-     
-     RESULTADO: Página impresa limpia con solo contenido. */
-  .main-header,
-  .utility-sidebar,
-  .sidebar-toggle,
-  .hero-cta,
-  .scroll-indicator {
-    display: none;
-  }
-  
-  /* ¿POR QUÉ? La sección hero no necesita ser de pantalla completa en impresión -
-     debe ser solo lo suficientemente alta para contener su contenido.
-     
-     ¿CÓMO FUNCIONA? Cambiar de 100vh a auto permite altura de contenido natural.
-     
-     RESULTADO: Uso eficiente de páginas impresas. */
-  .hero {
-    height: auto;
-    min-height: 300px;
-    page-break-inside: avoid;
-  }
-  
-  /* ¿POR QUÉ? Las imágenes de fondo consumen mucha tinta y a menudo se imprimen mal.
-     Las removemos por razones de costo y calidad.
-     
-     ¿CÓMO FUNCIONA? background-image: none quita la imagen.
-     
-     RESULTADO: Páginas impresas limpias y eficientes en tinta. */
-  .hero {
-    background-image: none;
-  }
-  
-  /* ¿POR QUÉ? La impresión necesita texto negro sobre papel blanco para máxima
-     legibilidad y uso mínimo de tinta.
-     
-     ¿CÓMO FUNCIONA? Sobrescribimos todos los estilos de color con valores amigables
-     para impresión.
-     
-     RESULTADO: Salida impresa legible y eficiente en tinta. */
-  body {
-    background: white;
-    color: black;
-  }
-}
 
 /* ============================================================================
    ACCESIBILIDAD - Movimiento Reducido
    
-   ¿POR QUÉ? Algunos usuarios experimentan mareo por movimiento de animaciones.
-   Debemos respetar la configuración "prefers-reduced-motion" de accesibilidad.
-   
-   ¿CÓMO FUNCIONA? Media query detecta la configuración del OS y deshabilita animaciones.
-   
-   ANALOGÍA FEYNMAN: Es como tener un interruptor en tu casa para luces estroboscópicas.
-   Algunas personas están bien con ellas, otras se marean. Este CSS respeta esa
-   preferencia - si alguien dice "sin animaciones rápidas por favor", las desactivamos.
-   
-   RESULTADO: Experiencia accesible para usuarios con trastornos vestibulares.
+   ¿POR QUÉ? Algunos usuarios experimentan mareo con animaciones.
+   prefers-reduced-motion detecta esta preferencia del sistema operativo
+   y deshabilita animaciones para estos usuarios.
    ============================================================================ */
-
 @media (prefers-reduced-motion: reduce) {
-  /* ¿POR QUÉ? Para usuarios que han habilitado movimiento reducido en sus configuraciones
-     de OS, deshabilitamos todas las animaciones y transiciones que podrían causar incomodidad.
-     
-     ¿CÓMO FUNCIONA? Estableciendo transiciones y animaciones a none o duraciones muy cortas.
-     
-     GLOSARIO: prefers-reduced-motion = configuración de accesibilidad del OS que los
-     usuarios pueden habilitar si las animaciones les causan mareo o distracción.
-     
-     RESULTADO: Experiencia accesible que respeta preferencias del usuario. */
   *,
   *::before,
   *::after {
@@ -657,14 +388,43 @@
     transition-duration: 0.01ms !important;
     scroll-behavior: auto !important;
   }
-  
-  /* ¿POR QUÉ? La animación bounce en el indicador de scroll puede ser particularmente
-     problemática para usuarios sensibles al movimiento.
-     
-     ¿CÓMO FUNCIONA? Deshabilitamos completamente la animación.
-     
-     RESULTADO: Indicador de scroll estático que no activa mareo por movimiento. */
+
   .scroll-indicator {
     animation: none;
+  }
+}
+
+
+/* ============================================================================
+   ESTILOS DE IMPRESIÓN
+   ============================================================================ */
+@media print {
+  /* Ocultar elementos interactivos */
+  .main-header,
+  .utility-sidebar,
+  .sidebar-toggle,
+  .hero-cta,
+  .scroll-indicator {
+    display: none !important;
+  }
+
+  /* Optimizar para papel */
+  .hero {
+    height: auto;
+    min-height: 300px;
+    page-break-inside: avoid;
+    background-image: none !important;
+  }
+
+  body {
+    background: white;
+    color: black;
+  }
+
+  /* Enlaces visibles con URL */
+  a[href]::after {
+    content: " (" attr(href) ")";
+    font-size: 0.875em;
+    color: #666;
   }
 }

@@ -91,61 +91,38 @@
        RESULTADO: La interfaz del navegador se mezcla con el diseño del sitio en móviles, luciendo pulido. -->
   <meta name="theme-color" content="#050a14">
   
-  <!-- ¿POR QUÉ? Los archivos CSS se cargan en un orden específico porque los estilos posteriores
-       sobrescriben a los anteriores (la "cascada" en Hojas de Estilo en Cascada). Cargamos
-       estilos fundamentales primero, luego estilos de componentes específicos.
+  <!-- ============================================================================
+       ARQUITECTURA CSS CON @layer
        
-       ¿CÓMO FUNCIONA? Cada tag <link> carga un archivo CSS. rel="stylesheet" le dice al
-       navegador que es CSS, no un ícono u otro tipo de recurso.
+       ¿POR QUÉ USAMOS @layer?
+       Las capas CSS nos permiten controlar EXPLÍCITAMENTE el orden de especificidad
+       de nuestros estilos, independientemente del orden de aparición en el código.
+       Esto resuelve la "guerra de especificidad" donde estilos se sobrescriben inesperadamente.
        
-       RESULTADO: Los estilos se aplican en el orden correcto, con estilos específicos
-       sobrescribiendo los generales como se pretende. -->
+       ORDEN DE CASCADA (de menor a mayor prioridad):
+       1. reset     → Normalización base
+       2. base      → Tipografía, colores, elementos HTML puros
+       3. layout    → Contenedores, grids, estructura macro
+       4. components → Botones, cards, navegación, hero
+       5. utilities → Clases helper de alta prioridad (.flow, .visually-hidden)
+       
+       ¿CÓMO FUNCIONA?
+       style.css declara el orden de capas y contiene reset, base, layout y utilities.
+       Los componentes están en archivos separados para organización.
+       responsive.css está FUERA de capas para máxima prioridad en media queries.
+       
+       RESULTADO: CSS predecible, mantenible y libre de !important innecesarios.
+       ============================================================================ -->
   
-  <!-- ¿POR QUÉ? reset.css DEBE cargar primero para normalizar los valores predeterminados del
-       navegador antes de aplicar cualquier estilo personalizado. Si carga después, podría
-       sobrescribir nuestros estilos intencionales.
-       
-       ¿CÓMO FUNCIONA? Simple tag link apuntando al archivo.
-       
-       RESULTADO: Base limpia para todos los navegadores antes de aplicar estilos personalizados. -->
-  <link rel="stylesheet" href="css/reset.css">
+  <!-- Archivo principal con arquitectura de capas -->
+  <link rel="stylesheet" href="css/style.css">
   
-  <!-- ¿POR QUÉ? variables.css define nuestros tokens de diseño (colores, espaciado, fuentes).
-       Carga segundo para que todas las hojas de estilo subsecuentes puedan usar estas variables.
-       
-       ¿CÓMO FUNCIONA? Las propiedades personalizadas CSS (variables) se vuelven disponibles
-       una vez que este archivo carga.
-       
-       RESULTADO: Sistema de diseño consistente en todas las hojas de estilo. -->
-  <link rel="stylesheet" href="css/variables.css">
+  <!-- Componentes (usan @layer components internamente) -->
+  <link rel="stylesheet" href="css/components/header.css">
+  <link rel="stylesheet" href="css/components/hero.css">
+  <link rel="stylesheet" href="css/components/sidebar.css">
   
-  <!-- ¿POR QUÉ? layout.css establece la base estructural (grid, flexbox, utilidades). Carga
-       antes de los estilos de componentes para que los componentes puedan construir sobre
-       esta base.
-       
-       ¿CÓMO FUNCIONA? Las utilidades de layout se vuelven disponibles para uso.
-       
-       RESULTADO: Base estructural sólida para todos los componentes. -->
-  <link rel="stylesheet" href="css/layout.css">
-  
-  <!-- ¿POR QUÉ? Las hojas de estilo específicas de componentes (header, hero, sidebar) cargan
-       después. El orden no importa mucho aquí ya que estilizan elementos diferentes.
-       
-       ¿CÓMO FUNCIONA? Cada archivo apunta a componentes específicos.
-       
-       RESULTADO: CSS modular y mantenible donde cada archivo tiene un propósito claro. -->
-  <link rel="stylesheet" href="css/header.css">
-  <link rel="stylesheet" href="css/hero.css">
-  <link rel="stylesheet" href="css/sidebar.css">
-  
-  <!-- ¿POR QUÉ? responsive.css carga al FINAL para que sus media queries puedan sobrescribir
-       cualquier estilo previo en breakpoints específicos. Si cargara antes, otros estilos
-       podrían sobrescribir los ajustes responsivos.
-       
-       ¿CÓMO FUNCIONA? Las media queries en este archivo tienen la última palabra sobre el
-       layout en cada breakpoint.
-       
-       RESULTADO: Los ajustes responsivos funcionan correctamente en todos los tamaños de pantalla. -->
+  <!-- Responsive FUERA de capas para máxima prioridad -->
   <link rel="stylesheet" href="css/responsive.css">
   
   <!-- ¿POR QUÉ? Los hints de preconnect le dicen al navegador que establezca conexiones
@@ -195,46 +172,48 @@
         Planaxis
       </a>
       
-      <!-- ¿POR QUÉ? El botón hamburguesa está oculto en escritorio pero aparece en móviles
-           para toggle el menú de navegación. Necesita un aria-label para accesibilidad ya que
-           el ícono solo no describe su propósito a lectores de pantalla.
+      <!-- ========================================================================
+           BOTÓN HAMBURGUESA - Menú Móvil Accesible
            
-           ¿CÓMO FUNCIONA? Botón con aria-label y aria-expanded para comunicar estado a
-           tecnología asistiva. La clase se estiliza en responsive.css.
+           ¿POR QUÉ aria-controls?
+           Conecta el botón con el menú que controla. Los lectores de pantalla
+           pueden anunciar "Este botón controla el menú de navegación".
            
-           RESULTADO: Toggle de menú móvil accesible que funciona para todos los usuarios. -->
-      <button class="mobile-menu-toggle" aria-label="Toggle navigation menu" aria-expanded="false">
-        <!-- ¿POR QUÉ? Usamos elementos span simples para crear el ícono hamburguesa (tres líneas)
-             en lugar de una imagen o fuente de íconos. Esto es más rápido, más mantenible y
-             más fácil de animar.
-             
-             ¿CÓMO FUNCIONA? Tres spans horizontales estilizados con CSS para parecer líneas apiladas.
-             
-             RESULTADO: Ícono hamburguesa liviano y personalizable. -->
-        <span style="display:block;width:25px;height:3px;background:white;margin:5px 0;"></span>
-        <span style="display:block;width:25px;height:3px;background:white;margin:5px 0;"></span>
-        <span style="display:block;width:25px;height:3px;background:white;margin:5px 0;"></span>
+           ¿POR QUÉ aria-expanded?
+           Indica si el menú está abierto (true) o cerrado (false). JavaScript
+           lo actualiza cuando el usuario hace clic. Los lectores de pantalla
+           anuncian "botón colapsado" o "botón expandido".
+           
+           ACCESIBILIDAD: Los tres atributos aria- trabajan juntos para crear
+           una experiencia completa para usuarios de tecnología asistiva.
+           ======================================================================== -->
+      <button 
+        class="mobile-menu-toggle" 
+        aria-label="Toggle navigation menu" 
+        aria-expanded="false"
+        aria-controls="main-navigation"
+        data-menu-open="false"
+      >
+        <!-- Ícono hamburguesa con spans para animación CSS -->
+        <span class="hamburger-line"></span>
+        <span class="hamburger-line"></span>
+        <span class="hamburger-line"></span>
       </button>
       
-      <!-- ¿POR QUÉ? El <ul> (lista desordenada) es la forma semántica de marcar una lista de
-           enlaces de navegación. Los lectores de pantalla anuncian "lista, 4 elementos" para
-           ayudar a usuarios a entender la estructura.
+      <!-- ========================================================================
+           MENÚ DE NAVEGACIÓN
            
-           ¿CÓMO FUNCIONA? Cada enlace es un <li> (elemento de lista) conteniendo un <a> (ancla/enlace).
-           
-           RESULTADO: HTML semántico que es accesible y amigable con SEO. -->
-      <ul class="nav-links">
+           id="main-navigation" conecta con aria-controls del botón.
+           data-visible controla el estado de visibilidad para CSS y JS.
+           ======================================================================== -->
+      <ul class="nav-links" id="main-navigation" data-visible="false">
         <li>
-          <!-- ¿POR QUÉ? El atributo aria-current="page" le dice a los lectores de pantalla
-               qué enlace representa la página actual. Es más semántico que solo una clase.
-               
-               ¿CÓMO FUNCIONA? Agrega aria-current="page" al enlace de la página activa/actual.
-               
-               RESULTADO: Los lectores de pantalla anuncian "página actual" para mejor navegación. -->
           <a href="#festival" class="active" aria-current="page" data-i18n="nav.festival">Festival</a>
         </li>
         <li><a href="#brand-activation" data-i18n="nav.brand">Brand Activation</a></li>
+        <li><a href="#lineup" data-i18n="nav.lineup">Line-Up</a></li>
         <li><a href="#cultural-events" data-i18n="nav.cultural">Cultural Events</a></li>
+        <li><a href="#gallery" data-i18n="nav.gallery">Experience Gallery</a></li>
         <li><a href="contact.html" data-i18n="nav.contact">Contact</a></li>
         
         <!-- Selector de Idioma -->
@@ -453,6 +432,72 @@
         Immerse yourself in the magic of Tomorrowland 2018, where the story of Planaxis
         comes alive through spectacular stages, world-class performances, and unforgettable moments.
       </p>
+      
+      <!-- ================================================================
+           EJEMPLO: Grid Auto-Fit con Tarjetas (Line-Up)
+           
+           ¿POR QUÉ .grid-auto-fit?
+           Este grid es "intrínsecamente responsivo" - se adapta automáticamente
+           al espacio disponible SIN media queries. Las tarjetas nunca serán
+           menores a 300px ni mayores a 1fr.
+           
+           TÉCNICA CLAVE: margin-block-start: auto en .card__footer empuja
+           los botones al fondo de cada tarjeta, alineándolos perfectamente
+           sin importar la cantidad de texto en cada una.
+           ================================================================ -->
+      <div class="grid-auto-fit mt-xl">
+        <!-- Tarjeta 1: DJ/Artista -->
+        <article class="card">
+          <div class="card__image">
+            <!-- ⚠️ PERSONALIZA: Reemplaza con imagen real del artista -->
+            <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='200'%3E%3Crect fill='%230a1e3c' width='400' height='200'/%3E%3Ctext fill='%23ffd700' x='50%25' y='50%25' text-anchor='middle' dy='.3em' font-family='system-ui'%3EArtist Image%3C/text%3E%3C/svg%3E" alt="DJ Artist performing at main stage" loading="lazy">
+          </div>
+          <div class="card__content">
+            <h3 class="card__title" data-i18n="card.artists.title">Main Stage Artists</h3>
+            <p class="card__description" data-i18n="card.artists.description">
+              Experience world-renowned DJs and producers on the iconic Planaxis main stage,
+              featuring cutting-edge visuals and sound design.
+            </p>
+          </div>
+          <footer class="card__footer">
+            <a href="festival-guide.html#lineup" class="btn" data-i18n="card.artists.button">View Line-Up</a>
+          </footer>
+        </article>
+        
+        <!-- Tarjeta 2: Escenario -->
+        <article class="card card--featured">
+          <div class="card__image">
+            <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='200'%3E%3Crect fill='%230a1e3c' width='400' height='200'/%3E%3Ctext fill='%2300bcd4' x='50%25' y='50%25' text-anchor='middle' dy='.3em' font-family='system-ui'%3EStage Image%3C/text%3E%3C/svg%3E" alt="The magnificent Planaxis underwater stage" loading="lazy">
+          </div>
+          <div class="card__content">
+            <h3 class="card__title" data-i18n="card.stage.title">The Planaxis Stage</h3>
+            <p class="card__description" data-i18n="card.stage.description">
+              A breathtaking underwater kingdom rises from the ground, featuring giant
+              seahorses, bioluminescent creatures, and immersive theatrical elements.
+            </p>
+          </div>
+          <footer class="card__footer">
+            <a href="#stages" class="btn" data-i18n="card.stage.button">Explore Stages</a>
+          </footer>
+        </article>
+        
+        <!-- Tarjeta 3: Experiencia -->
+        <article class="card">
+          <div class="card__image">
+            <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='200'%3E%3Crect fill='%230a1e3c' width='400' height='200'/%3E%3Ctext fill='%23a0b3c5' x='50%25' y='50%25' text-anchor='middle' dy='.3em' font-family='system-ui'%3EExperience Image%3C/text%3E%3C/svg%3E" alt="Festival attendees enjoying the experience" loading="lazy">
+          </div>
+          <div class="card__content">
+            <h3 class="card__title" data-i18n="card.experience.title">Immersive Experience</h3>
+            <p class="card__description" data-i18n="card.experience.description">
+              Beyond music: art installations, theatrical performances, and interactive
+              elements bring the Planaxis legend to life.
+            </p>
+          </div>
+          <footer class="card__footer">
+            <a href="festival-guide.html" class="btn btn--outline" data-i18n="card.experience.button">Learn More</a>
+          </footer>
+        </article>
+      </div>
     </section>
     
     <section id="brand-activation" class="section-spacing container">
@@ -463,12 +508,300 @@
       </p>
     </section>
     
+    <!-- ====================================================================
+         SECCIÓN LINE-UP CON FILTROS
+         
+         ¿POR QUÉ FILTROS?
+         Permite a los usuarios encontrar artistas por escenario o día sin
+         recargar la página. Mejora la UX en festivales con muchos artistas.
+         
+         VIEW TRANSITIONS API:
+         Cuando el usuario cambia filtros, usamos document.startViewTransition()
+         para que el navegador anime AUTOMÁTICAMENTE los cambios en el DOM.
+         
+         ¿CÓMO FUNCIONA startViewTransition?
+         1. El navegador toma un "screenshot" del estado actual
+         2. Ejecutamos los cambios en el DOM (ocultar/mostrar tarjetas)
+         3. El navegador toma otro "screenshot" del nuevo estado
+         4. Anima la transición entre los dos estados automáticamente
+         
+         Es como "morph" en PowerPoint, pero para el DOM. ¡Sin librerías!
+         ==================================================================== -->
+    <section id="lineup" class="section-spacing" style="background-color: var(--color-bg-primary);">
+      <div class="container">
+        <h2 class="text-center">Line-Up 2018</h2>
+        <p class="text-center text-muted mt-md">
+          Filter by stage or day to find your favorite artists.
+        </p>
+        
+        <!-- ================================================================
+             CONTROLES DE FILTRO
+             
+             Usamos botones en lugar de <select> para mejor UX y accesibilidad.
+             Los botones son más fáciles de tap en móvil y permiten selección
+             múltiple visual más clara.
+             ================================================================ -->
+        <div class="filter-controls mt-lg mb-xl">
+          <!-- Filtro por Escenario -->
+          <div class="filter-group">
+            <span class="filter-label">Stage:</span>
+            <div class="filter-buttons" role="group" aria-label="Filter by stage">
+              <button class="filter-btn active" data-filter-stage="all">All Stages</button>
+              <button class="filter-btn" data-filter-stage="mainstage">🎪 Mainstage</button>
+              <button class="filter-btn" data-filter-stage="atmosphere">🌊 Atmosphere</button>
+              <button class="filter-btn" data-filter-stage="freedom">🦋 Freedom</button>
+            </div>
+          </div>
+          
+          <!-- Filtro por Día -->
+          <div class="filter-group">
+            <span class="filter-label">Day:</span>
+            <div class="filter-buttons" role="group" aria-label="Filter by day">
+              <button class="filter-btn active" data-filter-day="all">All Days</button>
+              <button class="filter-btn" data-filter-day="friday">Friday</button>
+              <button class="filter-btn" data-filter-day="saturday">Saturday</button>
+              <button class="filter-btn" data-filter-day="sunday">Sunday</button>
+            </div>
+          </div>
+        </div>
+        
+        <!-- ================================================================
+             GRID DE ARTISTAS CON DATA ATTRIBUTES
+             
+             Cada tarjeta tiene:
+             - data-stage: "mainstage" | "atmosphere" | "freedom"
+             - data-day: "friday" | "saturday" | "sunday"
+             
+             El JS lee estos atributos para decidir qué mostrar/ocultar.
+             La clase .card ya tiene scroll-driven animations aplicadas.
+             ================================================================ -->
+        <div class="grid-auto-fit lineup-grid" id="lineup-grid">
+          <!-- Artista 1: Mainstage Friday -->
+          <article class="card" data-stage="mainstage" data-day="friday">
+            <div class="card__image">
+              <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='200'%3E%3Crect fill='%230a1e3c' width='400' height='200'/%3E%3Ctext fill='%23ffd700' x='50%25' y='50%25' text-anchor='middle' dy='.3em' font-family='system-ui' font-size='20'%3EDimitri Vegas%3C/text%3E%3C/svg%3E" alt="Dimitri Vegas & Like Mike" loading="lazy">
+            </div>
+            <div class="card__content">
+              <span class="card__badge card__badge--stage">🎪 Mainstage</span>
+              <h3 class="card__title">Dimitri Vegas & Like Mike</h3>
+              <p class="card__description">Friday 22:00 - 00:00 • Electro House legends bringing explosive energy.</p>
+            </div>
+            <footer class="card__footer">
+              <a href="festival-guide.html#lineup" class="btn btn--outline">View Artist</a>
+            </footer>
+          </article>
+          
+          <!-- Artista 2: Atmosphere Saturday -->
+          <article class="card" data-stage="atmosphere" data-day="saturday">
+            <div class="card__image">
+              <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='200'%3E%3Crect fill='%230a1e3c' width='400' height='200'/%3E%3Ctext fill='%2300bcd4' x='50%25' y='50%25' text-anchor='middle' dy='.3em' font-family='system-ui' font-size='20'%3ESolomun%3C/text%3E%3C/svg%3E" alt="Solomun" loading="lazy">
+            </div>
+            <div class="card__content">
+              <span class="card__badge card__badge--atmosphere">🌊 Atmosphere</span>
+              <h3 class="card__title">Solomun</h3>
+              <p class="card__description">Saturday 20:00 - 22:00 • Deep house master creating melodic journeys.</p>
+            </div>
+            <footer class="card__footer">
+              <a href="festival-guide.html#lineup" class="btn btn--outline">View Artist</a>
+            </footer>
+          </article>
+          
+          <!-- Artista 3: Freedom Sunday -->
+          <article class="card" data-stage="freedom" data-day="sunday">
+            <div class="card__image">
+              <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='200'%3E%3Crect fill='%230a1e3c' width='400' height='200'/%3E%3Ctext fill='%23a0b3c5' x='50%25' y='50%25' text-anchor='middle' dy='.3em' font-family='system-ui' font-size='20'%3ECharlotte de Witte%3C/text%3E%3C/svg%3E" alt="Charlotte de Witte" loading="lazy">
+            </div>
+            <div class="card__content">
+              <span class="card__badge card__badge--freedom">🦋 Freedom</span>
+              <h3 class="card__title">Charlotte de Witte</h3>
+              <p class="card__description">Sunday 18:00 - 20:00 • Techno queen with hypnotic dark rhythms.</p>
+            </div>
+            <footer class="card__footer">
+              <a href="festival-guide.html#lineup" class="btn btn--outline">View Artist</a>
+            </footer>
+          </article>
+          
+          <!-- Artista 4: Mainstage Saturday -->
+          <article class="card" data-stage="mainstage" data-day="saturday">
+            <div class="card__image">
+              <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='200'%3E%3Crect fill='%230a1e3c' width='400' height='200'/%3E%3Ctext fill='%23ffd700' x='50%25' y='50%25' text-anchor='middle' dy='.3em' font-family='system-ui' font-size='20'%3EMartin Garrix%3C/text%3E%3C/svg%3E" alt="Martin Garrix" loading="lazy">
+            </div>
+            <div class="card__content">
+              <span class="card__badge card__badge--stage">🎪 Mainstage</span>
+              <h3 class="card__title">Martin Garrix</h3>
+              <p class="card__description">Saturday 22:00 - 00:00 • EDM superstar with chart-topping anthems.</p>
+            </div>
+            <footer class="card__footer">
+              <a href="festival-guide.html#lineup" class="btn btn--outline">View Artist</a>
+            </footer>
+          </article>
+          
+          <!-- Artista 5: Atmosphere Friday -->
+          <article class="card" data-stage="atmosphere" data-day="friday">
+            <div class="card__image">
+              <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='200'%3E%3Crect fill='%230a1e3c' width='400' height='200'/%3E%3Ctext fill='%2300bcd4' x='50%25' y='50%25' text-anchor='middle' dy='.3em' font-family='system-ui' font-size='20'%3ETale Of Us%3C/text%3E%3C/svg%3E" alt="Tale Of Us" loading="lazy">
+            </div>
+            <div class="card__content">
+              <span class="card__badge card__badge--atmosphere">🌊 Atmosphere</span>
+              <h3 class="card__title">Tale Of Us</h3>
+              <p class="card__description">Friday 18:00 - 20:00 • Ethereal melodic techno duo.</p>
+            </div>
+            <footer class="card__footer">
+              <a href="festival-guide.html#lineup" class="btn btn--outline">View Artist</a>
+            </footer>
+          </article>
+          
+          <!-- Artista 6: Mainstage Sunday -->
+          <article class="card" data-stage="mainstage" data-day="sunday">
+            <div class="card__image">
+              <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='200'%3E%3Crect fill='%230a1e3c' width='400' height='200'/%3E%3Ctext fill='%23ffd700' x='50%25' y='50%25' text-anchor='middle' dy='.3em' font-family='system-ui' font-size='20'%3EArmin van Buuren%3C/text%3E%3C/svg%3E" alt="Armin van Buuren" loading="lazy">
+            </div>
+            <div class="card__content">
+              <span class="card__badge card__badge--stage">🎪 Mainstage</span>
+              <h3 class="card__title">Armin van Buuren</h3>
+              <p class="card__description">Sunday 22:00 - 00:00 • Trance legend closing the weekend.</p>
+            </div>
+            <footer class="card__footer">
+              <a href="festival-guide.html#lineup" class="btn btn--outline">View Artist</a>
+            </footer>
+          </article>
+          
+          <!-- Artista 7: Freedom Friday -->
+          <article class="card" data-stage="freedom" data-day="friday">
+            <div class="card__image">
+              <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='200'%3E%3Crect fill='%230a1e3c' width='400' height='200'/%3E%3Ctext fill='%23a0b3c5' x='50%25' y='50%25' text-anchor='middle' dy='.3em' font-family='system-ui' font-size='20'%3EAmelie Lens%3C/text%3E%3C/svg%3E" alt="Amelie Lens" loading="lazy">
+            </div>
+            <div class="card__content">
+              <span class="card__badge card__badge--freedom">🦋 Freedom</span>
+              <h3 class="card__title">Amelie Lens</h3>
+              <p class="card__description">Friday 20:00 - 22:00 • Belgian techno powerhouse.</p>
+            </div>
+            <footer class="card__footer">
+              <a href="festival-guide.html#lineup" class="btn btn--outline">View Artist</a>
+            </footer>
+          </article>
+          
+          <!-- Artista 8: Freedom Saturday -->
+          <article class="card" data-stage="freedom" data-day="saturday">
+            <div class="card__image">
+              <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='200'%3E%3Crect fill='%230a1e3c' width='400' height='200'/%3E%3Ctext fill='%23a0b3c5' x='50%25' y='50%25' text-anchor='middle' dy='.3em' font-family='system-ui' font-size='20'%3EBoris Brejcha%3C/text%3E%3C/svg%3E" alt="Boris Brejcha" loading="lazy">
+            </div>
+            <div class="card__content">
+              <span class="card__badge card__badge--freedom">🦋 Freedom</span>
+              <h3 class="card__title">Boris Brejcha</h3>
+              <p class="card__description">Saturday 16:00 - 18:00 • High-tech minimal maestro.</p>
+            </div>
+            <footer class="card__footer">
+              <a href="festival-guide.html#lineup" class="btn btn--outline">View Artist</a>
+            </footer>
+          </article>
+          
+          <!-- Artista 9: Atmosphere Sunday -->
+          <article class="card" data-stage="atmosphere" data-day="sunday">
+            <div class="card__image">
+              <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='200'%3E%3Crect fill='%230a1e3c' width='400' height='200'/%3E%3Ctext fill='%2300bcd4' x='50%25' y='50%25' text-anchor='middle' dy='.3em' font-family='system-ui' font-size='20'%3EMaceo Plex%3C/text%3E%3C/svg%3E" alt="Maceo Plex" loading="lazy">
+            </div>
+            <div class="card__content">
+              <span class="card__badge card__badge--atmosphere">🌊 Atmosphere</span>
+              <h3 class="card__title">Maceo Plex</h3>
+              <p class="card__description">Sunday 20:00 - 22:00 • Underground techno innovator.</p>
+            </div>
+            <footer class="card__footer">
+              <a href="festival-guide.html#lineup" class="btn btn--outline">View Artist</a>
+            </footer>
+          </article>
+        </div>
+        
+        <!-- Mensaje cuando no hay resultados -->
+        <p class="no-results text-center text-muted mt-xl" hidden>
+          No artists found for the selected filters. Try a different combination.
+        </p>
+      </div>
+    </section>
     <section id="cultural-events" class="section-spacing container">
       <h2 class="text-center" data-i18n="section.cultural.title">Cultural Events</h2>
       <p class="text-center text-muted" style="margin-top: var(--spacing-lg);" data-i18n="section.cultural.text">
         Beyond the music, discover art installations, theatrical performances, and cultural
         celebrations that bring the underwater kingdom to life.
       </p>
+    </section>
+    
+    <!-- ====================================================================
+         EJEMPLO: Bento Grid - Galería Asimétrica
+         
+         ¿POR QUÉ BENTO GRID?
+         El "Bento Grid" (inspirado en las cajas de almuerzo japonesas) crea
+         layouts asimétricos donde algunos elementos son más prominentes que otros.
+         Esto establece jerarquía visual y hace la galería más interesante.
+         
+         ¿CÓMO FUNCIONA grid-template-areas?
+         Cada "área" es un nombre que asignas a una celda (o grupo de celdas).
+         En CSS defines el template como texto ASCII:
+         "featured featured sidebar"
+         "item1    item2    sidebar"
+         
+         IMÁGENES: object-fit: cover asegura que las imágenes llenen su
+         contenedor sin distorsión, recortando si es necesario.
+         ==================================================================== -->
+    <section id="gallery" class="section-spacing">
+      <div class="container">
+        <h2 class="text-center">Experience Gallery</h2>
+        <p class="text-center text-muted mt-md mb-xl">
+          Discover the visual spectacle of Planaxis through our curated gallery.
+        </p>
+      </div>
+      
+      <!-- Bento Grid con layout por defecto -->
+      <div class="container">
+        <div class="bento-grid" data-layout="default">
+          <!-- Item Principal (2 columnas) -->
+          <figure class="bento-item bento-item--featured">
+            <!-- ⚠️ PERSONALIZA: Reemplaza con tu imagen del main stage -->
+            <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='800' height='400'%3E%3Cdefs%3E%3ClinearGradient id='g1' x1='0%25' y1='0%25' x2='100%25' y2='100%25'%3E%3Cstop offset='0%25' stop-color='%230a1e3c'/%3E%3Cstop offset='100%25' stop-color='%23050a14'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect fill='url(%23g1)' width='800' height='400'/%3E%3Ctext fill='%23ffd700' x='50%25' y='50%25' text-anchor='middle' dy='.3em' font-family='system-ui' font-size='24'%3EMain Stage%3C/text%3E%3C/svg%3E" alt="Planaxis Main Stage at sunset" loading="lazy">
+            <figcaption class="bento-item__overlay">
+              <h3 class="bento-item__title">The Planaxis Main Stage</h3>
+              <p class="bento-item__description">Where the underwater kingdom comes alive</p>
+            </figcaption>
+          </figure>
+          
+          <!-- Sidebar (2 filas) -->
+          <figure class="bento-item bento-item--sidebar">
+            <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='500'%3E%3Crect fill='%230a1e3c' width='400' height='500'/%3E%3Ctext fill='%2300bcd4' x='50%25' y='50%25' text-anchor='middle' dy='.3em' font-family='system-ui'%3ECrowd Shot%3C/text%3E%3C/svg%3E" alt="Festival crowd at night" loading="lazy">
+            <figcaption class="bento-item__overlay">
+              <h3 class="bento-item__title">People of Tomorrow</h3>
+              <p class="bento-item__description">United under the sea</p>
+            </figcaption>
+          </figure>
+          
+          <!-- Items medianos -->
+          <figure class="bento-item bento-item--1">
+            <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='300'%3E%3Crect fill='%230a1e3c' width='400' height='300'/%3E%3Ctext fill='%23a0b3c5' x='50%25' y='50%25' text-anchor='middle' dy='.3em' font-family='system-ui'%3EStage Details%3C/text%3E%3C/svg%3E" alt="Stage decoration details" loading="lazy">
+            <figcaption class="bento-item__overlay">
+              <h3 class="bento-item__title">Golden Seahorses</h3>
+            </figcaption>
+          </figure>
+          
+          <figure class="bento-item bento-item--2">
+            <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='300'%3E%3Crect fill='%230a1e3c' width='400' height='300'/%3E%3Ctext fill='%23a0b3c5' x='50%25' y='50%25' text-anchor='middle' dy='.3em' font-family='system-ui'%3ELight Show%3C/text%3E%3C/svg%3E" alt="Bioluminescent light show" loading="lazy">
+            <figcaption class="bento-item__overlay">
+              <h3 class="bento-item__title">Bioluminescence</h3>
+            </figcaption>
+          </figure>
+          
+          <!-- Items pequeños -->
+          <figure class="bento-item bento-item--3">
+            <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='200'%3E%3Crect fill='%230a1e3c' width='400' height='200'/%3E%3Ctext fill='%23a0b3c5' x='50%25' y='50%25' text-anchor='middle' dy='.3em' font-family='system-ui'%3EFireworks%3C/text%3E%3C/svg%3E" alt="Fireworks display" loading="lazy">
+          </figure>
+          
+          <figure class="bento-item bento-item--4">
+            <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='200'%3E%3Crect fill='%230a1e3c' width='400' height='200'/%3E%3Ctext fill='%23a0b3c5' x='50%25' y='50%25' text-anchor='middle' dy='.3em' font-family='system-ui'%3EDreamVille%3C/text%3E%3C/svg%3E" alt="DreamVille camping area" loading="lazy">
+          </figure>
+          
+          <figure class="bento-item bento-item--5">
+            <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='200'%3E%3Crect fill='%230a1e3c' width='400' height='200'/%3E%3Ctext fill='%23a0b3c5' x='50%25' y='50%25' text-anchor='middle' dy='.3em' font-family='system-ui'%3EFood Area%3C/text%3E%3C/svg%3E" alt="Festival food and drinks area" loading="lazy">
+          </figure>
+        </div>
+      </div>
     </section>
   </main>
   
@@ -479,27 +812,15 @@
        ¿CÓMO FUNCIONA? Tag footer con contenido apropiado.
        
        RESULTADO: Estructura de documento clara con significado semántico. -->
-  <footer style="background-color: var(--color-bg-secondary); padding: var(--spacing-2xl); text-align: center;">
-    <!-- ¿POR QUÉ? La información de copyright típicamente va en el footer. La entidad &copy;
-         muestra el símbolo de copyright (©).
-         
-         ¿CÓMO FUNCIONA? La entidad HTML &copy; se renderiza como ©.
-         
-         ⚠️ PERSONALIZA: Cambia el año y el nombre a tu proyecto
-         
-         RESULTADO: Aviso de copyright adecuado con el símbolo correcto. -->
+  <footer class="site-footer text-center">
+    <!-- Copyright -->
     <p class="text-muted" data-i18n="footer.copyright">
       &copy; 2024 Tomorrowland - The Story of Planaxis. All rights reserved.
     </p>
     
-    <!-- ¿POR QUÉ? La navegación del footer proporciona acceso rápido a páginas importantes
-         (política de privacidad, términos, etc.) sin saturar el header principal.
-         
-         ¿CÓMO FUNCIONA? Lista simple desordenada de enlaces con estilizado inline para layout horizontal.
-         
-         RESULTADO: Acceso conveniente a páginas secundarias. -->
-    <nav aria-label="Footer navigation" data-i18n-aria="footer.nav.label" style="margin-top: var(--spacing-md);">
-      <ul style="display: flex; justify-content: center; gap: var(--spacing-lg); flex-wrap: wrap;">
+    <!-- Navegación del Footer -->
+    <nav aria-label="Footer navigation" data-i18n-aria="footer.nav.label">
+      <ul>
         <li><a href="#privacy" class="text-muted" data-i18n="footer.privacy">Privacy Policy</a></li>
         <li><a href="#terms" class="text-muted" data-i18n="footer.terms">Terms of Service</a></li>
         <li><a href="contact.html" class="text-muted" data-i18n="footer.contact">Contact Us</a></li>

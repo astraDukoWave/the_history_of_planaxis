@@ -1,0 +1,1589 @@
+/* ============================================================================
+   STYLE.CSS - Arquitectura CSS con @layer
+   Proyecto: Tomorrowland 2018 - The Story of Planaxis
+   
+   ¿POR QUÉ USAMOS @layer?
+   =======================
+   Las capas CSS (@layer) nos permiten controlar EXPLÍCITAMENTE el orden de 
+   especificidad de nuestros estilos, independientemente del orden en que 
+   aparecen en el código. Esto resuelve uno de los problemas más grandes de CSS:
+   la "guerra de especificidad" donde estilos se sobrescriben inesperadamente.
+   
+   ANALOGÍA FEYNMAN: Imagina un edificio de oficinas con 5 pisos. Sin @layer,
+   cualquier oficina puede tener más "autoridad" que otra dependiendo de dónde
+   esté su puerta (especificidad). Con @layer, cada piso tiene una jerarquía
+   clara: el piso 5 (utilities) siempre gana sobre el piso 1 (reset), sin 
+   importar cuántas puertas tenga cada oficina.
+   
+   ORDEN DE CASCADA (de menor a mayor prioridad):
+   1. reset     → Normalización base (la fundación)
+   2. base      → Tipografía, colores, elementos HTML puros
+   3. layout    → Estructura macro (contenedores, grids)
+   4. components → Bloques de UI (botones, cards, nav, hero)
+   5. utilities → Clases helper de alta prioridad (.flow, .visually-hidden)
+   
+   RESULTADO: CSS predecible, mantenible y libre de !important innecesarios.
+   ============================================================================ */
+
+/* ============================================================================
+   DECLARACIÓN DEL ORDEN DE CAPAS
+   
+   ¿POR QUÉ? Esta declaración establece la jerarquía ANTES de definir cualquier
+   estilo. Las capas declaradas primero tienen MENOR prioridad en la cascada.
+   Esto significa que `utilities` siempre ganará sobre `reset`, sin importar
+   la especificidad de los selectores individuales.
+   
+   ¿CÓMO FUNCIONA? CSS lee esta declaración y crea el "stack" de capas en
+   memoria. Cualquier estilo sin capa cae FUERA de este sistema y tiene la
+   prioridad más alta (excepto !important).
+   
+   BENEFICIO CLAVE: Podemos usar selectores simples (.class) en utilities y
+   aún ganarán sobre selectores complejos (.parent .child .element) en reset,
+   porque utilities está en una capa superior.
+   ============================================================================ */
+@layer reset, base, layout, components, utilities;
+
+
+/* ============================================================================
+   CAPA 1: RESET - Normalización de Navegadores
+   
+   ¿POR QUÉ? Diferentes navegadores tienen estilos predeterminados distintos.
+   Esta capa crea una "hoja en blanco" consistente para construir encima.
+   
+   ANALOGÍA FEYNMAN: Es como preparar un lienzo antes de pintar. Si cada
+   lienzo tiene diferente textura o color base, tu pintura se verá diferente
+   en cada uno. El reset es la imprimación que hace todos los lienzos iguales.
+   ============================================================================ */
+@layer reset {
+  /* Reset Universal Moderno
+     ----------------------
+     ¿POR QUÉ box-sizing: border-box? 
+     Por defecto, CSS suma padding y border AL ancho declarado (content-box).
+     Esto causa confusión: un div de 300px con 20px de padding termina siendo 340px.
+     Con border-box, el padding y border se INCLUYEN en los 300px, haciendo
+     los cálculos intuitivos y predecibles. */
+  *,
+  *::before,
+  *::after {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+
+  /* HTML y Body Base
+     ----------------
+     line-height: 1.6 mejora legibilidad significativamente sobre el default (1.2).
+     -webkit-font-smoothing: antialiased hace texto más suave en macOS.
+     text-rendering: optimizeLegibility mejora kerning y ligatures. */
+  html {
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+  }
+
+  /* Imágenes Responsivas por Defecto
+     --------------------------------
+     ¿POR QUÉ? Las imágenes son elementos inline por defecto, causando espacio
+     extra debajo. También pueden desbordar contenedores. Estas reglas previenen
+     ambos problemas y hacen las imágenes automáticamente responsivas. */
+  img,
+  picture,
+  video,
+  canvas,
+  svg {
+    display: block;
+    max-width: 100%;
+    height: auto;
+  }
+
+  /* Herencia de Fuentes en Formularios
+     ----------------------------------
+     ¿POR QUÉ? Por defecto, inputs y buttons NO heredan font-family del body,
+     causando inconsistencia visual. Esta regla fuerza la herencia. */
+  input,
+  button,
+  textarea,
+  select {
+    font: inherit;
+  }
+
+  /* Reset de Listas para Navegación
+     -------------------------------
+     Los navegadores agregan bullets y padding a <ul>/<ol>. Para menús de
+     navegación, necesitamos una hoja en blanco. */
+  ul[role="list"],
+  ol[role="list"],
+  ul,
+  ol {
+    list-style: none;
+  }
+
+  /* Reset de Enlaces
+     ----------------
+     Removemos subrayados y hacemos que hereden color para control total. */
+  a {
+    text-decoration: none;
+    color: inherit;
+  }
+
+  /* Reset de Botones
+     ----------------
+     Removemos el estilizado "3D" anticuado de los navegadores. */
+  button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font: inherit;
+  }
+
+  /* Scroll Behavior
+     ---------------
+     Scroll suave cuando se navega a anchors (#section), pero solo si el
+     usuario no ha indicado preferencia por movimiento reducido. */
+  @media (prefers-reduced-motion: no-preference) {
+    html {
+      scroll-behavior: smooth;
+    }
+  }
+}
+
+
+/* ============================================================================
+   CAPA 2: BASE - Tokens de Diseño & Tipografía
+   
+   ¿POR QUÉ? Esta capa define los "átomos" de nuestro sistema de diseño:
+   colores, espaciado, tipografía. Todos los componentes construyen sobre
+   estos tokens, creando consistencia visual automática.
+   
+   CONCEPTO CLAVE: Custom Properties (variables CSS) definidas en :root son
+   accesibles en TODO el documento. Cambiar un valor aquí actualiza TODO el sitio.
+   ============================================================================ */
+@layer base {
+  /* ========================================================================
+     CUSTOM PROPERTIES - Tokens de Diseño
+     
+     ¿POR QUÉ VARIABLES CSS?
+     En lugar de escribir "#050a14" 50 veces, lo definimos una vez como
+     --color-deep-blue. Beneficios:
+     1. Cambiar un color actualiza TODO el sitio instantáneamente
+     2. Los nombres semánticos (--color-accent) son más legibles que hex
+     3. Podemos cambiar temas (dark/light) simplemente redefiniendo variables
+     ======================================================================== */
+  :root {
+    /* SISTEMA DE COLORES - Tema Planaxis Underwater
+       ---------------------------------------------
+       La paleta evoca el océano profundo: azules oscuros, acentos dorados
+       (caballitos de mar), y cyan bioluminiscente. */
+    
+    /* Colores Principales */
+    --color-deep-blue: #050a14;      /* Fondo principal - océano profundo */
+    --color-ocean-dark: #0a1e3c;     /* Fondo secundario - profundidades */
+    --color-accent-gold: #ffd700;    /* Acento primario - caballitos dorados */
+    --color-accent-teal: #00bcd4;    /* Acento secundario - bioluminiscencia */
+    
+    /* Colores de Texto */
+    --color-text-primary: #ffffff;   /* Texto principal - máximo contraste */
+    --color-text-muted: #a0b3c5;     /* Texto secundario - información de apoyo */
+    
+    /* Aliases Semánticos (para uso en componentes) */
+    --color-bg-primary: var(--color-deep-blue);
+    --color-bg-secondary: var(--color-ocean-dark);
+    --color-text-main: var(--color-text-primary);
+    
+    /* SISTEMA DE ESPACIADO
+       --------------------
+       ¿POR QUÉ MÚLTIPLOS DE 8px? Es un estándar de la industria (Google
+       Material Design, Apple HIG) porque:
+       1. 8 es divisible por 2 y 4, creando escalas proporcionales
+       2. Las pantallas usan múltiplos de 8 para renderizado limpio
+       3. Crea ritmo visual consistente */
+    --space-3xs: 0.25rem;   /* 4px  - Micro ajustes */
+    --space-2xs: 0.5rem;    /* 8px  - Gaps mínimos */
+    --space-xs: 0.75rem;    /* 12px - Padding interno compacto */
+    --space-sm: 1rem;       /* 16px - Espaciado estándar */
+    --space-md: 1.5rem;     /* 24px - Padding de sección */
+    --space-lg: 2rem;       /* 32px - Gaps de sección */
+    --space-xl: 3rem;       /* 48px - Separación mayor */
+    --space-2xl: 4rem;      /* 64px - Separación de secciones */
+    --space-3xl: 6rem;      /* 96px - Hero spacing */
+    
+    /* TIPOGRAFÍA FLUIDA
+       -----------------
+       ¿POR QUÉ CLAMP()? Crea tamaños que escalan FLUIDAMENTE entre móvil
+       y desktop, sin necesidad de media queries.
+       
+       Sintaxis: clamp(MIN, PREFERIDO, MAX)
+       - MIN: Tamaño mínimo (móvil)
+       - PREFERIDO: Tamaño que escala con viewport (vw)
+       - MAX: Tamaño máximo (desktop)
+       
+       ANALOGÍA: Es como un acordeón que se estira suavemente entre dos
+       tamaños límite, en lugar de saltar bruscamente en breakpoints. */
+    
+    /* Escala de Tamaños Fluida */
+    --font-size-sm: clamp(0.875rem, 0.8rem + 0.2vw, 0.9375rem);   /* 14-15px */
+    --font-size-base: clamp(1rem, 0.95rem + 0.25vw, 1.125rem);    /* 16-18px */
+    --font-size-md: clamp(1.125rem, 1rem + 0.5vw, 1.25rem);       /* 18-20px */
+    --font-size-lg: clamp(1.5rem, 1.25rem + 1vw, 2rem);           /* 24-32px */
+    --font-size-xl: clamp(2rem, 1.5rem + 2vw, 3rem);              /* 32-48px */
+    --font-size-2xl: clamp(2.5rem, 2rem + 2.5vw, 4rem);           /* 40-64px */
+    
+    /* Familia de Fuentes */
+    --font-primary: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 
+                    'Helvetica Neue', Arial, sans-serif;
+    --font-secondary: Georgia, 'Times New Roman', serif;
+    
+    /* Pesos de Fuente */
+    --font-weight-normal: 400;
+    --font-weight-medium: 500;
+    --font-weight-semibold: 600;
+    --font-weight-bold: 700;
+    
+    /* Line Heights */
+    --line-height-tight: 1.2;    /* Títulos */
+    --line-height-normal: 1.6;   /* Texto de cuerpo */
+    --line-height-loose: 1.8;    /* Lectura extendida */
+    
+    /* TRANSICIONES
+       ------------
+       Duraciones estándar para animaciones consistentes */
+    --transition-fast: 150ms;
+    --transition-normal: 250ms;
+    --transition-slow: 400ms;
+    --easing-default: cubic-bezier(0.4, 0, 0.2, 1);
+    --easing-bounce: cubic-bezier(0.34, 1.56, 0.64, 1);
+    
+    /* Z-INDEX
+       -------
+       Sistema de capas para elementos superpuestos */
+    --z-content: 1;
+    --z-dropdown: 100;
+    --z-sticky: 500;
+    --z-overlay: 900;
+    --z-modal: 1000;
+    --z-toast: 1100;
+    
+    /* BORDES Y RADIOS */
+    --radius-sm: 4px;
+    --radius-md: 8px;
+    --radius-lg: 16px;
+    --radius-xl: 24px;
+    --radius-full: 9999px;
+  }
+
+  /* Estilos Base del Body
+     ---------------------
+     Aplicamos los tokens de diseño al body como punto de partida. */
+  body {
+    font-family: var(--font-primary);
+    font-size: var(--font-size-base);
+    font-weight: var(--font-weight-normal);
+    line-height: var(--line-height-normal);
+    color: var(--color-text-main);
+    background-color: var(--color-bg-primary);
+    
+    /* Deshabilitamos selección en UI para evitar resaltados accidentales */
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    user-select: none;
+  }
+
+  /* Re-habilitamos selección en contenido principal */
+  main,
+  article,
+  section p,
+  section h1,
+  section h2,
+  section h3 {
+    -webkit-user-select: text;
+    -moz-user-select: text;
+    user-select: text;
+  }
+
+  /* Tipografía de Encabezados
+     -------------------------
+     Establecemos estilos base para h1-h6. Los componentes pueden 
+     sobrescribir estos estilos si necesitan variaciones. */
+  h1, h2, h3, h4, h5, h6 {
+    font-weight: var(--font-weight-bold);
+    line-height: var(--line-height-tight);
+    color: var(--color-text-primary);
+  }
+
+  h1 { font-size: var(--font-size-2xl); }
+  h2 { font-size: var(--font-size-xl); }
+  h3 { font-size: var(--font-size-lg); }
+  h4 { font-size: var(--font-size-md); }
+  h5 { font-size: var(--font-size-base); }
+  h6 { font-size: var(--font-size-sm); }
+
+  /* Longitud de Línea Óptima para Lectura
+     -------------------------------------
+     ¿POR QUÉ 65-75ch? La investigación tipográfica muestra que esta es
+     la longitud de línea ideal para lectura cómoda. Más larga causa
+     pérdida de lugar al regresar al inicio de la línea. */
+  p {
+    max-width: 70ch;
+    /* margin-inline: auto centra el párrafo horizontalmente */
+    margin-inline: auto;
+  }
+
+  /* Encabezados centrados con ancho máximo */
+  h2 {
+    max-width: 50ch;
+    margin-inline: auto;
+  }
+
+  h3 {
+    max-width: 45ch;
+    margin-inline: auto;
+  }
+
+  /* Focus Visible
+     -------------
+     ¿POR QUÉ? Los usuarios de teclado necesitan ver qué elemento tiene
+     el foco. :focus-visible solo muestra el outline cuando se navega
+     con teclado, no con mouse. */
+  :focus-visible {
+    outline: 2px solid var(--color-accent-gold);
+    outline-offset: 3px;
+  }
+}
+
+
+/* ============================================================================
+   CAPA 3: LAYOUT - Estructura Macro
+   
+   ¿POR QUÉ? Esta capa define la "arquitectura" de la página: contenedores,
+   grids, sistemas de layout. Separa la estructura visual del estilizado
+   de componentes individuales.
+   
+   PROPIEDADES LÓGICAS: Usamos margin-inline en lugar de margin-left/right.
+   ¿Por qué? Las propiedades lógicas son agnósticas a la dirección del texto.
+   En idiomas RTL (árabe, hebreo), inline-start es la derecha, no la izquierda.
+   Esto hace nuestro CSS automáticamente internacional.
+   ============================================================================ */
+@layer layout {
+  /* SISTEMA DE CONTENEDORES
+     -----------------------
+     Los contenedores restringen el ancho del contenido y lo centran.
+     ¿Por qué no 100% siempre? Líneas muy largas son difíciles de leer.
+     Un max-width de ~1100px mantiene el contenido en una zona cómoda. */
+  
+  .container {
+    width: 90%;
+    max-width: 1100px;
+    /* margin-inline: auto es la forma MODERNA de centrar bloques.
+       Es equivalente a margin-left: auto; margin-right: auto;
+       pero funciona en cualquier dirección de escritura (LTR/RTL). */
+    margin-inline: auto;
+    /* padding-inline agrega espacio en los lados (left/right en LTR).
+       Previene que el contenido toque los bordes en móviles. */
+    padding-inline: var(--space-md);
+  }
+
+  .container-fluid {
+    width: 100%;
+    padding-inline: var(--space-md);
+    margin-inline: auto;
+  }
+
+  /* Espaciado de Secciones
+     ----------------------
+     Padding consistente para secciones de contenido */
+  .section-spacing {
+    padding-block: var(--space-2xl);
+  }
+
+  /* UTILIDADES FLEXBOX
+     ------------------
+     Clases helper para patrones comunes de flexbox */
+  .flex-center {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .flex-between {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .flex-column {
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* SISTEMA GRID
+     ------------
+     Grid de 12 columnas para layouts complejos */
+  .grid-12 {
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+    gap: var(--space-md);
+  }
+
+  /* Grid auto-responsive
+     --------------------
+     ¿CÓMO FUNCIONA? auto-fit con minmax crea un grid que automáticamente
+     ajusta el número de columnas basado en el espacio disponible.
+     Las columnas nunca serán menores a 300px ni mayores a 1fr. */
+  .grid-auto {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(300px, 100%), 1fr));
+    gap: var(--space-lg);
+  }
+
+  /* ========================================================================
+     GRID AUTO-FIT - Sistema Intrínsecamente Responsivo
+     
+     ¿POR QUÉ "INTRÍNSECAMENTE RESPONSIVO"?
+     ======================================
+     Este patrón NO usa media queries. El grid se adapta AUTOMÁTICAMENTE
+     al espacio disponible. Esto es "Intrinsic Web Design" - el layout
+     responde al CONTENIDO y al ESPACIO, no a breakpoints arbitrarios.
+     
+     ¿CÓMO FUNCIONA minmax(min(100%, 300px), 1fr)?
+     =============================================
+     Descompongamos esta expresión de adentro hacia afuera:
+     
+     1. min(100%, 300px)
+        → "El MENOR entre 100% del contenedor y 300px"
+        → En pantallas < 300px: usa 100% (evita overflow horizontal)
+        → En pantallas >= 300px: usa 300px como mínimo
+     
+     2. minmax(MÍNIMO, 1fr)
+        → "Cada columna tiene al menos MÍNIMO, pero puede crecer hasta 1fr"
+        → 1fr = fracción del espacio disponible (se distribuye equitativamente)
+     
+     3. repeat(auto-fit, ...)
+        → "Crea tantas columnas como quepan en el espacio disponible"
+        → auto-fit COLAPSA columnas vacías (vs auto-fill que las mantiene)
+     
+     ANALOGÍA FEYNMAN: Imagina que tienes libros de 30cm de ancho en un
+     estante. Si el estante mide 100cm, caben 3 libros (3 × 30 = 90cm) con
+     10cm sobrantes. Con auto-fit, los libros se EXPANDEN para usar esos
+     10cm extra equitativamente. Si reduces el estante a 50cm, solo caben
+     1-2 libros y se ajustan. ¡Sin media queries!
+     
+     RESULTADO: Grid que funciona perfectamente desde 320px hasta 4K.
+     ======================================================================== */
+  .grid-auto-fit {
+    display: grid;
+    /* 
+     * La fórmula mágica para grids intrínsecos:
+     * - min(100%, 300px): Previene overflow en pantallas muy pequeñas
+     * - 300px: Ancho mínimo cómodo para tarjetas (legible, no comprimido)
+     * - 1fr: Las columnas crecen equitativamente para llenar el espacio
+     */
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr));
+    gap: var(--space-lg);
+  }
+
+  /* Variante con columnas más estrechas (para más elementos) */
+  .grid-auto-fit[data-min-width="narrow"] {
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 250px), 1fr));
+  }
+
+  /* Variante con columnas más anchas (para menos elementos, más detalle) */
+  .grid-auto-fit[data-min-width="wide"] {
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 350px), 1fr));
+  }
+
+  /* Utilidades de Posicionamiento */
+  .relative { position: relative; }
+  .fixed { position: fixed; }
+  .absolute { position: absolute; }
+  .sticky { position: sticky; top: 0; }
+}
+
+
+/* ============================================================================
+   CAPA 4: COMPONENTS - Bloques de UI
+   
+   ¿POR QUÉ? Los componentes son bloques reutilizables de UI: botones, cards,
+   navegación, hero. Esta capa tiene mayor prioridad que layout, permitiendo
+   que los componentes sobrescriban estilos estructurales cuando sea necesario.
+   ============================================================================ */
+@layer components {
+  /* Los componentes se importan de archivos separados para organización.
+     Ver: header.css, hero.css, sidebar.css */
+     
+  /* HEADER / NAVEGACIÓN
+     -------------------
+     Importado desde header.css */
+  
+  /* HERO SECTION
+     ------------
+     Importado desde hero.css */
+  
+  /* SIDEBAR / DOCK
+     --------------
+     Importado desde sidebar.css */
+  
+  /* BOTONES
+     -------
+     Estilos base para botones interactivos */
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--space-2xs);
+    
+    padding: var(--space-sm) var(--space-lg);
+    
+    font-size: var(--font-size-base);
+    font-weight: var(--font-weight-semibold);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    
+    background-color: var(--color-accent-gold);
+    color: var(--color-deep-blue);
+    
+    border: none;
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    
+    transition: 
+      background-color var(--transition-normal) var(--easing-default),
+      transform var(--transition-normal) var(--easing-default),
+      box-shadow var(--transition-normal) var(--easing-default);
+  }
+
+  .btn:hover {
+    background-color: var(--color-accent-teal);
+    transform: scale(1.05);
+    box-shadow: 0 0 20px rgba(0, 188, 212, 0.5);
+  }
+
+  .btn:active {
+    transform: scale(0.98);
+  }
+
+  .btn--outline {
+    background-color: transparent;
+    border: 2px solid var(--color-accent-gold);
+    color: var(--color-accent-gold);
+  }
+
+  .btn--outline:hover {
+    background-color: var(--color-accent-gold);
+    color: var(--color-deep-blue);
+  }
+
+  /* ========================================================================
+     CARD COMPONENT - Tarjetas Flexibles con Footer Alineado
+     
+     ¿POR QUÉ display: flex con flex-direction: column?
+     ==================================================
+     Las tarjetas necesitan que su contenido crezca verticalmente, pero
+     el botón/footer SIEMPRE debe estar alineado al fondo, sin importar
+     cuánto texto tenga cada tarjeta.
+     
+     PROBLEMA: Si tienes 3 tarjetas con diferentes cantidades de texto,
+     sus botones quedarán a diferentes alturas. Esto se ve desalineado.
+     
+     SOLUCIÓN: Usar flex-column + margin-block-start: auto en el footer.
+     El margin: auto en flexbox "empuja" el elemento lo más lejos posible.
+     
+     ANALOGÍA FEYNMAN: Imagina un ascensor en un edificio. No importa si
+     hay 1 persona o 10 personas arriba del botón de "planta baja", el
+     botón siempre está pegado al piso del ascensor. margin-top: auto es
+     como poner un resorte que empuja el botón hacia abajo.
+     ======================================================================== */
+  .card {
+    display: flex;
+    flex-direction: column;
+    
+    /* ========================================================================
+       ALTURA 100% - CRÍTICO PARA ALINEACIÓN DE BOTONES
+       
+       ¿POR QUÉ height: 100%?
+       ======================
+       En un grid, los items se estiran por defecto para llenar su celda.
+       Sin embargo, el contenido INTERNO del card necesita saber que debe
+       ocupar todo ese espacio estirado. Con height: 100%, le decimos al
+       card "ocupa toda la altura de tu celda del grid".
+       
+       Esto permite que margin-block-start: auto en .card__footer funcione
+       correctamente, empujando los botones al fondo de TODAS las tarjetas
+       uniformemente, sin importar cuánto texto tenga cada una.
+       
+       ANALOGÍA FEYNMAN: Imagina cajas en un estante. El estante (grid) define
+       la altura del compartimento. Pero la caja necesita "inflarse" para
+       llenar ese compartimento (height: 100%). Solo entonces el contenido
+       de la caja puede distribuirse correctamente con el botón siempre al fondo.
+       ======================================================================== */
+    height: 100%;
+    
+    /* Fondo con efecto de profundidad oceánica */
+    background-color: var(--color-bg-secondary);
+    
+    /* Bordes sutiles para definición */
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: var(--radius-lg);
+    
+    /* Padding interno consistente */
+    padding: var(--space-lg);
+    
+    /* Sombra para elevación sutil */
+    box-shadow: 
+      0 4px 6px rgba(0, 0, 0, 0.1),
+      0 1px 3px rgba(0, 0, 0, 0.08);
+    
+    /* Transición suave para efectos hover */
+    transition: 
+      transform var(--transition-normal) var(--easing-default),
+      box-shadow var(--transition-normal) var(--easing-default),
+      border-color var(--transition-normal) var(--easing-default);
+  }
+
+  /* Efecto hover - La tarjeta "flota" y brilla */
+  .card:hover {
+    transform: translateY(-4px);
+    box-shadow: 
+      0 12px 24px rgba(0, 0, 0, 0.15),
+      0 0 20px rgba(0, 188, 212, 0.1);
+    border-color: rgba(0, 188, 212, 0.3);
+  }
+
+  /* ========================================================================
+     CARD IMAGE - Contenedor de Imagen
+     ======================================================================== */
+  .card__image {
+    /* Margen negativo para que la imagen toque los bordes del card */
+    margin: calc(var(--space-lg) * -1);
+    margin-block-end: var(--space-lg);
+    
+    /* La imagen debe cubrir este contenedor */
+    overflow: hidden;
+    border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+  }
+
+  .card__image img {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+    
+    transition: transform var(--transition-slow) var(--easing-default);
+  }
+
+  .card:hover .card__image img {
+    transform: scale(1.05);
+  }
+
+  /* ========================================================================
+     CARD CONTENT - Área de Texto
+     ======================================================================== */
+  .card__content {
+    flex: 1; /* Permite que el contenido crezca y empuje el footer abajo */
+  }
+
+  .card__title {
+    font-size: var(--font-size-lg);
+    font-weight: var(--font-weight-bold);
+    color: var(--color-text-primary);
+    margin-block-end: var(--space-sm);
+  }
+
+  .card__description {
+    font-size: var(--font-size-base);
+    color: var(--color-text-muted);
+    line-height: var(--line-height-normal);
+  }
+
+  /* ========================================================================
+     CARD FOOTER - Siempre Alineado al Fondo
+     
+     ¿POR QUÉ margin-block-start: auto?
+     ==================================
+     En un contenedor flex-column, margin-top: auto (o margin-block-start)
+     "empuja" el elemento hacia abajo, ocupando TODO el espacio disponible.
+     
+     Esto asegura que los footers de todas las tarjetas estén alineados,
+     sin importar la cantidad de contenido en cada una.
+     ======================================================================== */
+  .card__footer {
+    /* TÉCNICA CLAVE: margin-top auto empuja el footer al fondo */
+    margin-block-start: auto;
+    padding-block-start: var(--space-md);
+  }
+
+  /* ========================================================================
+     CARD VARIANTS - Variantes de Tarjeta
+     ======================================================================== */
+  
+  /* Tarjeta destacada con borde dorado */
+  .card--featured {
+    border-color: var(--color-accent-gold);
+    box-shadow: 
+      0 4px 6px rgba(0, 0, 0, 0.1),
+      0 0 20px rgba(255, 215, 0, 0.1);
+  }
+
+  .card--featured:hover {
+    box-shadow: 
+      0 12px 24px rgba(0, 0, 0, 0.15),
+      0 0 30px rgba(255, 215, 0, 0.2);
+  }
+
+  /* Tarjeta compacta (sin imagen) */
+  .card--compact {
+    padding: var(--space-md);
+  }
+
+  /* ========================================================================
+     PRICE BADGE - Badge de Precio para Tarjetas de Camping
+     
+     ¿POR QUÉ?
+     Los badges de precio muestran prominentemente el costo en la parte superior
+     de la tarjeta, permitiendo a los usuarios comparar opciones rápidamente.
+     
+     USADO EN: Sección DreamVille de index.html y festival-guide.html
+     ======================================================================== */
+  .price-badge {
+    display: inline-block;
+    font-size: var(--font-size-xl);
+    font-weight: var(--font-weight-bold);
+    color: var(--color-bg-primary);
+    background: linear-gradient(135deg, var(--color-accent-gold), var(--color-accent-teal));
+    padding: var(--space-sm) var(--space-lg);
+    border-radius: var(--radius-full);
+    margin-block-end: var(--space-md);
+    text-align: center;
+  }
+
+  /* ========================================================================
+     FEATURED BADGE - Badge "Popular" para Tarjetas Destacadas
+     
+     ¿POR QUÉ?
+     La tarjeta "featured" (opción más popular) obtiene tratamiento especial
+     con énfasis visual extra para guiar la elección del usuario.
+     
+     ANALOGÍA FEYNMAN: Es como ir a una heladería y ver que un sabor tiene
+     una estrella dorada con "¡Más vendido!". Te ayuda a decidir cuando no
+     estás seguro - "ah, la mayoría de gente elige este".
+     ======================================================================== */
+  .featured-badge {
+    display: inline-block;
+    background: var(--color-accent-gold);
+    color: var(--color-bg-primary);
+    padding: var(--space-3xs) var(--space-xs);
+    border-radius: var(--radius-sm);
+    font-size: var(--font-size-sm);
+    font-weight: var(--font-weight-semibold);
+    margin-block-end: var(--space-sm);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+
+  /* ========================================================================
+     CARD FEATURES LIST - Lista de Características
+     
+     ¿POR QUÉ?
+     Las listas de features presentan hechos/beneficios clave en formato
+     escaneable con checkmarks.
+     ======================================================================== */
+  .card-features {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    margin-block-end: var(--space-md);
+    font-size: var(--font-size-sm);
+    color: var(--color-text-muted);
+  }
+
+  .card-features li {
+    padding: var(--space-xs) 0;
+    border-block-end: 1px solid rgba(255, 255, 255, 0.1);
+  }
+
+  .card-features li:last-child {
+    border-block-end: none;
+  }
+
+  /* ========================================================================
+     BENTO GRID - Layout Asimétrico Estilo Galería
+     
+     ¿QUÉ ES UN BENTO GRID?
+     ======================
+     Inspirado en las cajas de almuerzo japonesas "bento", este layout
+     crea una cuadrícula asimétrica donde algunos elementos ocupan más
+     espacio que otros, creando interés visual y jerarquía.
+     
+     ¿POR QUÉ grid-template-areas?
+     =============================
+     Esta propiedad permite "dibujar" el layout con texto ASCII, haciendo
+     el código MUY legible y fácil de modificar. Cada nombre en el template
+     corresponde a un elemento con grid-area de ese nombre.
+     
+     ANATOMÍA DEL TEMPLATE:
+     "featured featured sidebar"  → featured ocupa 2 columnas
+     "item1    item2    sidebar"  → sidebar ocupa 2 filas
+     "item3    item4    item5"    → items normales de 1×1
+     
+     ANALOGÍA FEYNMAN: Es como armar un puzzle donde algunas piezas son
+     más grandes que otras. El template-areas es como el diagrama del
+     puzzle que muestra dónde va cada pieza por su nombre.
+     ======================================================================== */
+  .bento-grid {
+    display: grid;
+    /* 
+     * 3 columnas con la misma fracción del espacio
+     * auto-rows asegura que las filas se ajusten al contenido
+     */
+    grid-template-columns: repeat(3, 1fr);
+    grid-auto-rows: minmax(200px, auto);
+    gap: var(--space-md);
+    
+    /* El template se define vía data-attribute o directamente en CSS */
+  }
+
+  /* Layout por defecto: 1 grande + 2 medianos + 3 pequeños */
+  .bento-grid[data-layout="default"] {
+    grid-template-areas:
+      "featured featured sidebar"
+      "item1    item2    sidebar"
+      "item3    item4    item5";
+    grid-template-rows: repeat(3, minmax(200px, auto));
+  }
+
+  /* Layout alternativo: 2 grandes lado a lado */
+  .bento-grid[data-layout="split"] {
+    grid-template-areas:
+      "large1 large1 large2 large2"
+      "small1 small2 small3 small4";
+    grid-template-columns: repeat(4, 1fr);
+    grid-template-rows: minmax(300px, auto) minmax(200px, auto);
+  }
+
+  /* ========================================================================
+     BENTO ITEMS - Elementos del Grid
+     ======================================================================== */
+  .bento-item {
+    position: relative;
+    overflow: hidden;
+    border-radius: var(--radius-lg);
+    
+    /* Todos los items son contenedores de imagen */
+    background-color: var(--color-bg-secondary);
+  }
+
+  /* Asignación de áreas */
+  .bento-item--featured { grid-area: featured; }
+  .bento-item--sidebar { grid-area: sidebar; }
+  .bento-item--large1 { grid-area: large1; }
+  .bento-item--large2 { grid-area: large2; }
+  .bento-item--1 { grid-area: item1; }
+  .bento-item--2 { grid-area: item2; }
+  .bento-item--3 { grid-area: item3; }
+  .bento-item--4 { grid-area: item4; }
+  .bento-item--5 { grid-area: item5; }
+  .bento-item--small1 { grid-area: small1; }
+  .bento-item--small2 { grid-area: small2; }
+  .bento-item--small3 { grid-area: small3; }
+  .bento-item--small4 { grid-area: small4; }
+
+  /* ========================================================================
+     BENTO IMAGES - Imágenes que Cubren su Contenedor
+     
+     ¿POR QUÉ object-fit: cover?
+     ===========================
+     Las imágenes de galería vienen en diferentes aspect ratios. Sin
+     object-fit: cover, tendríamos espacio blanco o distorsión.
+     
+     Cover = "Cubre TODO el contenedor, recortando si es necesario"
+     Contain = "Muestra TODO el contenido, dejando espacio si es necesario"
+     
+     IMPORTANTE: height: 100% asegura que la imagen llene el contenedor
+     verticalmente, no solo horizontalmente.
+     ======================================================================== */
+  .bento-item img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    
+    transition: transform var(--transition-slow) var(--easing-default);
+  }
+
+  .bento-item:hover img {
+    transform: scale(1.05);
+  }
+
+  /* Overlay con gradiente para texto sobre imagen */
+  .bento-item__overlay {
+    position: absolute;
+    inset: 0;
+    
+    background: linear-gradient(
+      to top,
+      rgba(5, 10, 20, 0.9) 0%,
+      rgba(5, 10, 20, 0.4) 50%,
+      transparent 100%
+    );
+    
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    padding: var(--space-md);
+    
+    opacity: 0;
+    transition: opacity var(--transition-normal) var(--easing-default);
+  }
+
+  .bento-item:hover .bento-item__overlay {
+    opacity: 1;
+  }
+
+  .bento-item__title {
+    font-size: var(--font-size-lg);
+    font-weight: var(--font-weight-bold);
+    color: var(--color-text-primary);
+  }
+
+  .bento-item__description {
+    font-size: var(--font-size-sm);
+    color: var(--color-text-muted);
+    margin-block-start: var(--space-2xs);
+  }
+}
+
+
+/* ============================================================================
+   CAPA 5: UTILITIES - Clases de Alta Prioridad
+   
+   ¿POR QUÉ? Las utilidades son clases de propósito único que SIEMPRE deben
+   ganar sobre otros estilos (excepto inline). Esta es la capa de mayor
+   prioridad, permitiendo sobrescribir cualquier estilo de componente.
+   
+   FILOSOFÍA: Cada utilidad hace UNA cosa y la hace bien. Esto permite
+   composición rápida en el HTML sin escribir CSS personalizado.
+   ============================================================================ */
+@layer utilities {
+  /* ========================================================================
+     .wrapper - Contenedor con Variantes via Data Attributes
+     
+     ¿POR QUÉ DATA ATTRIBUTES? Permiten variantes semánticas directamente
+     en el HTML: <div class="wrapper" data-width="narrow">
+     Esto es más legible que clases múltiples y se auto-documenta.
+     ======================================================================== */
+  .wrapper {
+    --wrapper-max-width: 1100px;
+    --wrapper-padding: var(--space-md);
+    
+    width: 100%;
+    max-width: var(--wrapper-max-width);
+    margin-inline: auto;
+    padding-inline: var(--wrapper-padding);
+  }
+
+  /* Variantes de ancho usando data attributes */
+  .wrapper[data-width="narrow"] {
+    --wrapper-max-width: 720px;
+  }
+
+  .wrapper[data-width="wide"] {
+    --wrapper-max-width: 1400px;
+  }
+
+  .wrapper[data-width="full"] {
+    --wrapper-max-width: 100%;
+    --wrapper-padding: 0;
+  }
+
+  /* ========================================================================
+     .flow - Espaciado Vertical Inteligente (Lobotomized Owl)
+     
+     ¿QUÉ ES "LOBOTOMIZED OWL"? Es un patrón CSS (selector * + *) que 
+     aplica margen SOLO entre elementos hermanos adyacentes. El nombre
+     viene de que el selector se parece a una lechuza: * + *
+     
+     ¿POR QUÉ? En lugar de agregar margin-bottom a cada elemento (que
+     crea espacio extra al final), este patrón solo agrega espacio ENTRE
+     elementos. El primer elemento no tiene margen superior, el último
+     no tiene margen inferior.
+     
+     ALTERNATIVA MODERNA: Usamos gap en un contenedor flex cuando es posible,
+     pero flow funciona en cualquier contexto sin cambiar display.
+     ======================================================================== */
+  .flow > * + * {
+    margin-block-start: var(--flow-space, var(--space-md));
+  }
+
+  /* Variantes de espaciado */
+  .flow[data-space="sm"] { --flow-space: var(--space-sm); }
+  .flow[data-space="md"] { --flow-space: var(--space-md); }
+  .flow[data-space="lg"] { --flow-space: var(--space-lg); }
+  .flow[data-space="xl"] { --flow-space: var(--space-xl); }
+
+  /* ========================================================================
+     .visually-hidden - Accesibilidad
+     
+     ¿POR QUÉ? Algunos elementos necesitan ser accesibles para lectores de
+     pantalla pero NO visibles en la UI (labels de íconos, skip links, etc.).
+     Esta técnica los oculta VISUALMENTE pero los mantiene en el DOM y
+     accesibles para tecnología asistiva.
+     
+     ⚠️ NO uses display: none o visibility: hidden - estos TAMBIÉN ocultan
+     el contenido de lectores de pantalla.
+     ======================================================================== */
+  .visually-hidden,
+  .sr-only {
+    position: absolute !important;
+    width: 1px !important;
+    height: 1px !important;
+    padding: 0 !important;
+    margin: -1px !important;
+    overflow: hidden !important;
+    clip: rect(0, 0, 0, 0) !important;
+    white-space: nowrap !important;
+    border: 0 !important;
+  }
+
+  /* Versión que se muestra en focus (para skip links) */
+  .visually-hidden-focusable:not(:focus):not(:focus-within) {
+    position: absolute !important;
+    width: 1px !important;
+    height: 1px !important;
+    padding: 0 !important;
+    margin: -1px !important;
+    overflow: hidden !important;
+    clip: rect(0, 0, 0, 0) !important;
+    white-space: nowrap !important;
+    border: 0 !important;
+  }
+
+  /* ========================================================================
+     UTILIDADES DE TEXTO
+     ======================================================================== */
+  .text-center { text-align: center; }
+  .text-left { text-align: start; }
+  .text-right { text-align: end; }
+  
+  .text-uppercase { text-transform: uppercase; }
+  .text-capitalize { text-transform: capitalize; }
+  
+  .text-primary { color: var(--color-text-primary); }
+  .text-muted { color: var(--color-text-muted); }
+  .text-accent { color: var(--color-accent-gold); }
+
+  /* ========================================================================
+     UTILIDADES DE ESPACIADO
+     
+     Nomenclatura: {propiedad}{lado}-{tamaño}
+     m = margin, p = padding
+     t = top (block-start), b = bottom (block-end)
+     l = left (inline-start), r = right (inline-end)
+     x = inline (left + right), y = block (top + bottom)
+     ======================================================================== */
+  .mt-sm { margin-block-start: var(--space-sm); }
+  .mt-md { margin-block-start: var(--space-md); }
+  .mt-lg { margin-block-start: var(--space-lg); }
+  .mt-xl { margin-block-start: var(--space-xl); }
+  
+  .mb-sm { margin-block-end: var(--space-sm); }
+  .mb-md { margin-block-end: var(--space-md); }
+  .mb-lg { margin-block-end: var(--space-lg); }
+  .mb-xl { margin-block-end: var(--space-xl); }
+  
+  .my-sm { margin-block: var(--space-sm); }
+  .my-md { margin-block: var(--space-md); }
+  .my-lg { margin-block: var(--space-lg); }
+  .my-xl { margin-block: var(--space-xl); }
+
+  .mx-auto { margin-inline: auto; }
+
+  .pt-sm { padding-block-start: var(--space-sm); }
+  .pt-md { padding-block-start: var(--space-md); }
+  .pt-lg { padding-block-start: var(--space-lg); }
+  
+  .pb-sm { padding-block-end: var(--space-sm); }
+  .pb-md { padding-block-end: var(--space-md); }
+  .pb-lg { padding-block-end: var(--space-lg); }
+
+  .py-sm { padding-block: var(--space-sm); }
+  .py-md { padding-block: var(--space-md); }
+  .py-lg { padding-block: var(--space-lg); }
+  .py-xl { padding-block: var(--space-xl); }
+
+  .px-sm { padding-inline: var(--space-sm); }
+  .px-md { padding-inline: var(--space-md); }
+  .px-lg { padding-inline: var(--space-lg); }
+
+  /* ========================================================================
+     UTILIDADES DE DISPLAY
+     ======================================================================== */
+  .hidden { display: none; }
+  .block { display: block; }
+  .inline { display: inline; }
+  .inline-block { display: inline-block; }
+  .flex { display: flex; }
+  .grid { display: grid; }
+}
+
+
+/* ============================================================================
+   COMPONENTES DE INTERACCIÓN AVANZADA
+   
+   Estos componentes usan características CSS modernas:
+   - transition-behavior: allow-discrete (animar display)
+   - @starting-style (valores iniciales de entrada)
+   - animation-timeline: view() (scroll-driven animations)
+   - View Transitions API (manejado por JS)
+   ============================================================================ */
+
+/* ============================================================================
+   HAMBURGER ICON - Animación de Menú Móvil
+   
+   El ícono hamburguesa se transforma en una "X" cuando el menú está abierto.
+   Esto proporciona feedback visual claro del estado del menú.
+   ============================================================================ */
+.hamburger-line {
+  display: block;
+  width: 25px;
+  height: 3px;
+  background-color: var(--color-text-main);
+  margin: 5px 0;
+  border-radius: 2px;
+  
+  transition: 
+    transform var(--transition-normal) var(--easing-default),
+    opacity var(--transition-normal) var(--easing-default);
+  transform-origin: center;
+}
+
+/* Transformación a "X" cuando el menú está abierto */
+.mobile-menu-toggle[data-menu-open="true"] .hamburger-line:nth-child(1) {
+  transform: translateY(8px) rotate(45deg);
+}
+
+.mobile-menu-toggle[data-menu-open="true"] .hamburger-line:nth-child(2) {
+  opacity: 0;
+  transform: scaleX(0);
+}
+
+.mobile-menu-toggle[data-menu-open="true"] .hamburger-line:nth-child(3) {
+  transform: translateY(-8px) rotate(-45deg);
+}
+
+/* ============================================================================
+   CONTROLES DE FILTRO - Sistema de Filtrado del Line-Up
+   
+   Botones toggle para filtrar tarjetas por escenario y día.
+   Diseñados para ser accesibles y fáciles de usar en móvil.
+   ============================================================================ */
+.filter-controls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-lg);
+  justify-content: center;
+  align-items: center;
+}
+
+.filter-group {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-sm);
+}
+
+.filter-label {
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.filter-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2xs);
+}
+
+.filter-btn {
+  padding: var(--space-2xs) var(--space-sm);
+  
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-medium);
+  color: var(--color-text-muted);
+  
+  background-color: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: var(--radius-full);
+  
+  cursor: pointer;
+  
+  transition: 
+    background-color var(--transition-fast) var(--easing-default),
+    border-color var(--transition-fast) var(--easing-default),
+    color var(--transition-fast) var(--easing-default),
+    transform var(--transition-fast) var(--easing-default);
+}
+
+.filter-btn:hover {
+  border-color: var(--color-accent-gold);
+  color: var(--color-accent-gold);
+}
+
+.filter-btn.active {
+  background-color: var(--color-accent-gold);
+  border-color: var(--color-accent-gold);
+  color: var(--color-bg-primary);
+}
+
+.filter-btn:focus-visible {
+  outline: 2px solid var(--color-accent-teal);
+  outline-offset: 2px;
+}
+
+/* ============================================================================
+   CARD BADGES - Etiquetas de Escenario
+   ============================================================================ */
+.card__badge {
+  display: inline-block;
+  padding: var(--space-3xs) var(--space-xs);
+  margin-block-end: var(--space-sm);
+  
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-medium);
+  
+  border-radius: var(--radius-sm);
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+.card__badge--stage {
+  background-color: rgba(255, 215, 0, 0.2);
+  color: var(--color-accent-gold);
+}
+
+.card__badge--atmosphere {
+  background-color: rgba(0, 188, 212, 0.2);
+  color: var(--color-accent-teal);
+}
+
+.card__badge--freedom {
+  background-color: rgba(160, 179, 197, 0.2);
+  color: var(--color-text-muted);
+}
+
+/* ============================================================================
+   MENSAJE "NO RESULTS"
+   ============================================================================ */
+.no-results {
+  padding: var(--space-xl);
+}
+
+.no-results[hidden] {
+  display: none;
+}
+
+/* ============================================================================
+   ATRIBUTO [hidden] - Soporte Universal para Tarjetas Filtradas
+   
+   ¿POR QUÉ NECESITAMOS ESTO?
+   ==========================
+   El atributo HTML `hidden` tiene un comportamiento predeterminado de 
+   `display: none` en navegadores modernos. SIN EMBARGO, cuando CSS define
+   explícitamente `display: flex` (como en .card), este valor SOBRESCRIBE
+   el comportamiento del atributo hidden.
+   
+   EJEMPLO DEL PROBLEMA:
+   - HTML: <article class="card" hidden>
+   - CSS: .card { display: flex; }
+   - RESULTADO: El card se muestra porque flex > hidden default
+   
+   SOLUCIÓN:
+   Usamos un selector de atributo [hidden] con alta especificidad y
+   !important para garantizar que el atributo hidden SIEMPRE oculte el
+   elemento, sin importar qué otro display tenga.
+   
+   ANALOGÍA FEYNMAN: Es como poner un candado extra en una puerta. Aunque
+   la puerta tenga un mecanismo de cierre normal (hidden), si alguien pone
+   un objeto bloqueándola (display: flex), no cierra. El !important es como
+   quitar ese objeto para que el candado funcione.
+   ============================================================================ */
+.card[hidden] {
+  display: none !important;
+}
+
+/* ============================================================================
+   SCROLL-DRIVEN ANIMATIONS - Animaciones Basadas en Scroll (CSS Puro)
+   
+   ¿QUÉ ES animation-timeline: view()?
+   ====================================
+   Es una nueva propiedad CSS que conecta una animación al SCROLL del viewport
+   en lugar del tiempo. La animación progresa según el elemento entra/sale
+   del viewport.
+   
+   ¿CÓMO FUNCIONA?
+   1. Definimos una animación @keyframes normal
+   2. En lugar de animation-duration, usamos animation-timeline: view()
+   3. animation-range define CUÁNDO de la visibilidad se ejecuta la animación
+   
+   animation-range: entry 0% entry 100%
+   → La animación se ejecuta desde que el elemento EMPIEZA a entrar (0%)
+     hasta que TERMINA de entrar (100%) en el viewport.
+   
+   ANALOGÍA FEYNMAN: Es como un efecto de "fundido" en cine. Cuando la
+   cámara hace pan hacia un objeto, el objeto se vuelve visible gradualmente.
+   Aquí, el "pan" es el scroll del usuario, y el objeto se anima entrando.
+   
+   VENTAJAS:
+   - 100% CSS, sin JavaScript
+   - Rendimiento optimizado (usa el compositor del navegador)
+   - Se sincroniza perfectamente con el scroll
+   ============================================================================ */
+
+/* Definición de la animación fade-in-up */
+@keyframes fade-in-up {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Aplicar scroll-driven animation a las tarjetas */
+.card {
+  /* La animación se ejecuta cuando el elemento entra en el viewport */
+  animation: fade-in-up linear both;
+  animation-timeline: view();
+  
+  /* 
+   * animation-range define el rango de scroll donde la animación ocurre:
+   * - entry 0%: cuando el borde inferior del elemento toca el viewport
+   * - entry 100%: cuando el elemento está completamente dentro del viewport
+   * 
+   * Esto crea un efecto suave donde las tarjetas "flotan" hacia arriba
+   * conforme el usuario hace scroll hacia abajo.
+   */
+  animation-range: entry 0% entry 100%;
+}
+
+/* También aplicar a los items del Bento Grid */
+.bento-item {
+  animation: fade-in-up linear both;
+  animation-timeline: view();
+  animation-range: entry 0% entry 100%;
+}
+
+/* Fallback para navegadores sin soporte de scroll-driven animations */
+@supports not (animation-timeline: view()) {
+  .card,
+  .bento-item {
+    /* Sin la animación scroll-driven, simplemente se muestran normalmente */
+    animation: none;
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* ============================================================================
+   VIEW TRANSITIONS - Estilos para la API de View Transitions
+   
+   Cuando usamos document.startViewTransition(), el navegador crea pseudo-
+   elementos para la transición. Podemos estilizarlos para personalizar
+   la animación.
+   
+   ::view-transition-old → El estado "antes" (screenshot)
+   ::view-transition-new → El estado "después" (nuevo DOM)
+   ============================================================================ */
+
+/* Transición global (fallback suave) */
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation-duration: 300ms;
+  animation-timing-function: ease-in-out;
+}
+
+/* Transición específica para el grid de lineup */
+.lineup-grid {
+  /* view-transition-name permite personalizar la transición de este elemento */
+  view-transition-name: lineup-grid;
+}
+
+/* Las tarjetas individuales pueden tener transiciones únicas */
+.card--artist {
+  view-transition-name: artist-card;
+}
+
+
+/* ============================================================================
+   ESTILOS RESPONSIVOS
+   
+   Los media queries están FUERA de @layer intencionalmente. Esto les da
+   la prioridad más alta, permitiendo sobrescribir cualquier estilo de capa
+   basado en el tamaño del viewport.
+   ============================================================================ */
+
+/* Móvil (default) - Estilos base arriba */
+
+/* Tablet: 768px+ */
+@media (min-width: 768px) {
+  .container {
+    width: 90%;
+    padding-inline: var(--space-md);
+  }
+}
+
+/* Desktop: 1024px+ */
+@media (min-width: 1024px) {
+  .container {
+    width: 90%;
+    max-width: 1100px;
+  }
+}
+
+/* Desktop Grande: 1440px+ */
+@media (min-width: 1440px) {
+  .container {
+    max-width: 1250px;
+  }
+}
+
+/* ============================================================================
+   RESPONSIVE - Bento Grid
+   
+   El Bento Grid usa un enfoque "desktop-first" donde el layout complejo
+   es el default, y simplificamos en pantallas más pequeñas.
+   ============================================================================ */
+
+/* Tablet: 768px - 1023px → 2 columnas */
+@media (max-width: 1023px) {
+  .bento-grid,
+  .bento-grid[data-layout="default"],
+  .bento-grid[data-layout="split"] {
+    grid-template-columns: repeat(2, 1fr);
+    grid-template-areas:
+      "featured featured"
+      "item1    item2"
+      "sidebar  item3"
+      "item4    item5";
+    grid-template-rows: auto;
+  }
+}
+
+/* Móvil: < 768px → 1 columna (stack vertical) */
+@media (max-width: 767px) {
+  .bento-grid,
+  .bento-grid[data-layout="default"],
+  .bento-grid[data-layout="split"] {
+    grid-template-columns: 1fr;
+    grid-template-areas:
+      "featured"
+      "sidebar"
+      "item1"
+      "item2"
+      "item3"
+      "item4"
+      "item5";
+    grid-template-rows: auto;
+  }
+  
+  /* En móvil, todos los items tienen altura mínima consistente */
+  .bento-item {
+    min-height: 200px;
+  }
+}
+
+
+/* ============================================================================
+   ACCESIBILIDAD - Movimiento Reducido
+   
+   Respetamos la preferencia del usuario por animaciones reducidas.
+   ============================================================================ */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+
+/* ============================================================================
+   FOOTER STYLES - Estilos del Pie de Página
+   
+   ¿POR QUÉ? El footer necesita separación visual clara del contenido principal
+   y estados interactivos para los enlaces.
+   ============================================================================ */
+
+/* Footer Base */
+.site-footer,
+footer {
+  margin-block-start: var(--space-2xl);
+  padding-block: var(--space-2xl);
+  padding-inline: var(--space-md);
+  background-color: var(--color-bg-secondary);
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* Enlaces del Footer con transiciones suaves */
+footer a,
+.site-footer a {
+  transition: color 0.3s ease, text-decoration 0.3s ease;
+}
+
+footer a:hover,
+.site-footer a:hover {
+  color: var(--color-accent-gold);
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+
+/* Navegación del Footer */
+footer nav ul,
+.site-footer nav ul {
+  display: flex;
+  justify-content: center;
+  gap: var(--space-lg);
+  flex-wrap: wrap;
+  padding: 0;
+  margin: 0;
+}
+
+footer nav li,
+.site-footer nav li {
+  list-style: none;
+}
+
+/* Copyright */
+footer > p,
+.site-footer > p {
+  margin-block-end: var(--space-lg);
+  max-width: 100%;
+}
+
+
+/* ============================================================================
+   ESTILOS DE IMPRESIÓN
+   ============================================================================ */
+@media print {
+  .main-header,
+  .utility-sidebar,
+  .sidebar-toggle,
+  .scroll-indicator {
+    display: none !important;
+  }
+
+  body {
+    background: white;
+    color: black;
+  }
+
+  .hero {
+    height: auto;
+    min-height: 200px;
+    background-image: none;
+  }
+}
+

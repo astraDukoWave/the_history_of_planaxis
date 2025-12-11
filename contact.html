@@ -26,12 +26,19 @@
   <!-- Theme Color -->
   <meta name="theme-color" content="#050a14">
   
-  <!-- Hojas de estilo - Carga en orden: reset → variables → layout → components → page-specific → responsive -->
-  <link rel="stylesheet" href="css/reset.css">
-  <link rel="stylesheet" href="css/variables.css">
-  <link rel="stylesheet" href="css/layout.css">
-  <link rel="stylesheet" href="css/header.css">
-  <link rel="stylesheet" href="css/sidebar.css">
+  <!-- ============================================================================
+       ARQUITECTURA CSS CON @layer
+       
+       ORDEN DE CASCADA (de menor a mayor prioridad):
+       1. reset → 2. base → 3. layout → 4. components → 5. utilities
+       
+       style.css contiene las capas principales.
+       Los componentes y páginas específicas usan @layer internamente.
+       responsive.css está FUERA de capas para máxima prioridad.
+       ============================================================================ -->
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/components/header.css">
+  <link rel="stylesheet" href="css/components/sidebar.css">
   <link rel="stylesheet" href="css/contact.css">
   <link rel="stylesheet" href="css/responsive.css">
   
@@ -61,6 +68,7 @@
       <!-- Enlaces de Navegación -->
       <ul class="nav-links">
         <li><a href="index.html#festival" data-i18n="nav.festival">Festival</a></li>
+        <li><a href="index.html#lineup" data-i18n="nav.lineup">Line-Up</a></li>
         <li><a href="index.html#brand-activation" data-i18n="nav.brand">Brand Activation</a></li>
         <li><a href="index.html#cultural-events" data-i18n="nav.cultural">Cultural Events</a></li>
         <li><a href="contact.html" class="active" aria-current="page" data-i18n="nav.contact">Contact</a></li>
@@ -125,7 +133,7 @@
        ======================================================================== -->
   <main>
     <section class="contact-section">
-      <div class="contact-container">
+      <div class="contact-container wrapper" data-width="narrow">
         <!-- ¿POR QUÉ? La tarjeta glassmorphism crea jerarquía visual y hace que el formulario
              sea el punto focal de la página. El fondo semi-transparente con blur de fondo
              crea ese efecto moderno de "vidrio esmerilado".

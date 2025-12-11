@@ -357,20 +357,75 @@ function handleFormSubmit(e) {
 }
 
 // ============================================================================
-// FUNCIONALIDAD EXISTENTE (de scripts inline)
+// MENÚ MÓVIL ACCESIBLE Y ANIMADO
 // ============================================================================
+
+// ¿POR QUÉ? El menú móvil es una pieza crítica de UX. Necesita ser:
+// 1. Accesible (lectores de pantalla entienden el estado)
+// 2. Animado suavemente (usando CSS moderno con allow-discrete)
+// 3. Navegable con teclado (Escape cierra el menú)
+//
+// ¿CÓMO FUNCIONA?
+// Usamos data-attributes para controlar el estado:
+// - data-visible="true/false" en el menú
+// - data-menu-open="true/false" en el botón
+// - aria-expanded="true/false" para accesibilidad
+//
+// El CSS usa transition-behavior: allow-discrete para animar la propiedad
+// display, y @starting-style define los valores iniciales de la animación.
+//
+// EXPLICACIÓN FEYNMAN:
+// Imagina que el menú es una puerta de garaje. Antes, CSS solo podía hacer
+// que la puerta estuviera "abierta" o "cerrada" instantáneamente. Con las
+// nuevas propiedades, la puerta puede ABRIRSE GRADUALMENTE, como en la realidad.
+// - @starting-style dice: "cuando la puerta empiece a abrirse, empieza cerrada"
+// - transition-behavior dice: "está bien animar esta puerta que solo tiene
+//   dos posiciones (abierta/cerrada)"
 
 function initializeMobileMenu() {
   const mobileMenuToggle = document.querySelector('.mobile-menu-toggle');
   const navLinks = document.querySelector('.nav-links');
   
-  if (mobileMenuToggle && navLinks) {
-    mobileMenuToggle.addEventListener('click', function() {
-      navLinks.classList.toggle('show');
-      const isExpanded = navLinks.classList.contains('show');
-      mobileMenuToggle.setAttribute('aria-expanded', isExpanded);
-    });
+  if (!mobileMenuToggle || !navLinks) {
+    return; // Salir si los elementos no existen
   }
+  
+  // ¿POR QUÉ? Esta función centraliza la lógica de abrir/cerrar el menú.
+  // Actualiza todos los atributos necesarios para CSS y accesibilidad.
+  function toggleMenu() {
+    const isCurrentlyOpen = navLinks.getAttribute('data-visible') === 'true';
+    const newState = !isCurrentlyOpen;
+    
+    // Actualizar atributos para CSS
+    navLinks.setAttribute('data-visible', newState);
+    mobileMenuToggle.setAttribute('data-menu-open', newState);
+    
+    // Actualizar atributo ARIA para accesibilidad
+    // Los lectores de pantalla anunciarán "menú expandido" o "menú colapsado"
+    mobileMenuToggle.setAttribute('aria-expanded', newState);
+  }
+  
+  // Click en el botón hamburguesa
+  mobileMenuToggle.addEventListener('click', toggleMenu);
+  
+  // ¿POR QUÉ? Cerrar el menú con la tecla Escape es una convención de UX
+  // que los usuarios esperan. Mejora la accesibilidad de teclado.
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && navLinks.getAttribute('data-visible') === 'true') {
+      toggleMenu();
+      mobileMenuToggle.focus(); // Devolver foco al botón
+    }
+  });
+  
+  // ¿POR QUÉ? Cerrar el menú cuando se hace clic en un enlace mejora la UX
+  // en móviles donde el menú cubre toda la pantalla.
+  navLinks.querySelectorAll('a').forEach(link => {
+    link.addEventListener('click', () => {
+      if (navLinks.getAttribute('data-visible') === 'true') {
+        toggleMenu();
+      }
+    });
+  });
 }
 
 function initializeSidebar() {
@@ -414,9 +469,150 @@ function initializeSmoothScroll() {
         
         const navLinks = document.querySelector('.nav-links');
         const sidebar = document.querySelector('.utility-sidebar');
-        if (navLinks) navLinks.classList.remove('show');
+        if (navLinks) navLinks.setAttribute('data-visible', 'false');
         if (sidebar) sidebar.classList.remove('show');
       }
+    });
+  });
+}
+
+// ============================================================================
+// SISTEMA DE FILTRADO CON VIEW TRANSITIONS API
+// ============================================================================
+
+// ¿QUÉ ES LA VIEW TRANSITIONS API?
+// ================================
+// Es una API nativa del navegador que permite crear transiciones animadas
+// entre estados del DOM sin librerías externas. Funciona así:
+//
+// 1. Llamas document.startViewTransition(callback)
+// 2. El navegador toma un "screenshot" del estado actual
+// 3. Tu callback ejecuta los cambios en el DOM
+// 4. El navegador toma otro "screenshot" del nuevo estado
+// 5. El navegador anima automáticamente entre los dos estados
+//
+// ¿POR QUÉ ES MÁGICO?
+// ===================
+// Sin View Transitions, cuando ocultas/muestras elementos, simplemente
+// desaparecen/aparecen. Con View Transitions, el navegador INTERPOLA
+// suavemente entre los estados, creando animaciones fluidas.
+//
+// ANALOGÍA FEYNMAN:
+// Imagina que tienes fotos de un libro de fotos flip-book. Cada foto es un
+// estado del DOM. Normalmente, al cambiar de página el cambio es instantáneo.
+// View Transitions es como tener una cámara que filma la transición entre
+// páginas, creando una animación suave automáticamente.
+//
+// COMPATIBILIDAD:
+// View Transitions es relativamente nueva. Si el navegador no la soporta,
+// los cambios ocurren instantáneamente (degradación elegante).
+
+function initializeLineupFilters() {
+  // ========================================================================
+  // SISTEMA DE FILTRADO CON VIEW TRANSITIONS API
+  // 
+  // ¿POR QUÉ? Permite filtrar artistas por escenario y día con animaciones
+  // suaves gracias a View Transitions API.
+  //
+  // SELECTOR IMPORTANTE: Usamos '#lineup-grid .card' para seleccionar SOLO
+  // las tarjetas dentro de la sección de line-up, no todas las tarjetas.
+  // ========================================================================
+  
+  const lineupGrid = document.getElementById('lineup-grid');
+  const noResultsMessage = document.querySelector('.no-results');
+  const filterButtons = document.querySelectorAll('.filter-btn');
+  
+  if (!lineupGrid || filterButtons.length === 0) {
+    return; // No hay sección de line-up en esta página
+  }
+  
+  // Seleccionar TODAS las tarjetas del line-up (usando .card, no .card--artist)
+  const artistCards = lineupGrid.querySelectorAll('.card');
+  
+  // Estado actual de los filtros
+  let activeFilters = {
+    stage: 'all',
+    day: 'all'
+  };
+  
+  // ¿POR QUÉ? Esta función aplica los filtros a las tarjetas.
+  function applyFilters() {
+    let visibleCount = 0;
+    
+    // Iterar sobre cada tarjeta y verificar si coincide con los filtros
+    artistCards.forEach(card => {
+      const cardStage = card.dataset.stage;
+      const cardDay = card.dataset.day;
+      
+      // Verificar si la tarjeta coincide con ambos filtros
+      const stageMatch = activeFilters.stage === 'all' || cardStage === activeFilters.stage;
+      const dayMatch = activeFilters.day === 'all' || cardDay === activeFilters.day;
+      
+      // ¿POR QUÉ? Usamos el atributo `hidden` en lugar de display: none.
+      // El atributo hidden es más semántico y accesible.
+      if (stageMatch && dayMatch) {
+        card.hidden = false;
+        visibleCount++;
+      } else {
+        card.hidden = true;
+      }
+    });
+    
+    // Mostrar mensaje si no hay resultados
+    if (noResultsMessage) {
+      noResultsMessage.hidden = visibleCount > 0;
+    }
+  }
+  
+  // ¿POR QUÉ? Esta función envuelve applyFilters() en View Transitions.
+  // Si el navegador soporta View Transitions, la transición es animada.
+  function applyFiltersWithTransition() {
+    // ========================================================================
+    // VIEW TRANSITIONS: La "Magia" Explicada
+    //
+    // document.startViewTransition() hace:
+    // 1. Captura un "snapshot" del estado visual actual
+    // 2. Ejecuta la función callback (nuestros cambios en el DOM)
+    // 3. Captura otro snapshot del nuevo estado
+    // 4. Anima automáticamente entre los dos estados
+    //
+    // ¡Sin escribir código de animación manualmente!
+    // ========================================================================
+    
+    if (document.startViewTransition) {
+      document.startViewTransition(() => {
+        applyFilters();
+      });
+    } else {
+      // Fallback para navegadores sin soporte
+      applyFilters();
+    }
+  }
+  
+  // Agregar event listeners a todos los botones de filtro
+  filterButtons.forEach(btn => {
+    btn.addEventListener('click', () => {
+      // 1. Actualizar estado visual de botones
+      // Encontrar el grupo de botones al que pertenece
+      const group = btn.closest('.filter-buttons');
+      if (group) {
+        const currentActive = group.querySelector('.active');
+        if (currentActive) {
+          currentActive.classList.remove('active');
+        }
+        btn.classList.add('active');
+      }
+      
+      // 2. Actualizar estado lógico de filtros
+      if (btn.dataset.filterStage !== undefined) {
+        activeFilters.stage = btn.dataset.filterStage;
+      }
+      if (btn.dataset.filterDay !== undefined) {
+        activeFilters.day = btn.dataset.filterDay;
+      }
+      
+      // 3. Aplicar filtros con animación View Transitions
+      applyFiltersWithTransition();
     });
   });
 }
@@ -438,16 +634,39 @@ function initializeSmoothScroll() {
 //
 // RESULTADO: Todo nuestro código se ejecuta en el momento correcto, cuando los elementos existen.
 document.addEventListener('DOMContentLoaded', () => {
-  // Inicializar sistema de idiomas
+  // ========================================================================
+  // MÓDULO 1: SISTEMA DE IDIOMAS (i18n)
+  // ========================================================================
   initializeLanguage();
   initializeLanguageSelector();
   
-  // Inicializar formulario de contacto (si está presente)
+  // ========================================================================
+  // MÓDULO 2: FORMULARIO DE CONTACTO
+  // Solo se inicializa si existe en la página actual
+  // ========================================================================
   initializeContactForm();
   
-  // Inicializar funcionalidad existente
-  initializeMobileMenu();
-  initializeSidebar();
-  initializeScrollHeader();
-  initializeSmoothScroll();
+  // ========================================================================
+  // MÓDULO 3: NAVEGACIÓN Y UI
+  // Menú móvil, sidebar, efectos de scroll
+  // ========================================================================
+  initializeMobileMenu();  // Menú hamburguesa con animación CSS moderna
+  initializeSidebar();      // Sidebar flotante
+  initializeScrollHeader(); // Header con efecto glassmorphism en scroll
+  initializeSmoothScroll(); // Scroll suave a anchors
+  
+  // ========================================================================
+  // MÓDULO 4: SISTEMA DE FILTRADO CON VIEW TRANSITIONS
+  // Filtra tarjetas de line-up con animaciones automáticas del navegador
+  // ========================================================================
+  initializeLineupFilters();
+  
+  // ========================================================================
+  // LOG DE DESARROLLO
+  // ========================================================================
+  console.log('🎪 Planaxis initialized with:');
+  console.log('  ✓ Mobile menu (CSS allow-discrete animation)');
+  console.log('  ✓ Line-up filters (View Transitions API)');
+  console.log('  ✓ Scroll-driven animations (animation-timeline: view)');
+  console.log('  ✓ i18n system (localStorage persistence)');
 });

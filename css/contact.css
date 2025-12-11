@@ -1,21 +1,17 @@
 /* ============================================================================
-   ESTILOS DE PÁGINA DE CONTACTO
-   ============================================================================
+   CONTACT.CSS - Estilos de Página de Contacto
+   
+   ¿POR QUÉ @layer components?
+   Los estilos de página específicos pertenecen a la capa components para
+   mantener la jerarquía correcta en la arquitectura de capas CSS.
    
    ¿POR QUÉ? Esta hoja de estilos contiene todos los estilos específicos para la
-   página de contacto, particularmente el formulario con efecto glassmorphism. Al
-   mantener estos estilos separados, mantenemos modularidad y solo cargamos lo necesario.
-   
-   ¿CÓMO FUNCIONA? Usamos propiedades personalizadas de CSS (variables) para consistencia,
-   y características CSS modernas como backdrop-filter para el efecto glassmorphism.
-   
-   ANALOGÍA FEYNMAN: Es como tener un archivo de recetas especial solo para postres.
-   No mezclas las recetas de postres con las de platos principales - cada archivo
-   tiene su propósito y se carga solo cuando se necesita.
+   página de contacto, particularmente el formulario con efecto glassmorphism.
    
    RESULTADO: Formulario de contacto hermoso y moderno con estética submarina/vidrio.
    ============================================================================ */
 
+@layer components {
 /* ¿POR QUÉ? La sección de contacto necesita espacio del header FIXED y centrado
    apropiado para hacer del formulario el punto focal de la página. Como cambiamos
    el header a position: fixed, ya no ocupa espacio en el flujo del documento,
@@ -44,9 +40,9 @@
      
      RESULTADO: El contenido comienza debajo del header fixed con espaciado agradable. */
   padding-top: 120px;
-  padding-bottom: var(--spacing-3xl);
-  padding-left: var(--spacing-lg);
-  padding-right: var(--spacing-lg);
+  padding-bottom: var(--space-3xl);
+  padding-left: var(--space-lg);
+  padding-right: var(--space-lg);
   background: linear-gradient(135deg, #0a1e3c 0%, #050a14 100%);
   position: relative;
   overflow: hidden;
@@ -167,7 +163,7 @@
   border: 1px solid rgba(212, 175, 55, 0.2);
   border-radius: var(--radius-lg);
   
-  padding: var(--spacing-2xl);
+  padding: var(--space-2xl);
   
   /* ¿POR QUÉ? Múltiples box-shadows crean profundidad. La primera crea un brillo sutil,
      la segunda crea elevación, haciendo que la tarjeta parezca flotar.
@@ -206,14 +202,14 @@
    RESULTADO: Introducción clara e invitante al formulario de contacto. */
 .contact-header {
   text-align: center;
-  margin-bottom: var(--spacing-2xl);
+  margin-bottom: var(--space-2xl);
 }
 
 .contact-header h1 {
   font-size: clamp(2rem, 5vw, 2.5rem);
   font-weight: 700;
-  color: var(--color-gold);
-  margin-bottom: var(--spacing-sm);
+  color: var(--color-accent-gold);
+  margin-bottom: var(--space-sm);
   text-shadow: 0 0 20px rgba(212, 175, 55, 0.3);
 }
 
@@ -230,7 +226,7 @@
    
    RESULTADO: Layout de formulario limpio y organizado. */
 .form-group {
-  margin-bottom: var(--spacing-lg);
+  margin-bottom: var(--space-lg);
 }
 
 /* ¿POR QUÉ? Los labels deben estar claramente asociados con sus inputs y estilizados
@@ -242,8 +238,8 @@
    RESULTADO: Labels de formulario accesibles y legibles. */
 .form-group label {
   display: block;
-  margin-bottom: var(--spacing-xs);
-  color: var(--color-text-secondary);
+  margin-bottom: var(--space-xs);
+  color: var(--color-text-muted);
   font-size: var(--font-size-sm);
   font-weight: 500;
   text-transform: uppercase;
@@ -261,7 +257,7 @@
 .form-group select,
 .form-group textarea {
   width: 100%;
-  padding: var(--spacing-md);
+  padding: var(--space-md);
   
   /* ¿POR QUÉ? Fondo transparente/semi-transparente mantiene la estética de vidrio y
      deja que el diseño subyacente se muestre.
@@ -303,7 +299,7 @@
 .form-group select:focus,
 .form-group textarea:focus {
   outline: none;
-  border-color: var(--color-gold);
+  border-color: var(--color-accent-gold);
   background: rgba(255, 255, 255, 0.08);
   box-shadow: 0 0 20px rgba(212, 175, 55, 0.2);
 }
@@ -334,7 +330,7 @@
    bioluminiscente interactivo en nuestro reino submarino. */
 .submit-button {
   width: 100%;
-  padding: var(--spacing-md) var(--spacing-xl);
+  padding: var(--space-md) var(--space-xl);
   
   /* ¿POR QUÉ? Gradiente de cyan brillante a azul más profundo crea profundidad e
      interés visual. Los colores evocan criaturas marinas bioluminiscentes - brillantes,
@@ -451,7 +447,7 @@
 .success-message {
   display: none; /* Oculto por defecto, mostrado por JavaScript */
   text-align: center;
-  padding: var(--spacing-xl);
+  padding: var(--space-xl);
   
   background: rgba(46, 204, 113, 0.1);
   border: 1px solid rgba(46, 204, 113, 0.3);
@@ -463,7 +459,7 @@
 .success-message h2 {
   color: #2ecc71;
   font-size: var(--font-size-xl);
-  margin-bottom: var(--spacing-md);
+  margin-bottom: var(--space-md);
 }
 
 .success-message p {
@@ -471,8 +467,13 @@
   font-size: var(--font-size-md);
 }
 
+} /* Fin de @layer components */
+
+
 /* ============================================================================
    DISEÑO RESPONSIVO
+   
+   Los media queries están FUERA de @layer para mayor prioridad en la cascada.
    ============================================================================ */
 
 /* ¿POR QUÉ? En pantallas más pequeñas, reducimos padding y tamaños de fuente para
@@ -483,11 +484,11 @@
    RESULTADO: Formulario amigable para móvil que funciona genial en teléfonos. */
 @media (max-width: 768px) {
   .contact-section {
-    padding: var(--spacing-xl) var(--spacing-md);
+    padding: var(--space-xl) var(--space-md);
   }
   
   .contact-card {
-    padding: var(--spacing-xl);
+    padding: var(--space-xl);
   }
   
   .contact-header h1 {
@@ -497,11 +498,11 @@
   .form-group input,
   .form-group select,
   .form-group textarea {
-    padding: var(--spacing-sm);
+    padding: var(--space-sm);
   }
   
   .submit-button {
-    padding: var(--spacing-md);
+    padding: var(--space-md);
   }
 }
 
@@ -513,18 +514,18 @@
    RESULTADO: Experiencia móvil óptima incluso en dispositivos pequeños. */
 @media (max-width: 480px) {
   .contact-section {
-    padding: var(--spacing-lg) var(--spacing-sm);
+    padding: var(--space-lg) var(--space-sm);
   }
   
   .contact-card {
-    padding: var(--spacing-lg);
+    padding: var(--space-lg);
   }
   
   .contact-header {
-    margin-bottom: var(--spacing-lg);
+    margin-bottom: var(--space-lg);
   }
   
   .form-group {
-    margin-bottom: var(--spacing-md);
+    margin-bottom: var(--space-md);
   }
 }
