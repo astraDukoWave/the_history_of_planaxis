@@ -33,17 +33,16 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  /* ¿POR QUÉ? padding-top: 120px crea espacio para el header fixed (80px) más espacio
-     de respiración extra (40px) para que el título no se sienta apretado contra el header.
-     
-     CÁLCULO: Altura del header (~80px) + espaciado cómodo (40px) = 120px
-     
-     RESULTADO: El contenido comienza debajo del header fixed con espaciado agradable. */
-  padding-top: 120px;
-  padding-bottom: var(--space-3xl);
-  padding-left: var(--space-lg);
-  padding-right: var(--space-lg);
-  background: linear-gradient(135deg, #0a1e3c 0%, #050a14 100%);
+  /* MOBILE-FIRST:
+     Base = valores más compactos (1 columna + paddings reducidos).
+     Mantenemos compensación del header fixed, pero con menor "aire" en móvil. */
+  padding: var(--spacing-lg, var(--space-lg)) var(--spacing-sm, var(--space-sm));
+  padding-top: calc(80px + var(--spacing-lg, var(--space-lg)));
+  background: linear-gradient(
+    135deg,
+    var(--color-bg-secondary, #0a1e3c) 0%,
+    var(--color-bg-primary, #050a14) 100%
+  );
   position: relative;
   overflow: hidden;
 }
@@ -163,7 +162,8 @@
   border: 1px solid rgba(212, 175, 55, 0.2);
   border-radius: var(--radius-lg);
   
-  padding: var(--space-2xl);
+  /* MOBILE-FIRST: padding reducido (desktop lo amplía en min-width: 768px) */
+  padding: var(--spacing-lg, var(--space-lg));
   
   /* ¿POR QUÉ? Múltiples box-shadows crean profundidad. La primera crea un brillo sutil,
      la segunda crea elevación, haciendo que la tarjeta parezca flotar.
@@ -202,14 +202,16 @@
    RESULTADO: Introducción clara e invitante al formulario de contacto. */
 .contact-header {
   text-align: center;
-  margin-bottom: var(--space-2xl);
+  /* MOBILE-FIRST */
+  margin-bottom: var(--spacing-lg, var(--space-lg));
 }
 
 .contact-header h1 {
-  font-size: clamp(2rem, 5vw, 2.5rem);
+  /* MOBILE-FIRST */
+  font-size: 2rem;
   font-weight: 700;
   color: var(--color-accent-gold);
-  margin-bottom: var(--space-sm);
+  margin-bottom: var(--spacing-sm, var(--space-sm));
   text-shadow: 0 0 20px rgba(212, 175, 55, 0.3);
 }
 
@@ -226,7 +228,8 @@
    
    RESULTADO: Layout de formulario limpio y organizado. */
 .form-group {
-  margin-bottom: var(--space-lg);
+  /* MOBILE-FIRST */
+  margin-bottom: var(--spacing-md, var(--space-md));
 }
 
 /* ¿POR QUÉ? Los labels deben estar claramente asociados con sus inputs y estilizados
@@ -238,7 +241,7 @@
    RESULTADO: Labels de formulario accesibles y legibles. */
 .form-group label {
   display: block;
-  margin-bottom: var(--space-xs);
+  margin-bottom: var(--spacing-xs, var(--space-xs));
   color: var(--color-text-muted);
   font-size: var(--font-size-sm);
   font-weight: 500;
@@ -257,7 +260,8 @@
 .form-group select,
 .form-group textarea {
   width: 100%;
-  padding: var(--space-md);
+  /* MOBILE-FIRST */
+  padding: var(--spacing-sm, var(--space-sm));
   
   /* ¿POR QUÉ? Fondo transparente/semi-transparente mantiene la estética de vidrio y
      deja que el diseño subyacente se muestre.
@@ -330,7 +334,8 @@
    bioluminiscente interactivo en nuestro reino submarino. */
 .submit-button {
   width: 100%;
-  padding: var(--space-md) var(--space-xl);
+  /* MOBILE-FIRST */
+  padding: var(--spacing-md, var(--space-md));
   
   /* ¿POR QUÉ? Gradiente de cyan brillante a azul más profundo crea profundidad e
      interés visual. Los colores evocan criaturas marinas bioluminiscentes - brillantes,
@@ -476,56 +481,64 @@
    Los media queries están FUERA de @layer para mayor prioridad en la cascada.
    ============================================================================ */
 
-/* ¿POR QUÉ? En pantallas más pequeñas, reducimos padding y tamaños de fuente para
-   asegurar que el formulario permanezca cómodo de usar sin scroll horizontal.
-   
-   ¿CÓMO FUNCIONA? Media query apunta a pantallas debajo de 768px y ajusta espaciado.
-   
-   RESULTADO: Formulario amigable para móvil que funciona genial en teléfonos. */
-@media (max-width: 768px) {
+/* Desktop / Tablet+ (768px+): padding más amplio + layout de formulario en 2 columnas */
+@media (min-width: 768px) {
   .contact-section {
-    padding: var(--space-xl) var(--space-md);
+    /* Restauramos el espaciado "desktop" sin perder la compensación del header fixed */
+    padding-top: 120px;
+    padding-bottom: var(--space-3xl);
+    padding-left: var(--spacing-lg, var(--space-lg));
+    padding-right: var(--spacing-lg, var(--space-lg));
   }
-  
+
   .contact-card {
-    padding: var(--space-xl);
+    padding: var(--space-2xl);
   }
-  
+
+  .contact-header {
+    margin-bottom: var(--space-2xl);
+  }
+
   .contact-header h1 {
-    font-size: 2rem;
+    font-size: clamp(2rem, 5vw, 2.5rem);
   }
-  
+
+  .form-group {
+    margin-bottom: var(--space-lg);
+  }
+
   .form-group input,
   .form-group select,
   .form-group textarea {
-    padding: var(--space-sm);
-  }
-  
-  .submit-button {
     padding: var(--space-md);
   }
-}
 
-/* ¿POR QUÉ? En pantallas muy pequeñas (teléfonos en portrait), reducimos más el
-   espaciado para maximizar el espacio usable.
-   
-   ¿CÓMO FUNCIONA? Reducciones de espaciado más agresivas en segundo breakpoint.
-   
-   RESULTADO: Experiencia móvil óptima incluso en dispositivos pequeños. */
-@media (max-width: 480px) {
-  .contact-section {
-    padding: var(--space-lg) var(--space-sm);
+  .submit-button {
+    padding: var(--space-md) var(--space-xl);
   }
-  
-  .contact-card {
-    padding: var(--space-lg);
+
+  /* NUEVO: 2-column Grid layout (desktop)
+     - Name + Email lado a lado
+     - Subject + Message + Submit a ancho completo */
+  .contact-form {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--space-lg);
+    align-items: start;
   }
-  
-  .contact-header {
-    margin-bottom: var(--space-lg);
+
+  /* Evitamos doble espaciado (gap ya maneja separación vertical/horizontal) */
+  .contact-form .form-group {
+    margin-bottom: 0;
   }
-  
-  .form-group {
-    margin-bottom: var(--space-md);
+
+  /* Subject + Message (3er y 4to form-group) ocupan ancho completo */
+  .contact-form > .form-group:nth-child(n + 3) {
+    grid-column: 1 / -1;
+  }
+
+  /* Botón submit ocupa ancho completo */
+  .contact-form > .submit-button {
+    grid-column: 1 / -1;
   }
 }

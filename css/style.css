@@ -472,6 +472,7 @@
      ======================================================================== */
   .grid-auto-fit {
     display: grid;
+    container-type: inline-size;
     /* 
      * La fórmula mágica para grids intrínsecos:
      * - min(100%, 300px): Previene overflow en pantallas muy pequeñas
@@ -480,6 +481,26 @@
      */
     grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr));
     gap: var(--space-lg);
+    
+    /* ========================================================================
+       SUBGRID CONTEXT - Filas para Alineación de Internos de Tarjeta
+       
+       ¿POR QUÉ grid-template-rows?
+       ============================
+       Para que las tarjetas puedan usar `subgrid` en sus filas, el contenedor
+       padre DEBE definir filas explícitas. Cada tarjeta tiene 3 partes:
+       1. .card__image (altura automática según imagen)
+       2. .card__content (crece para llenar espacio disponible)
+       3. .card__footer (altura automática según contenido)
+       
+       Usamos `auto` para cada fila porque queremos que se dimensionen según
+       su contenido. Los navegadores con soporte de subgrid alinearán cada
+       parte ENTRE tarjetas, creando filas visuales perfectas.
+       
+       NOTA: Este patrón requiere 3 filas POR TARJETA. Si hay múltiples filas
+       de tarjetas, CSS Grid crea automáticamente filas adicionales.
+       ======================================================================== */
+    grid-template-rows: repeat(3, auto);
   }
 
   /* Variante con columnas más estrechas (para más elementos) */
@@ -594,6 +615,9 @@
      como poner un resorte que empuja el botón hacia abajo.
      ======================================================================== */
   .card {
+    --card-padding: var(--space-lg);
+    --card-title-size: var(--font-size-lg);
+
     display: flex;
     flex-direction: column;
     
@@ -626,7 +650,7 @@
     border-radius: var(--radius-lg);
     
     /* Padding interno consistente */
-    padding: var(--space-lg);
+    padding: var(--card-padding);
     
     /* Sombra para elevación sutil */
     box-shadow: 
@@ -682,10 +706,22 @@
   }
 
   .card__title {
-    font-size: var(--font-size-lg);
+    font-size: var(--card-title-size);
     font-weight: var(--font-weight-bold);
     color: var(--color-text-primary);
     margin-block-end: var(--space-sm);
+  }
+
+  /* Container Query - Más espacio cuando el contenedor lo permite */
+  @container (min-width: 350px) {
+    .card {
+      --card-padding: var(--space-xl);
+    }
+
+    .card__title {
+      /* Incremento sutil: más jerarquía tipográfica con más ancho disponible */
+      --card-title-size: calc(var(--font-size-lg) + 0.125rem);
+    }
   }
 
   .card__description {
@@ -864,6 +900,7 @@
      ======================================================================== */
   .bento-item {
     position: relative;
+    container-type: inline-size;
     overflow: hidden;
     border-radius: var(--radius-lg);
     
@@ -900,6 +937,12 @@
      IMPORTANTE: height: 100% asegura que la imagen llene el contenedor
      verticalmente, no solo horizontalmente.
      ======================================================================== */
+  .bento-item picture {
+    display: block;
+    width: 100%;
+    height: 100%;
+  }
+
   .bento-item img {
     width: 100%;
     height: 100%;
@@ -1381,6 +1424,70 @@
     animation: none;
     opacity: 1;
     transform: none;
+  }
+}
+
+/* ============================================================================
+   CSS SUBGRID - Alineación de Internos de Tarjeta
+   
+   ¿QUÉ ES SUBGRID?
+   ================
+   Subgrid permite que un elemento hijo "herede" las líneas del grid de su
+   padre. Esto significa que .card__image, .card__content y .card__footer
+   pueden alinearse ENTRE tarjetas, creando filas visuales perfectas.
+   
+   ¿POR QUÉ @supports?
+   ===================
+   Subgrid es una característica CSS relativamente nueva (Chrome 117+, 
+   Firefox 71+, Safari 16+). Usamos @supports para progressive enhancement:
+   - Navegadores modernos: usan subgrid para alineación perfecta
+   - Navegadores antiguos: mantienen el layout flexbox (fallback seguro)
+   
+   ANATOMÍA DEL PATRÓN:
+   1. grid-row: span 3 → La tarjeta ocupa 3 filas del padre
+   2. display: grid → Activa grid en la tarjeta (reemplaza flex)
+   3. grid-template-rows: subgrid → Hereda las 3 filas del padre
+   
+   ANALOGÍA FEYNMAN: Imagina un estante con divisiones horizontales. Sin
+   subgrid, cada caja (tarjeta) tiene sus propias divisiones internas que
+   pueden no coincidir. CON subgrid, todas las cajas COMPARTEN las mismas
+   divisiones del estante, así que los niveles de cada sección (imagen,
+   contenido, botón) están perfectamente alineados entre cajas.
+   
+   RESULTADO: Los botones de TODAS las tarjetas están a la misma altura,
+   sin importar cuánto texto tenga cada tarjeta.
+   ============================================================================ */
+@supports (grid-template-rows: subgrid) {
+  .card {
+    /* La tarjeta ocupa 3 filas del grid padre (image, content, footer) */
+    grid-row: span 3;
+    
+    /* Cambiamos de flexbox a grid para habilitar subgrid */
+    display: grid;
+    
+    /* CLAVE: Heredamos las filas del grid padre */
+    grid-template-rows: subgrid;
+    
+    /* Mantenemos la altura 100% para compatibilidad */
+    height: 100%;
+  }
+  
+  /* Con subgrid, los hijos se colocan automáticamente en las filas heredadas */
+  .card__image {
+    /* Primera fila del subgrid */
+    grid-row: 1;
+  }
+  
+  .card__content {
+    /* Segunda fila del subgrid - ya no necesita flex: 1 */
+    grid-row: 2;
+  }
+  
+  .card__footer {
+    /* Tercera fila del subgrid - ya no necesita margin-top: auto */
+    grid-row: 3;
+    /* Alineamos el contenido al final de la celda */
+    align-self: end;
   }
 }
 

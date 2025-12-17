@@ -137,6 +137,7 @@
 </head>
 
 <body>
+  <a href="#main-content" class="visually-hidden-focusable">Skip to main content</a>
   <!-- ¿POR QUÉ? El elemento <header> es un tag HTML5 semántico que identifica el área de
        navegación principal. Los motores de búsqueda y lectores de pantalla reconocen esto
        como la navegación primaria, mejorando SEO y accesibilidad.
@@ -385,7 +386,7 @@
        
        RESULTADO: Los lectores de pantalla pueden saltar directamente al contenido principal,
        omitiendo la navegación. Esto es crucial para usuarios de teclado y lectores de pantalla. -->
-  <main id="discover">
+  <main id="main-content">
     <!-- ¿POR QUÉ? Esta sección placeholder de contenido muestra dónde irá el contenido futuro.
          Usar HTML semántico incluso para placeholders mantiene buena estructura.
          
@@ -394,7 +395,7 @@
          ⚠️ PERSONALIZA ESTE CONTENIDO: Reemplaza este texto con la historia real de tu festival
          
          RESULTADO: Estructura de documento clara lista para contenido real. -->
-    <section class="section-spacing container">
+    <section id="discover" class="section-spacing container">
       <!-- ¿POR QUÉ? El <h2> crea una jerarquía de encabezados bajo el <h1> principal. El orden
            adecuado de encabezados (h1 → h2 → h3) es crucial para accesibilidad - los lectores
            de pantalla usan encabezados para navegar y entender la estructura de la página.
@@ -763,8 +764,12 @@
         <div class="bento-grid" data-layout="default">
           <!-- Item Principal (2 columnas) -->
           <figure class="bento-item bento-item--featured">
-            <!-- ⚠️ PERSONALIZA: Reemplaza con tu imagen del main stage -->
-            <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='800' height='400'%3E%3Cdefs%3E%3ClinearGradient id='g1' x1='0%25' y1='0%25' x2='100%25' y2='100%25'%3E%3Cstop offset='0%25' stop-color='%230a1e3c'/%3E%3Cstop offset='100%25' stop-color='%23050a14'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect fill='url(%23g1)' width='800' height='400'/%3E%3Ctext fill='%23ffd700' x='50%25' y='50%25' text-anchor='middle' dy='.3em' font-family='system-ui' font-size='24'%3EMain Stage%3C/text%3E%3C/svg%3E" alt="Planaxis Main Stage at sunset" loading="lazy">
+            <img 
+              src="assets/images/main-stage-small.webp" 
+              srcset="assets/images/main-stage-small.webp 800w, assets/images/main-stage-large.webp 1920w" 
+              sizes="(min-width: 1024px) 66vw, 100vw" 
+              alt="Planaxis Main Stage with golden seahorse" 
+              loading="lazy">
             <figcaption class="bento-item__overlay">
               <h3 class="bento-item__title" data-i18n="gallery.mainstage.title">The Planaxis Main Stage</h3>
               <p class="bento-item__description" data-i18n="gallery.mainstage.description">Where the underwater kingdom comes alive</p>
@@ -773,7 +778,10 @@
           
           <!-- Sidebar (2 filas) -->
           <figure class="bento-item bento-item--sidebar">
-            <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='500'%3E%3Crect fill='%230a1e3c' width='400' height='500'/%3E%3Ctext fill='%2300bcd4' x='50%25' y='50%25' text-anchor='middle' dy='.3em' font-family='system-ui'%3ECrowd Shot%3C/text%3E%3C/svg%3E" alt="Festival crowd at night" loading="lazy">
+            <picture>
+              <source media="(min-width: 1024px)" srcset="assets/images/crowd-desktop.webp">
+              <img src="assets/images/crowd-mobile.webp" alt="Crowd at Tomorrowland waving flags" loading="lazy">
+            </picture>
             <figcaption class="bento-item__overlay">
               <h3 class="bento-item__title" data-i18n="gallery.crowd.title">People of Tomorrow</h3>
               <p class="bento-item__description" data-i18n="gallery.crowd.description">United under the sea</p>
@@ -782,14 +790,22 @@
           
           <!-- Items medianos -->
           <figure class="bento-item bento-item--1">
-            <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='300'%3E%3Crect fill='%230a1e3c' width='400' height='300'/%3E%3Ctext fill='%23a0b3c5' x='50%25' y='50%25' text-anchor='middle' dy='.3em' font-family='system-ui'%3EStage Details%3C/text%3E%3C/svg%3E" alt="Stage decoration details" loading="lazy">
+            <img 
+              src="assets/images/seahorse.webp" 
+              sizes="(min-width: 1024px) 33vw, (min-width: 768px) 50vw, 100vw" 
+              alt="Golden Seahorses stage decoration" 
+              loading="lazy">
             <figcaption class="bento-item__overlay">
               <h3 class="bento-item__title" data-i18n="gallery.seahorses.title">Golden Seahorses</h3>
             </figcaption>
           </figure>
           
           <figure class="bento-item bento-item--2">
-            <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='300'%3E%3Crect fill='%230a1e3c' width='400' height='300'/%3E%3Ctext fill='%23a0b3c5' x='50%25' y='50%25' text-anchor='middle' dy='.3em' font-family='system-ui'%3ELight Show%3C/text%3E%3C/svg%3E" alt="Bioluminescent light show" loading="lazy">
+            <img 
+              src="assets/images/bioluminescence.webp" 
+              sizes="(min-width: 1024px) 33vw, (min-width: 768px) 50vw, 100vw" 
+              alt="Bioluminescent light show" 
+              loading="lazy">
             <figcaption class="bento-item__overlay">
               <h3 class="bento-item__title" data-i18n="gallery.bioluminescence.title">Bioluminescence</h3>
             </figcaption>
@@ -797,15 +813,27 @@
           
           <!-- Items pequeños -->
           <figure class="bento-item bento-item--3">
-            <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='200'%3E%3Crect fill='%230a1e3c' width='400' height='200'/%3E%3Ctext fill='%23a0b3c5' x='50%25' y='50%25' text-anchor='middle' dy='.3em' font-family='system-ui'%3EFireworks%3C/text%3E%3C/svg%3E" alt="Fireworks display" loading="lazy">
+            <img 
+              src="assets/images/fireworks.webp" 
+              sizes="(min-width: 1024px) 33vw, (min-width: 768px) 50vw, 100vw" 
+              alt="Fireworks display" 
+              loading="lazy">
           </figure>
           
           <figure class="bento-item bento-item--4">
-            <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='200'%3E%3Crect fill='%230a1e3c' width='400' height='200'/%3E%3Ctext fill='%23a0b3c5' x='50%25' y='50%25' text-anchor='middle' dy='.3em' font-family='system-ui'%3EDreamVille%3C/text%3E%3C/svg%3E" alt="DreamVille camping area" loading="lazy">
+            <img 
+              src="assets/images/dreamville.webp" 
+              sizes="(min-width: 1024px) 33vw, (min-width: 768px) 50vw, 100vw" 
+              alt="DreamVille camping area" 
+              loading="lazy">
           </figure>
           
           <figure class="bento-item bento-item--5">
-            <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='200'%3E%3Crect fill='%230a1e3c' width='400' height='200'/%3E%3Ctext fill='%23a0b3c5' x='50%25' y='50%25' text-anchor='middle' dy='.3em' font-family='system-ui'%3EFood Area%3C/text%3E%3C/svg%3E" alt="Festival food and drinks area" loading="lazy">
+            <img 
+              src="assets/images/food.webp" 
+              sizes="(min-width: 1024px) 33vw, (min-width: 768px) 50vw, 100vw" 
+              alt="Festival food and drinks area" 
+              loading="lazy">
           </figure>
         </div>
       </div>
