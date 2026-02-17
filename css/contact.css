@@ -12,87 +12,51 @@
    ============================================================================ */
 
 @layer components {
-/* ¿POR QUÉ? La sección de contacto necesita espacio del header FIXED y centrado
-   apropiado para hacer del formulario el punto focal de la página. Como cambiamos
-   el header a position: fixed, ya no ocupa espacio en el flujo del documento,
-   así que el contenido puede scrollear debajo de él.
-   
-   CORRECCIÓN CRÍTICA: Debemos agregar padding-top para prevenir que el header fixed
-   cubra el título de la página. Sin esto, el header se superpondría al encabezado
-   "Contáctanos", haciéndolo ilegible y creando una mala experiencia de usuario.
-   
-   ¿CÓMO FUNCIONA? Flexbox para centrado, min-height asegura que llene el viewport.
-   Agregamos padding-top extra (120px) para considerar la altura del header fixed
-   (~80px) más algo de espacio de respiración. El padding regular proporciona
-   espaciado en otros lados.
-   
-   RESULTADO: El formulario se muestra prominentemente, perfectamente centrado, y el
-   título está completamente visible debajo del header fixed. */
+
 .contact-section {
-  min-height: 100vh; /* Altura completa del viewport */
+  min-height: 100vh;
+  min-height: 100dvh;
   display: flex;
   align-items: center;
   justify-content: center;
-  /* MOBILE-FIRST:
-     Base = valores más compactos (1 columna + paddings reducidos).
-     Mantenemos compensación del header fixed, pero con menor "aire" en móvil. */
-  padding: var(--spacing-lg, var(--space-lg)) var(--spacing-sm, var(--space-sm));
-  padding-top: calc(80px + var(--spacing-lg, var(--space-lg)));
+  padding: var(--space-lg) var(--space-sm);
+  padding-block-start: calc(80px + var(--space-lg));
   background: linear-gradient(
     135deg,
-    var(--color-bg-secondary, #0a1e3c) 0%,
-    var(--color-bg-primary, #050a14) 100%
+    var(--color-bg-secondary) 0%,
+    var(--color-bg-primary) 100%
   );
   position: relative;
   overflow: hidden;
+
+  &::before,
+  &::after {
+    content: '';
+    position: absolute;
+    border-radius: 50%;
+    background: radial-gradient(circle, hsl(51 100% 50% / 0.1) 0%, transparent 70%);
+    filter: blur(60px);
+    animation: float 20s ease-in-out infinite;
+    z-index: 0;
+  }
+
+  &::before {
+    width: 500px;
+    height: 500px;
+    top: -100px;
+    left: -100px;
+    animation-delay: 0s;
+  }
+
+  &::after {
+    width: 400px;
+    height: 400px;
+    bottom: -100px;
+    right: -150px;
+    animation-delay: 10s;
+  }
 }
 
-/* ¿POR QUÉ? Elementos animados sutiles de fondo crean profundidad y la sensación
-   submarina sin distraer del formulario.
-   
-   ¿CÓMO FUNCIONA? Pseudo-elementos con gradientes que pulsan y se mueven usando
-   animaciones CSS.
-   
-   ANALOGÍA FEYNMAN: Es como tener luces de colores suaves moviéndose detrás de
-   una cortina transparente. Ves el movimiento, crea atmósfera, pero no te distrae
-   de lo que estás haciendo (llenar el formulario).
-   
-   RESULTADO: Fondo dinámico e inmersivo que mejora el tema. */
-.contact-section::before,
-.contact-section::after {
-  content: '';
-  position: absolute;
-  border-radius: 50%;
-  background: radial-gradient(circle, rgba(212, 175, 55, 0.1) 0%, transparent 70%);
-  filter: blur(60px);
-  animation: float 20s ease-in-out infinite;
-  z-index: 0;
-}
-
-.contact-section::before {
-  width: 500px;
-  height: 500px;
-  top: -100px;
-  left: -100px;
-  animation-delay: 0s;
-}
-
-.contact-section::after {
-  width: 400px;
-  height: 400px;
-  bottom: -100px;
-  right: -150px;
-  animation-delay: 10s;
-}
-
-/* ¿POR QUÉ? La animación @keyframes define cómo se mueven los elementos de fondo.
-   Las animaciones requieren keyframes para especificar cómo las propiedades cambian
-   con el tiempo.
-   
-   ¿CÓMO FUNCIONA? Definimos estados en 0%, 50% y 100%. Los elementos se mueven
-   ligeramente y cambian de escala y opacidad, creando un efecto de flotación.
-   
-   RESULTADO: Movimiento suave y orgánico que se siente como estar bajo el agua. */
 @keyframes float {
   0%, 100% {
     transform: translate(0, 0) scale(1);
@@ -104,14 +68,6 @@
   }
 }
 
-/* ¿POR QUÉ? El contenedor de contacto necesita estar sobre el fondo animado y tener
-   un max-width razonable para legibilidad.
-   
-   ¿CÓMO FUNCIONA? z-index lo trae al frente, max-width previene que el formulario
-   se vuelva muy ancho en pantallas grandes.
-   
-   RESULTADO: El formulario permanece legible y correctamente dimensionado en todas
-   las pantallas. */
 .contact-container {
   width: 100%;
   max-width: 600px;
@@ -119,357 +75,155 @@
   z-index: 1;
 }
 
-/* ¿POR QUÉ? La tarjeta de contacto es la heroína de esta página - necesita destacar
-   con el efecto glassmorphism (fondo semi-transparente con blur de backdrop).
-   
-   ¿CÓMO FUNCIONA? backdrop-filter crea el efecto blur, el fondo semi-transparente
-   proporciona el look de "vidrio esmerilado", los bordes y sombras agregan profundidad.
-   
-   ANALOGÍA FEYNMAN: Imagina una tarjeta hecha de vidrio esmerilado flotando sobre
-   un fondo colorido. Puedes ver formas y colores detrás, pero están borrosos. Eso
-   hace que la tarjeta se sienta moderna, elegante y futurista.
-   
-   RESULTADO: Tarjeta hermosa tipo vidrio que es moderna y temática. */
 .contact-card {
-  /* ¿POR QUÉ? Glassmorphism requiere un fondo semi-transparente para que podamos
-     ver el contenido borroso detrás. Los valores rgba crean un efecto de vidrio oscuro. */
-  background: rgba(15, 25, 45, 0.7);
-  
-  /* ¿POR QUÉ? backdrop-filter es LA CLAVE del glassmorphism - difumina y satura
-     lo que está detrás del elemento, creando ese efecto de vidrio esmerilado.
-     
-     EXPLICACIÓN FEYNMAN:
-     Imagina mirar a través de una ventana de baño con vidrio esmerilado. Puedes ver
-     formas y colores detrás, pero están borrosos. ¡Eso es backdrop-filter! Toma todo
-     detrás de esta tarjeta y lo difumina, haciendo que parezca que estamos mirando
-     a través de vidrio texturizado.
-     
-     ¿CÓMO FUNCIONA? blur(20px) difumina el fondo, saturate(150%) intensifica los
-     colores ligeramente para que se vean más vibrantes a través del "vidrio".
-     
-     RESULTADO: La tarjeta parece un panel de vidrio flotante - ves a través pero
-     está lo suficientemente distinto para visibilidad clara del contenido. */
+  background: hsl(220 50% 12% / 0.7);
   backdrop-filter: blur(20px) saturate(150%);
-  -webkit-backdrop-filter: blur(20px) saturate(150%); /* Soporte Safari */
-  
-  /* ¿POR QUÉ? Bordes con colores semi-transparentes mejoran el efecto de vidrio al
-     crear resaltados que "capturan la luz".
-     
-     ¿CÓMO FUNCIONA? Un borde dorado sutil (20% opacidad) crea un reflejo delicado.
-     
-     RESULTADO: La tarjeta tiene un brillo de borde refinado, como luz reflejándose
-     en vidrio real. */
-  border: 1px solid rgba(212, 175, 55, 0.2);
+  -webkit-backdrop-filter: blur(20px) saturate(150%);
+  border: 1px solid hsl(51 100% 50% / 0.2);
   border-radius: var(--radius-lg);
-  
-  /* MOBILE-FIRST: padding reducido (desktop lo amplía en min-width: 768px) */
-  padding: var(--spacing-lg, var(--space-lg));
-  
-  /* ¿POR QUÉ? Múltiples box-shadows crean profundidad. La primera crea un brillo sutil,
-     la segunda crea elevación, haciendo que la tarjeta parezca flotar.
-     
-     ¿CÓMO FUNCIONA? Dos sombras apiladas: una dorada brillante y una negra profunda.
-     
-     RESULTADO: Efecto de flotación dramático que separa la tarjeta del fondo. */
+  padding: var(--space-lg);
   box-shadow: 
-    0 0 40px rgba(212, 175, 55, 0.1),
-    0 8px 32px rgba(0, 0, 0, 0.3);
-  
-  /* ¿POR QUÉ? Transición suave para efectos hover. */
-  transition: all 0.3s ease;
+    0 0 40px hsl(51 100% 50% / 0.1),
+    0 8px 32px hsl(0 0% 0% / 0.3);
+  transition: box-shadow 0.3s ease, translate 0.3s ease, border-color 0.3s ease;
+
+  &:hover {
+    box-shadow: 
+      0 0 60px hsl(51 100% 50% / 0.2),
+      0 12px 40px hsl(0 0% 0% / 0.4);
+    translate: 0 -2px;
+    border-color: hsl(51 100% 50% / 0.3);
+  }
 }
 
-/* ¿POR QUÉ? En hover, intensificamos el brillo y levantamos la tarjeta ligeramente
-   para proporcionar retroalimentación interactiva y mejorar el efecto de "flotación".
-   
-   ¿CÓMO FUNCIONA? Aumentamos la intensidad de box-shadow y agregamos un transform
-   sutil hacia arriba.
-   
-   RESULTADO: La tarjeta se siente viva y responsiva a la interacción del usuario. */
-.contact-card:hover {
-  box-shadow: 
-    0 0 60px rgba(212, 175, 55, 0.2),
-    0 12px 40px rgba(0, 0, 0, 0.4);
-  transform: translateY(-2px);
-  border-color: rgba(212, 175, 55, 0.3);
-}
-
-/* ¿POR QUÉ? El header de contacto introduce el formulario y debe ser visualmente
-   distinto con espaciado y jerarquía apropiados.
-   
-   ¿CÓMO FUNCIONA? Texto centrado, margen inferior, uso de color dorado para acento.
-   
-   RESULTADO: Introducción clara e invitante al formulario de contacto. */
 .contact-header {
   text-align: center;
-  /* MOBILE-FIRST */
-  margin-bottom: var(--spacing-lg, var(--space-lg));
+  margin-block-end: var(--space-lg);
+
+  & h1 {
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--color-accent-gold);
+    margin-block-end: var(--space-sm);
+    text-shadow: 0 0 20px hsl(51 100% 50% / 0.3);
+  }
+
+  & p {
+    color: var(--color-text-muted);
+    font-size: var(--font-size-md);
+    line-height: 1.6;
+  }
 }
 
-.contact-header h1 {
-  /* MOBILE-FIRST */
-  font-size: 2rem;
-  font-weight: 700;
-  color: var(--color-accent-gold);
-  margin-bottom: var(--spacing-sm, var(--space-sm));
-  text-shadow: 0 0 20px rgba(212, 175, 55, 0.3);
-}
-
-.contact-header p {
-  color: var(--color-text-muted);
-  font-size: var(--font-size-md);
-  line-height: 1.6;
-}
-
-/* ¿POR QUÉ? Los grupos de formulario necesitan espaciado para separar campos visualmente,
-   haciendo el formulario más fácil de escanear y llenar.
-   
-   ¿CÓMO FUNCIONA? margin-bottom crea espaciado consistente entre campos.
-   
-   RESULTADO: Layout de formulario limpio y organizado. */
 .form-group {
-  /* MOBILE-FIRST */
-  margin-bottom: var(--spacing-md, var(--space-md));
+  margin-block-end: var(--space-md);
+
+  & label {
+    display: block;
+    margin-block-end: var(--space-xs);
+    color: var(--color-text-muted);
+    font-size: var(--font-size-sm);
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  & input,
+  & select,
+  & textarea {
+    width: 100%;
+    padding: var(--space-sm);
+    background: hsl(0 0% 100% / 0.05);
+    border: 1px solid hsl(0 0% 100% / 0.1);
+    border-radius: var(--radius-sm);
+    color: var(--color-text-primary);
+    font-size: var(--font-size-md);
+    font-family: inherit;
+    transition: border-color 0.3s ease, background 0.3s ease, box-shadow 0.3s ease;
+
+    &:focus-visible {
+      outline: 2px solid var(--color-accent-gold);
+      outline-offset: 2px;
+      border-color: var(--color-accent-gold);
+      background: hsl(0 0% 100% / 0.08);
+      box-shadow: 0 0 20px hsl(51 100% 50% / 0.2);
+    }
+
+    &::placeholder {
+      color: hsl(0 0% 100% / 0.4);
+    }
+  }
+
+  & textarea {
+    min-height: 150px;
+    resize: vertical;
+  }
 }
 
-/* ¿POR QUÉ? Los labels deben estar claramente asociados con sus inputs y estilizados
-   consistentemente con la tipografía del sitio.
-   
-   ¿CÓMO FUNCIONA? Display como block para que se sienten sobre los inputs, agrega
-   color sutil y espaciado.
-   
-   RESULTADO: Labels de formulario accesibles y legibles. */
-.form-group label {
-  display: block;
-  margin-bottom: var(--spacing-xs, var(--space-xs));
-  color: var(--color-text-muted);
-  font-size: var(--font-size-sm);
-  font-weight: 500;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-}
-
-/* ¿POR QUÉ? Los inputs de formulario necesitan coincidir con la estética glassmorphism
-   mientras permanecen altamente funcionales y accesibles.
-   
-   ¿CÓMO FUNCIONA? Fondos semi-transparentes, bordes dorados en focus, padding apropiado
-   para interacción cómoda.
-   
-   RESULTADO: Inputs hermosos que también son altamente usables. */
-.form-group input,
-.form-group select,
-.form-group textarea {
-  width: 100%;
-  /* MOBILE-FIRST */
-  padding: var(--spacing-sm, var(--space-sm));
-  
-  /* ¿POR QUÉ? Fondo transparente/semi-transparente mantiene la estética de vidrio y
-     deja que el diseño subyacente se muestre.
-     
-     ¿CÓMO FUNCIONA? rgba(255, 255, 255, 0.05) = blanco con 5% opacidad.
-     
-     RESULTADO: Inputs que se sienten como parte del efecto de vidrio. */
-  background: rgba(255, 255, 255, 0.05);
-  
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: var(--radius-sm);
-  
-  color: var(--color-text-primary);
-  font-size: var(--font-size-md);
-  font-family: inherit;
-  
-  /* ¿POR QUÉ? Transiciones suaves hacen que los cambios de estado se sientan pulidos. */
-  transition: all 0.3s ease;
-}
-
-/* ¿POR QUÉ? Textarea necesita más altura para acomodar mensajes más largos. */
-.form-group textarea {
-  min-height: 150px;
-  resize: vertical; /* Permite a usuarios redimensionar solo verticalmente */
-}
-
-/* ¿POR QUÉ? El estado focus es crítico para accesibilidad y UX. El borde dorado
-   proporciona retroalimentación visual clara mostrando qué campo está activo.
-   
-   ¿CÓMO FUNCIONA? La pseudo-clase :focus apunta al input activo, outline: none
-   remueve el outline predeterminado del navegador (reemplazado con nuestro borde personalizado).
-   
-   ANALOGÍA FEYNMAN: Es como cuando hablas con alguien y esa persona se "ilumina"
-   mostrando que te está prestando atención. El input se "ilumina" con dorado cuando
-   haces clic en él, diciéndote "estoy listo para tu escritura".
-   
-   RESULTADO: Estado focus claro y hermoso que guía usuarios a través del formulario. */
-.form-group input:focus,
-.form-group select:focus,
-.form-group textarea:focus {
-  outline: none;
-  border-color: var(--color-accent-gold);
-  background: rgba(255, 255, 255, 0.08);
-  box-shadow: 0 0 20px rgba(212, 175, 55, 0.2);
-}
-
-/* ¿POR QUÉ? El texto placeholder debe ser visible pero sutil, guiando sin distraer. */
-.form-group input::placeholder,
-.form-group textarea::placeholder {
-  color: rgba(255, 255, 255, 0.4);
-}
-
-/* ¿POR QUÉ? El botón submit es el call-to-action y necesita destacar con un efecto
-   de brillo bioluminiscente vibrante que coincida con nuestro tema submarino. En
-   lugar de un botón dorado plano, creamos un botón llamativo con brillo cyan/turquesa
-   que evoca bioluminiscencia de aguas profundas.
-   
-   MEJORA UX: El botón anterior tenía sombras oscuras que lo hacían ver "apagado"
-   (dull/turned off). Ahora usamos sombras brillantes que hacen que el botón se
-   sienta vivo e invitante - como una criatura brillante en el océano profundo.
-   
-   ¿CÓMO FUNCIONA? Fondo gradiente de cyan a azul, con efecto de brillo cyan brillante
-   usando box-shadow. Ancho completo para tapping amigable en móvil.
-   
-   ANALOGÍA FEYNMAN: Es como una medusa bioluminiscente brillando en el océano
-   oscuro. No es un color sólido - pulsa con luz desde dentro, atrapando tu atención
-   e invitándote a interactuar.
-   
-   RESULTADO: Botón submit prominente e invitante que se siente como un elemento
-   bioluminiscente interactivo en nuestro reino submarino. */
 .submit-button {
   width: 100%;
-  /* MOBILE-FIRST */
-  padding: var(--spacing-md, var(--space-md));
-  
-  /* ¿POR QUÉ? Gradiente de cyan brillante a azul más profundo crea profundidad e
-     interés visual. Los colores evocan criaturas marinas bioluminiscentes - brillantes,
-     vivos y cautivadores.
-     
-     ¿CÓMO FUNCIONA? linear-gradient de #00bcd4 (cyan brillante) a #0097a7 (teal más profundo).
-     
-     RESULTADO: El botón tiene color dimensional que atrae el ojo. */
-  background: linear-gradient(135deg, #00bcd4 0%, #0097a7 100%);
+  padding: var(--space-md);
+  background: linear-gradient(135deg, hsl(187 100% 42%) 0%, hsl(187 100% 33%) 100%);
   border: none;
   border-radius: var(--radius-sm);
-  
-  color: #ffffff;
+  color: var(--color-text-primary);
   font-size: var(--font-size-md);
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.1em;
-  
   cursor: pointer;
-  transition: all 0.3s ease;
-  
-  /* ¿POR QUÉ? El efecto de brillo (box-shadow) es la estrella del show. Múltiples
-     sombras crean un brillo bioluminiscente realista que hace que el botón se sienta vivo.
-     
-     EFECTO BIOLUMINISCENCIA: Apilamos múltiples sombras:
-     - Sombra cercana (0 0 15px) crea el brillo inmediato
-     - Sombra media (0 0 30px) extiende el brillo hacia afuera
-     - Sombra lejana (0 4px 40px) crea profundidad y elevación
-     
-     ¿CÓMO FUNCIONA? Tres box-shadows con radio de blur creciente y opacidad decreciente,
-     todas usando color cyan/turquesa (rgba(0, 188, 212, ...)).
-     
-     ANALOGÍA FEYNMAN: Es como una luciérnaga o un pez de aguas profundas brillante.
-     La luz no solo está EN el animal - brilla ALREDEDOR de él en capas, creando
-     un resplandor mágico que puedes ver desde lejos.
-     
-     RESULTADO: El botón parece brillar como una medusa bioluminiscente o criatura
-     de aguas profundas, creando una sensación interactiva encantadora. */
+  transition: filter 0.3s ease, box-shadow 0.3s ease, translate 0.3s ease;
   box-shadow: 
-    0 0 15px rgba(0, 188, 212, 0.6),
-    0 0 30px rgba(0, 188, 212, 0.4),
-    0 4px 40px rgba(0, 188, 212, 0.3);
+    0 0 15px hsl(187 100% 42% / 0.6),
+    0 0 30px hsl(187 100% 42% / 0.4),
+    0 4px 40px hsl(187 100% 42% / 0.3);
+
+  &:hover {
+    filter: brightness(1.15);
+    box-shadow: 
+      0 0 20px hsl(187 100% 42% / 0.8),
+      0 0 40px hsl(187 100% 42% / 0.6),
+      0 6px 50px hsl(187 100% 42% / 0.5);
+    translate: 0 -2px;
+  }
+
+  &:active {
+    translate: 0 0;
+  }
+
+  &:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    pointer-events: none;
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--color-accent-gold);
+    outline-offset: 3px;
+  }
 }
 
-/* ¿POR QUÉ? El estado hover intensifica el brillo bioluminiscente, haciendo que el
-   botón se sienta como si se estuviera "iluminando" en respuesta a la interacción
-   del usuario. Esto crea una sensación mágica y responsiva que es hermosa y funcional.
-   
-   ¿CÓMO FUNCIONA? Aumentamos la intensidad del brillo, iluminamos el gradiente, y
-   agregamos un levantamiento sutil. El brillo se vuelve más fuerte y vibrante en hover.
-   
-   RESULTADO: El botón se siente vivo y responsivo, como una criatura marina reaccionando
-   a tu presencia. El brillo mejorado proporciona retroalimentación clara de que es interactivo. */
-.submit-button:hover {
-  /* ¿POR QUÉ? Iluminar el gradiente hace que el botón se sienta más energizado en hover.
-     
-     ¿CÓMO FUNCIONA? filter: brightness(1.15) aumenta la luminosidad en 15%.
-     
-     RESULTADO: El botón aparece más vibrante y "cargado" cuando se hace hover. */
-  filter: brightness(1.15);
-  
-  /* ¿POR QUÉ? Brillo intensificado en hover crea un efecto de "encenderse" que es
-     hermoso y proporciona retroalimentación interactiva clara.
-     
-     ¿CÓMO FUNCIONA? Aumentamos la opacidad y el radio de blur de todas las capas de
-     sombra, haciendo el brillo más fuerte y expansivo.
-     
-     RESULTADO: El botón brilla más intensamente, como una criatura bioluminiscente
-     respondiendo a estimulación. El efecto es fascinante y claramente indica interactividad. */
-  box-shadow: 
-    0 0 20px rgba(0, 188, 212, 0.8),
-    0 0 40px rgba(0, 188, 212, 0.6),
-    0 6px 50px rgba(0, 188, 212, 0.5);
-  
-  /* ¿POR QUÉ? Movimiento sutil hacia arriba mejora la sensación de "flotación" y
-     proporciona retroalimentación táctil.
-     
-     ¿CÓMO FUNCIONA? translateY(-2px) mueve el botón hacia arriba 2 píxeles.
-     
-     RESULTADO: El botón se siente como si estuviera elevándose hacia tu cursor,
-     creando una sensación satisfactoria de profundidad e interactividad. */
-  transform: translateY(-2px);
-}
-
-/* ¿POR QUÉ? El estado active (cuando el botón está siendo clickeado) debe proporcionar
-   retroalimentación inmediata con una sensación de "presionado".
-   
-   ¿CÓMO FUNCIONA? Revertimos el transform para mover el botón ligeramente hacia abajo.
-   
-   RESULTADO: Retroalimentación de clic satisfactoria. */
-.submit-button:active {
-  transform: translateY(0);
-}
-
-/* ¿POR QUÉ? El estado disabled (mientras el formulario se está enviando) debe indicar
-   claramente que el botón no puede ser clickeado y prevenir envíos dobles accidentales.
-   
-   ¿CÓMO FUNCIONA? Reducimos opacidad, cambiamos cursor, deshabilitamos pointer events.
-   
-   RESULTADO: Retroalimentación visual clara durante envío. */
-.submit-button:disabled {
-  opacity: 0.6;
-  cursor: not-allowed;
-  pointer-events: none;
-}
-
-/* ¿POR QUÉ? El mensaje de éxito necesita estar oculto por defecto y destacar cuando
-   se muestra para comunicar claramente que el formulario fue enviado exitosamente.
-   
-   ¿CÓMO FUNCIONA? display: none por defecto, esquema de color verde, ícono para
-   atractivo visual.
-   
-   RESULTADO: Retroalimentación clara y positiva después del envío del formulario. */
 .success-message {
-  display: none; /* Oculto por defecto, mostrado por JavaScript */
+  --color-success: hsl(145 63% 49%);
+
+  display: none;
   text-align: center;
   padding: var(--space-xl);
-  
-  background: rgba(46, 204, 113, 0.1);
-  border: 1px solid rgba(46, 204, 113, 0.3);
+  background: hsl(145 63% 49% / 0.1);
+  border: 1px solid hsl(145 63% 49% / 0.3);
   border-radius: var(--radius-lg);
-  
   backdrop-filter: blur(10px);
-}
 
-.success-message h2 {
-  color: #2ecc71;
-  font-size: var(--font-size-xl);
-  margin-bottom: var(--space-md);
-}
+  & h2 {
+    color: var(--color-success);
+    font-size: var(--font-size-xl);
+    margin-block-end: var(--space-md);
+  }
 
-.success-message p {
-  color: var(--color-text-secondary);
-  font-size: var(--font-size-md);
+  & p {
+    color: var(--color-text-secondary);
+    font-size: var(--font-size-md);
+  }
 }
 
 } /* Fin de @layer components */
@@ -481,14 +235,11 @@
    Los media queries están FUERA de @layer para mayor prioridad en la cascada.
    ============================================================================ */
 
-/* Desktop / Tablet+ (768px+): padding más amplio + layout de formulario en 2 columnas */
-@media (min-width: 768px) {
+@media (width >= 768px) {
   .contact-section {
-    /* Restauramos el espaciado "desktop" sin perder la compensación del header fixed */
-    padding-top: 120px;
-    padding-bottom: var(--space-3xl);
-    padding-left: var(--spacing-lg, var(--space-lg));
-    padding-right: var(--spacing-lg, var(--space-lg));
+    padding-block-start: 120px;
+    padding-block-end: var(--space-3xl);
+    padding-inline: var(--space-lg);
   }
 
   .contact-card {
@@ -496,49 +247,43 @@
   }
 
   .contact-header {
-    margin-bottom: var(--space-2xl);
-  }
+    margin-block-end: var(--space-2xl);
 
-  .contact-header h1 {
-    font-size: clamp(2rem, 5vw, 2.5rem);
+    & h1 {
+      font-size: clamp(2rem, 5vw, 2.5rem);
+    }
   }
 
   .form-group {
-    margin-bottom: var(--space-lg);
-  }
+    margin-block-end: var(--space-lg);
 
-  .form-group input,
-  .form-group select,
-  .form-group textarea {
-    padding: var(--space-md);
+    & input,
+    & select,
+    & textarea {
+      padding: var(--space-md);
+    }
   }
 
   .submit-button {
     padding: var(--space-md) var(--space-xl);
   }
 
-  /* NUEVO: 2-column Grid layout (desktop)
-     - Name + Email lado a lado
-     - Subject + Message + Submit a ancho completo */
   .contact-form {
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: var(--space-lg);
     align-items: start;
-  }
 
-  /* Evitamos doble espaciado (gap ya maneja separación vertical/horizontal) */
-  .contact-form .form-group {
-    margin-bottom: 0;
-  }
+    & .form-group {
+      margin-block-end: 0;
+    }
 
-  /* Subject + Message (3er y 4to form-group) ocupan ancho completo */
-  .contact-form > .form-group:nth-child(n + 3) {
-    grid-column: 1 / -1;
-  }
+    & > .form-group:nth-child(n + 3) {
+      grid-column: 1 / -1;
+    }
 
-  /* Botón submit ocupa ancho completo */
-  .contact-form > .submit-button {
-    grid-column: 1 / -1;
+    & > .submit-button {
+      grid-column: 1 / -1;
+    }
   }
 }

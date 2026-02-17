@@ -176,15 +176,15 @@
        La paleta evoca el océano profundo: azules oscuros, acentos dorados
        (caballitos de mar), y cyan bioluminiscente. */
     
-    /* Colores Principales */
-    --color-deep-blue: #050a14;      /* Fondo principal - océano profundo */
-    --color-ocean-dark: #0a1e3c;     /* Fondo secundario - profundidades */
-    --color-accent-gold: #ffd700;    /* Acento primario - caballitos dorados */
-    --color-accent-teal: #00bcd4;    /* Acento secundario - bioluminiscencia */
+    /* Colores Principales (HSL format for intuitive adjustments) */
+    --color-deep-blue: hsl(220 47% 5%);       /* Fondo principal - océano profundo */
+    --color-ocean-dark: hsl(214 60% 15%);      /* Fondo secundario - profundidades */
+    --color-accent-gold: hsl(51 100% 50%);     /* Acento primario - caballitos dorados */
+    --color-accent-teal: hsl(187 100% 42%);    /* Acento secundario - bioluminiscencia */
     
     /* Colores de Texto */
-    --color-text-primary: #ffffff;   /* Texto principal - máximo contraste */
-    --color-text-muted: #a0b3c5;     /* Texto secundario - información de apoyo */
+    --color-text-primary: hsl(0 0% 100%);      /* Texto principal - máximo contraste */
+    --color-text-muted: hsl(210 25% 70%);      /* Texto secundario - información de apoyo */
     
     /* Aliases Semánticos (para uso en componentes) */
     --color-bg-primary: var(--color-deep-blue);
@@ -207,6 +207,13 @@
     --space-xl: 3rem;       /* 48px - Separación mayor */
     --space-2xl: 4rem;      /* 64px - Separación de secciones */
     --space-3xl: 6rem;      /* 96px - Hero spacing */
+
+    /* Responsive spacing: larger values on wider viewports */
+    @media (width > 768px) {
+      --space-xl: 4rem;     /* 64px on tablet+ */
+      --space-2xl: 5rem;    /* 80px on tablet+ */
+      --space-3xl: 8rem;    /* 128px on tablet+ */
+    }
     
     /* TIPOGRAFÍA FLUIDA
        -----------------
@@ -579,29 +586,29 @@
     
     transition: 
       background-color var(--transition-normal) var(--easing-default),
-      transform var(--transition-normal) var(--easing-default),
+      scale var(--transition-normal) var(--easing-default),
       box-shadow var(--transition-normal) var(--easing-default);
-  }
 
-  .btn:hover {
-    background-color: var(--color-accent-teal);
-    transform: scale(1.05);
-    box-shadow: 0 0 20px rgba(0, 188, 212, 0.5);
-  }
+    &:hover {
+      background-color: var(--color-accent-teal);
+      scale: 1.05;
+      box-shadow: 0 0 20px rgba(0, 188, 212, 0.5);
+    }
 
-  .btn:active {
-    transform: scale(0.98);
+    &:active {
+      scale: 0.98;
+    }
   }
 
   .btn--outline {
     background-color: transparent;
     border: 2px solid var(--color-accent-gold);
     color: var(--color-accent-gold);
-  }
 
-  .btn--outline:hover {
-    background-color: var(--color-accent-gold);
-    color: var(--color-deep-blue);
+    &:hover {
+      background-color: var(--color-accent-gold);
+      color: var(--color-deep-blue);
+    }
   }
 
   /* ========================================================================
@@ -669,18 +676,18 @@
     
     /* Transición suave para efectos hover */
     transition: 
-      transform var(--transition-normal) var(--easing-default),
+      translate var(--transition-normal) var(--easing-default),
       box-shadow var(--transition-normal) var(--easing-default),
       border-color var(--transition-normal) var(--easing-default);
-  }
 
-  /* Efecto hover - La tarjeta "flota" y brilla */
-  .card:hover {
-    transform: translateY(-4px);
-    box-shadow: 
-      0 12px 24px rgba(0, 0, 0, 0.15),
-      0 0 20px rgba(0, 188, 212, 0.1);
-    border-color: rgba(0, 188, 212, 0.3);
+    /* Efecto hover - La tarjeta "flota" y brilla */
+    &:hover {
+      translate: 0 -4px;
+      box-shadow: 
+        0 12px 24px rgba(0, 0, 0, 0.15),
+        0 0 20px rgba(0, 188, 212, 0.1);
+      border-color: rgba(0, 188, 212, 0.3);
+    }
   }
 
   /* ========================================================================
@@ -701,11 +708,11 @@
     height: 200px;
     object-fit: cover;
     
-    transition: transform var(--transition-slow) var(--easing-default);
-  }
+    transition: scale var(--transition-slow) var(--easing-default);
 
-  .card:hover .card__image img {
-    transform: scale(1.05);
+    .card:hover & {
+      scale: 1.05;
+    }
   }
 
   /* ========================================================================
@@ -767,12 +774,12 @@
     box-shadow: 
       0 4px 6px rgba(0, 0, 0, 0.1),
       0 0 20px rgba(255, 215, 0, 0.1);
-  }
 
-  .card--featured:hover {
-    box-shadow: 
-      0 12px 24px rgba(0, 0, 0, 0.15),
-      0 0 30px rgba(255, 215, 0, 0.2);
+    &:hover {
+      box-shadow: 
+        0 12px 24px rgba(0, 0, 0, 0.15),
+        0 0 30px rgba(255, 215, 0, 0.2);
+    }
   }
 
   /* Tarjeta compacta (sin imagen) */
@@ -844,10 +851,10 @@
   .card-features li {
     padding: var(--space-xs) 0;
     border-block-end: 1px solid rgba(255, 255, 255, 0.1);
-  }
 
-  .card-features li:last-child {
-    border-block-end: none;
+    &:last-child {
+      border-block-end: none;
+    }
   }
 
   /* ========================================================================
@@ -958,11 +965,11 @@
     height: 100%;
     object-fit: cover;
     
-    transition: transform var(--transition-slow) var(--easing-default);
-  }
+    transition: scale var(--transition-slow) var(--easing-default);
 
-  .bento-item:hover img {
-    transform: scale(1.05);
+    .bento-item:hover & {
+      scale: 1.05;
+    }
   }
 
   /* Overlay con gradiente para texto sobre imagen */
@@ -984,10 +991,10 @@
     
     opacity: 0;
     transition: opacity var(--transition-normal) var(--easing-default);
-  }
 
-  .bento-item:hover .bento-item__overlay {
-    opacity: 1;
+    .bento-item:hover & {
+      opacity: 1;
+    }
   }
 
   .bento-item__title {
@@ -1205,20 +1212,20 @@
     transform var(--transition-normal) var(--easing-default),
     opacity var(--transition-normal) var(--easing-default);
   transform-origin: center;
-}
 
-/* Transformación a "X" cuando el menú está abierto */
-.mobile-menu-toggle[data-menu-open="true"] .hamburger-line:nth-child(1) {
-  transform: translateY(8px) rotate(45deg);
-}
+  /* Transformación a "X" cuando el menú está abierto */
+  .mobile-menu-toggle[data-menu-open="true"] &:nth-child(1) {
+    transform: translateY(8px) rotate(45deg);
+  }
 
-.mobile-menu-toggle[data-menu-open="true"] .hamburger-line:nth-child(2) {
-  opacity: 0;
-  transform: scaleX(0);
-}
+  .mobile-menu-toggle[data-menu-open="true"] &:nth-child(2) {
+    opacity: 0;
+    transform: scaleX(0);
+  }
 
-.mobile-menu-toggle[data-menu-open="true"] .hamburger-line:nth-child(3) {
-  transform: translateY(-8px) rotate(-45deg);
+  .mobile-menu-toggle[data-menu-open="true"] &:nth-child(3) {
+    transform: translateY(-8px) rotate(-45deg);
+  }
 }
 
 /* ============================================================================
@@ -1274,22 +1281,22 @@
     border-color var(--transition-fast) var(--easing-default),
     color var(--transition-fast) var(--easing-default),
     transform var(--transition-fast) var(--easing-default);
-}
 
-.filter-btn:hover {
-  border-color: var(--color-accent-gold);
-  color: var(--color-accent-gold);
-}
+  &:hover {
+    border-color: var(--color-accent-gold);
+    color: var(--color-accent-gold);
+  }
 
-.filter-btn.active {
-  background-color: var(--color-accent-gold);
-  border-color: var(--color-accent-gold);
-  color: var(--color-bg-primary);
-}
+  &.active {
+    background-color: var(--color-accent-gold);
+    border-color: var(--color-accent-gold);
+    color: var(--color-bg-primary);
+  }
 
-.filter-btn:focus-visible {
-  outline: 2px solid var(--color-accent-teal);
-  outline-offset: 2px;
+  &:focus-visible {
+    outline: 2px solid var(--color-accent-teal);
+    outline-offset: 2px;
+  }
 }
 
 /* ============================================================================
@@ -1394,11 +1401,11 @@
 @keyframes fade-in-up {
   from {
     opacity: 0;
-    transform: translateY(30px);
+    translate: 0 30px;
   }
   to {
     opacity: 1;
-    transform: translateY(0);
+    translate: 0 0;
   }
 }
 
@@ -1694,13 +1701,12 @@ footer {
 footer a,
 .site-footer a {
   transition: color 0.3s ease, text-decoration 0.3s ease;
-}
 
-footer a:hover,
-.site-footer a:hover {
-  color: var(--color-accent-gold);
-  text-decoration: underline;
-  text-underline-offset: 4px;
+  &:hover {
+    color: var(--color-accent-gold);
+    text-decoration: underline;
+    text-underline-offset: 4px;
+  }
 }
 
 /* Navegación del Footer */

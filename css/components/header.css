@@ -101,10 +101,10 @@
     letter-spacing: 0.1em;
     
     transition: color var(--transition-fast) var(--easing-default);
-  }
 
-  .logo:hover {
-    color: var(--color-accent-teal);
+    &:hover {
+      color: var(--color-accent-teal);
+    }
   }
 
   /* ========================================================================
@@ -134,38 +134,38 @@
     white-space: nowrap;
 
     transition: color var(--transition-fast) var(--easing-default);
-  }
 
-  /* Subrayado animado con pseudo-elemento */
-  .nav-links li a::after {
-    content: '';
-    position: absolute;
-    inset-inline: 0;
-    bottom: -4px;
-    
-    height: 2px;
-    background-color: var(--color-accent-gold);
-    
-    transform: scaleX(0);
-    transform-origin: left;
-    transition: transform var(--transition-normal) var(--easing-default);
-  }
+    /* Subrayado animado con pseudo-elemento */
+    &::after {
+      content: '';
+      position: absolute;
+      inset-inline: 0;
+      bottom: -4px;
+      
+      height: 2px;
+      background-color: var(--color-accent-gold);
+      
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: transform var(--transition-normal) var(--easing-default);
+    }
 
-  .nav-links li a:hover {
-    color: var(--color-accent-gold);
-  }
+    &:hover {
+      color: var(--color-accent-gold);
 
-  .nav-links li a:hover::after {
-    transform: scaleX(1);
-  }
+      &::after {
+        transform: scaleX(1);
+      }
+    }
 
-  /* Estado activo */
-  .nav-links li a.active {
-    color: var(--color-accent-gold);
-  }
+    /* Estado activo */
+    &.active {
+      color: var(--color-accent-gold);
 
-  .nav-links li a.active::after {
-    transform: scaleX(1);
+      &::after {
+        transform: scaleX(1);
+      }
+    }
   }
 
   /* ========================================================================
@@ -189,24 +189,24 @@
     border-radius: var(--radius-sm);
     
     transition: all var(--transition-normal) var(--easing-default);
-  }
 
-  .lang-link::after {
-    display: none !important;
-  }
+    &::after {
+      display: none !important;
+    }
 
-  .lang-link.active {
-    background: var(--color-accent-gold);
-    color: var(--color-bg-primary);
-  }
+    &.active {
+      background: var(--color-accent-gold);
+      color: var(--color-bg-primary);
+    }
 
-  .lang-link:not(.active) {
-    color: var(--color-text-muted);
-  }
+    &:not(.active) {
+      color: var(--color-text-muted);
 
-  .lang-link:not(.active):hover {
-    color: var(--color-text-primary);
-    background: rgba(255, 255, 255, 0.1);
+      &:hover {
+        color: var(--color-text-primary);
+        background: rgba(255, 255, 255, 0.1);
+      }
+    }
   }
 
   .lang-separator {

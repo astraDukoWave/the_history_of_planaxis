@@ -428,7 +428,7 @@
 
   /* Enlaces visibles con URL */
   a[href]::after {
-    content: " (" attr(href) ")";
+    content: " (" attr(href) ")" / "";
     font-size: 0.875em;
     color: #666;
   }

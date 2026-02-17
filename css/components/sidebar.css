@@ -74,12 +74,12 @@
   .sidebar-links li a span:not(.icon) {
     opacity: 0;
     transition: opacity 0.2s ease;
-  }
 
-  /* Texto visible en estado expandido */
-  .utility-sidebar:hover .sidebar-links li a span:not(.icon) {
-    opacity: 1;
-    transition-delay: 0.15s;
+    /* Texto visible en estado expandido */
+    .utility-sidebar:hover & {
+      opacity: 1;
+      transition-delay: 0.15s;
+    }
   }
 
   /* Enlaces individuales */
@@ -98,18 +98,18 @@
     transition: 
       background-color 0.2s ease,
       color 0.2s ease,
-      transform 0.2s ease;
-  }
+      scale 0.2s ease;
 
-  .sidebar-links li a:hover {
-    background-color: var(--color-bg-secondary);
-    color: var(--color-accent-gold);
-    transform: scale(1.05);
-  }
+    &:hover {
+      background-color: var(--color-bg-secondary);
+      color: var(--color-accent-gold);
+      scale: 1.05;
+    }
 
-  .sidebar-links li a.active {
-    background-color: var(--color-bg-secondary);
-    color: var(--color-accent-gold);
+    &.active {
+      background-color: var(--color-bg-secondary);
+      color: var(--color-accent-gold);
+    }
   }
 
   /* ========================================================================
@@ -128,11 +128,11 @@
     color: var(--color-accent-teal);
     
     transition: color 0.2s ease;
-  }
 
-  .sidebar-links li a:hover .icon,
-  .sidebar-links li a.active .icon {
-    color: var(--color-accent-gold);
+    .sidebar-links li a:hover &,
+    .sidebar-links li a.active & {
+      color: var(--color-accent-gold);
+    }
   }
 
   /* ========================================================================
@@ -180,19 +180,19 @@
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
     
     transition: 
-      transform 0.2s ease,
+      scale 0.2s ease,
       box-shadow 0.2s ease,
       background-color 0.2s ease;
-  }
 
-  .sidebar-toggle:hover {
-    transform: scale(1.1);
-    background-color: var(--color-accent-teal);
-    box-shadow: 0 6px 20px rgba(0, 188, 212, 0.4);
-  }
+    &:hover {
+      scale: 1.1;
+      background-color: var(--color-accent-teal);
+      box-shadow: 0 6px 20px rgba(0, 188, 212, 0.4);
+    }
 
-  .sidebar-toggle:active {
-    transform: scale(0.95);
+    &:active {
+      scale: 0.95;
+    }
   }
 }
 
