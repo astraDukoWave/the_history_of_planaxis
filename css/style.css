@@ -283,22 +283,31 @@
     color: var(--color-text-main);
     background-color: var(--color-bg-primary);
     
-    /* Deshabilitamos selección en UI para evitar resaltados accidentales */
-    -webkit-user-select: none;
-    -moz-user-select: none;
-    user-select: none;
   }
 
-  /* Re-habilitamos selección en contenido principal */
-  main,
-  article,
-  section p,
-  section h1,
-  section h2,
-  section h3 {
-    -webkit-user-select: text;
-    -moz-user-select: text;
-    user-select: text;
+  body::before,
+  body::after {
+    content: '';
+    position: fixed;
+    width: min(40vw, 420px);
+    aspect-ratio: 1;
+    border-radius: 50%;
+    filter: blur(90px);
+    pointer-events: none;
+    z-index: 0;
+    opacity: 0.25;
+  }
+
+  body::before {
+    top: -120px;
+    inset-inline-start: -100px;
+    background: radial-gradient(circle, rgba(0, 188, 212, 0.55) 0%, rgba(0, 188, 212, 0) 70%);
+  }
+
+  body::after {
+    bottom: -160px;
+    inset-inline-end: -120px;
+    background: radial-gradient(circle, rgba(255, 215, 0, 0.35) 0%, rgba(255, 215, 0, 0) 70%);
   }
 
   /* Tipografía de Encabezados
@@ -333,6 +342,7 @@
   h2 {
     max-width: 50ch;
     margin-inline: auto;
+    text-wrap: balance;
   }
 
   h3 {
