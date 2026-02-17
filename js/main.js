@@ -392,17 +392,20 @@ function initializeMobileMenu() {
   
   // ¿POR QUÉ? Esta función centraliza la lógica de abrir/cerrar el menú.
   // Actualiza todos los atributos necesarios para CSS y accesibilidad.
+  function setMenuState(isOpen) {
+    navLinks.setAttribute('data-visible', String(isOpen));
+    mobileMenuToggle.setAttribute('data-menu-open', String(isOpen));
+    mobileMenuToggle.setAttribute('aria-expanded', String(isOpen));
+    document.body.style.overflow = isOpen ? 'hidden' : '';
+  }
+
   function toggleMenu() {
     const isCurrentlyOpen = navLinks.getAttribute('data-visible') === 'true';
-    const newState = !isCurrentlyOpen;
-    
-    // Actualizar atributos para CSS
-    navLinks.setAttribute('data-visible', newState);
-    mobileMenuToggle.setAttribute('data-menu-open', newState);
-    
-    // Actualizar atributo ARIA para accesibilidad
-    // Los lectores de pantalla anunciarán "menú expandido" o "menú colapsado"
-    mobileMenuToggle.setAttribute('aria-expanded', newState);
+    setMenuState(!isCurrentlyOpen);
+  }
+
+  function closeMenu() {
+    setMenuState(false);
   }
   
   // Click en el botón hamburguesa
@@ -412,7 +415,7 @@ function initializeMobileMenu() {
   // que los usuarios esperan. Mejora la accesibilidad de teclado.
   document.addEventListener('keydown', (e) => {
     if (e.key === 'Escape' && navLinks.getAttribute('data-visible') === 'true') {
-      toggleMenu();
+      closeMenu();
       mobileMenuToggle.focus(); // Devolver foco al botón
     }
   });
@@ -422,10 +425,24 @@ function initializeMobileMenu() {
   navLinks.querySelectorAll('a').forEach(link => {
     link.addEventListener('click', () => {
       if (navLinks.getAttribute('data-visible') === 'true') {
-        toggleMenu();
+        closeMenu();
       }
     });
   });
+
+  const desktopBreakpoint = window.matchMedia('(min-width: 1024px)');
+  const handleDesktopBreakpoint = (event) => {
+    if (event.matches) {
+      closeMenu();
+    }
+  };
+
+  if (desktopBreakpoint.addEventListener) {
+    desktopBreakpoint.addEventListener('change', handleDesktopBreakpoint);
+  } else {
+    desktopBreakpoint.addListener(handleDesktopBreakpoint);
+  }
+
 }
 
 function initializeSidebar() {
@@ -506,6 +523,61 @@ function initializeSmoothScroll() {
 // COMPATIBILIDAD:
 // View Transitions es relativamente nueva. Si el navegador no la soporta,
 // los cambios ocurren instantáneamente (degradación elegante).
+
+
+
+function initializeSectionSpy() {
+  const sectionLinks = Array.from(document.querySelectorAll('.nav-links a[href^="#"]'));
+
+  if (sectionLinks.length === 0 || !('IntersectionObserver' in window)) {
+    return;
+  }
+
+  const visibleSections = new Map();
+
+  const setActiveSection = (sectionId) => {
+    sectionLinks.forEach((link) => {
+      const isActive = link.getAttribute('href') === `#${sectionId}`;
+      link.classList.toggle('active', isActive);
+      if (isActive) {
+        link.setAttribute('aria-current', 'page');
+      } else {
+        link.removeAttribute('aria-current');
+      }
+    });
+  };
+
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((entry) => {
+      if (entry.isIntersecting) {
+        visibleSections.set(entry.target.id, entry.intersectionRatio);
+      } else {
+        visibleSections.delete(entry.target.id);
+      }
+    });
+
+    if (visibleSections.size === 0) {
+      return;
+    }
+
+    const activeSection = [...visibleSections.entries()]
+      .sort((a, b) => b[1] - a[1])[0][0];
+
+    setActiveSection(activeSection);
+  }, {
+    rootMargin: '-30% 0px -50% 0px',
+    threshold: [0.2, 0.4, 0.6, 0.8]
+  });
+
+  sectionLinks.forEach((link) => {
+    const sectionId = link.getAttribute('href').slice(1);
+    const section = document.getElementById(sectionId);
+
+    if (section) {
+      observer.observe(section);
+    }
+  });
+}
 
 function initializeLineupFilters() {
   // ========================================================================
@@ -654,6 +726,7 @@ document.addEventListener('DOMContentLoaded', () => {
   initializeSidebar();      // Sidebar flotante
   initializeScrollHeader(); // Header con efecto glassmorphism en scroll
   initializeSmoothScroll(); // Scroll suave a anchors
+  initializeSectionSpy();   // Estado activo de navegación según scroll
   
   // ========================================================================
   // MÓDULO 4: SISTEMA DE FILTRADO CON VIEW TRANSITIONS
