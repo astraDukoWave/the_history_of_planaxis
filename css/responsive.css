@@ -297,6 +297,8 @@
     opacity: 1;
     pointer-events: auto;
     box-shadow: none;
+    max-height: none;
+    overflow: visible;
   }
 
   .nav-links li {
