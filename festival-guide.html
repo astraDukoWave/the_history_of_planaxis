@@ -29,6 +29,7 @@
 </head>
 
 <body>
+  <div class="scroll-progress" aria-hidden="true"></div>
   <a href="#main-content" class="visually-hidden-focusable">Skip to main content</a>
   <!-- ¿POR QUÉ? Mismo header que index.html para navegación consistente en todo el sitio -->
   <header class="main-header">
@@ -488,6 +489,11 @@
   
   <!-- ¿POR QUÉ? Usamos un enfoque modular de JavaScript con módulos ES6. El archivo main.js
        maneja toda la funcionalidad interactiva incluyendo i18n y la funcionalidad inline antigua. -->
+  <!-- GSAP + ScrollTrigger + Lenis via CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3/dist/gsap.min.js" defer></script>
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3/dist/ScrollTrigger.min.js" defer></script>
+  <script src="https://cdn.jsdelivr.net/npm/lenis@1/dist/lenis.min.js" defer></script>
+  <script src="js/animations.js" type="module"></script>
   <script src="js/main.js" type="module"></script>
 </body>
 </html>

@@ -1444,6 +1444,56 @@
   }
 }
 
+/* When GSAP takes over scroll reveals, disable CSS scroll-driven animations
+   to avoid doubling. The .gsap-active class is added by js/animations.js. */
+.gsap-active .card,
+.gsap-active .bento-item {
+  animation: none;
+  opacity: 1;
+  transform: none;
+}
+
+/* When Lenis smooth scroll is active, disable CSS scroll-behavior
+   to avoid conflicts. Lenis adds the .lenis class to <html>. */
+html.lenis,
+html.lenis body {
+  height: auto;
+}
+
+html.lenis {
+  scroll-behavior: auto;
+}
+
+/* Scroll progress bar: thin fixed bar at the top of the viewport,
+   driven by ScrollTrigger in js/animations.js. */
+.scroll-progress {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 3px;
+  background: var(--color-accent-gold);
+  transform-origin: left;
+  transform: scaleX(0);
+  z-index: var(--z-modal);
+  pointer-events: none;
+}
+
+/* Horizontal scroll layout for the lineup grid, activated by
+   js/animations.js when GSAP horizontal scroll is initialized. */
+.gsap-horizontal {
+  display: flex !important;
+  flex-wrap: nowrap !important;
+  gap: var(--space-md);
+  width: max-content;
+
+  .card {
+    min-width: 280px;
+    max-width: 320px;
+    flex-shrink: 0;
+  }
+}
+
 /* ============================================================================
    CSS SUBGRID - Alineación de Internos de Tarjeta
    

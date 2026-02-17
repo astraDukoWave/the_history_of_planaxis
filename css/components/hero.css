@@ -145,6 +145,17 @@
     text-shadow: 2px 4px 10px rgba(0, 0, 0, 0.7);
     
     margin-block-end: var(--space-md);
+
+    /* Text split animation: clip overflow so words can translate up into view */
+    .word {
+      display: inline-block;
+      overflow: hidden;
+      vertical-align: top;
+    }
+
+    .word-inner {
+      display: inline-block;
+    }
   }
 
   /* ========================================================================
