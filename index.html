@@ -283,7 +283,25 @@
            
            RESULTADO: Semántica adecuada que funciona correctamente con navegación del navegador
            y herramientas de accesibilidad. -->
-      <a href="#discover" class="hero-cta" data-i18n="hero.cta">Discover the Legend</a>
+      <div class="hero-actions">
+        <a href="#discover" class="hero-cta" data-i18n="hero.cta">Discover the Legend</a>
+        <a href="#lineup" class="hero-cta hero-cta--ghost">See Line-Up</a>
+      </div>
+
+      <div class="hero-highlights" aria-label="Festival quick highlights">
+        <article class="hero-highlight-card">
+          <span class="hero-highlight-value">16</span>
+          <span class="hero-highlight-label">Stages</span>
+        </article>
+        <article class="hero-highlight-card">
+          <span class="hero-highlight-value">3</span>
+          <span class="hero-highlight-label">Days</span>
+        </article>
+        <article class="hero-highlight-card">
+          <span class="hero-highlight-value">400K+</span>
+          <span class="hero-highlight-label">People of Tomorrow</span>
+        </article>
+      </div>
     </div>
     
     <!-- ¿POR QUÉ? El indicador de scroll es un elemento decorativo que sugiere más contenido
@@ -387,6 +405,21 @@
        RESULTADO: Los lectores de pantalla pueden saltar directamente al contenido principal,
        omitiendo la navegación. Esto es crucial para usuarios de teclado y lectores de pantalla. -->
   <main id="main-content">
+    <section class="experience-strip container" aria-label="Quick planning highlights">
+      <article class="experience-pill">
+        <p class="experience-pill__eyebrow">Best Time</p>
+        <p class="experience-pill__value">Golden Hour · 18:30</p>
+      </article>
+      <article class="experience-pill">
+        <p class="experience-pill__eyebrow">Crowd Level</p>
+        <p class="experience-pill__value">Mainstage peaks after 21:00</p>
+      </article>
+      <article class="experience-pill">
+        <p class="experience-pill__eyebrow">Recommended Route</p>
+        <p class="experience-pill__value">Atmosphere → Mainstage → Freedom</p>
+      </article>
+    </section>
+
     <!-- ¿POR QUÉ? Esta sección placeholder de contenido muestra dónde irá el contenido futuro.
          Usar HTML semántico incluso para placeholders mantiene buena estructura.
          

@@ -120,6 +120,8 @@
   gap: 0;
   
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+  max-height: calc(100dvh - 80px);
+  overflow-y: auto;
   
   /* Estado CERRADO por defecto */
   display: none;
@@ -235,38 +237,6 @@
    TABLET - 768px a 1023px
    ============================================================================ */
 @media (min-width: 768px) {
-  /* Navegación horizontal en tablet - Siempre visible */
-  .nav-links,
-  .nav-links[data-visible="false"],
-  .nav-links[data-visible="true"] {
-    position: static;
-    flex-direction: row;
-    
-    display: flex;
-    background-color: transparent;
-    backdrop-filter: none;
-    padding: 0;
-    gap: var(--space-lg);
-    
-    transform: none;
-    opacity: 1;
-    pointer-events: auto;
-    box-shadow: none;
-  }
-
-  .nav-links li {
-    border-block-end: none;
-  }
-
-  .nav-links li a {
-    padding: var(--space-2xs) var(--space-sm);
-  }
-
-  /* Ocultar hamburguesa en tablet */
-  .mobile-menu-toggle {
-    display: none;
-  }
-
   /* Hero a altura completa */
   .hero {
     min-height: 100vh;
@@ -308,6 +278,41 @@
   }
 }
 
+
+@media (min-width: 1024px) {
+  /* Navegación horizontal en desktop */
+  .nav-links,
+  .nav-links[data-visible="false"],
+  .nav-links[data-visible="true"] {
+    position: static;
+    flex-direction: row;
+
+    display: flex;
+    background-color: transparent;
+    backdrop-filter: none;
+    padding: 0;
+    gap: var(--space-lg);
+
+    transform: none;
+    opacity: 1;
+    pointer-events: auto;
+    box-shadow: none;
+    max-height: none;
+    overflow: visible;
+  }
+
+  .nav-links li {
+    border-block-end: none;
+  }
+
+  .nav-links li a {
+    padding: var(--space-2xs) var(--space-sm);
+  }
+
+  .mobile-menu-toggle {
+    display: none;
+  }
+}
 
 /* ============================================================================
    DESKTOP - 1024px y más
