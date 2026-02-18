@@ -1,180 +1,134 @@
-# 🎓 GUÍA DEL PROYECTO - Planaxis Project
+# Guia del Proyecto / Project Guide
 
-### ✅ **Archivos HTML **
-- ✅ `index.html` - Página principal con explicaciones de estructura semántica
-- ✅ `festival-guide.html` - Guía del festival con componentes explicados
-- ✅ `contact.html` - Formulario con glassmorphism explicado
+Developer reference for navigating and modifying the Planaxis codebase. For architecture overview and design system, see [README.md](README.md).
 
-**Marcadores importantes:** Buscar `⚠️ PERSONALIZA` para saber dónde cambiar contenido
+Referencia para desarrolladores sobre la estructura y modificacion del codigo. Para arquitectura y sistema de diseno, ver [README.md](README.md).
 
 ---
 
-### ✅ **Archivos JavaScript **
-- ✅ `js/main.js` - Lógica completa con analogías Feynman
-  - Sistema i18n explicado
-  - localStorage como "libreta del navegador"
-  - Event listeners como "vigilantes"
-  - preventDefault como "interceptar una carta"
+## Quick Reference / Referencia Rapida
+
+| Task | File(s) |
+|------|---------|
+| Change colors, spacing, typography | `css/style.css` (design tokens in `:root`, base layer) |
+| Modify hero section | `css/components/hero.css`, hero markup in `index.html` |
+| Update navigation / header | `css/components/header.css`, `<header>` in each HTML file |
+| Add or edit sidebar links | `css/components/sidebar.css`, `<aside>` in each HTML file |
+| Add a new language | `js/translations.js` + language selector in HTML nav |
+| Change contact form behavior | `js/main.js` (form submit handler) |
+| Adjust animations | `js/animations.js` (GSAP) or `css/style.css` (scroll-driven) |
+| Add page-specific styles | Create new CSS file, import in that page's `<head>` |
 
 ---
 
-### ✅ **Archivos CSS Traducidos (Principales)**
-- ✅ `css/variables.css` - **COMPLETO** - Sistema de design tokens
-- ✅ `css/reset.css` - **COMPLETO** - Normalización de navegadores
-- ✅ `css/layout.css` - **COMPLETO** - Flexbox, Grid, contenedores
+## File Map / Mapa de Archivos
+
+### HTML
+
+| File | Role |
+|------|------|
+| `index.html` | Landing: hero, content sections, bento grid, footer. Entry point. |
+| `contact.html` | Contact form with glassmorphism. Uses `contact.css`. |
+| `festival-guide.html` | Festival info: lineup, DreamVille, tickets. Uses `guide.css`. |
+
+**Customization markers:** Search for `PERSONALIZA` or `TODO` in HTML for placeholder content.
+
+### CSS
+
+| File | Layer / Role |
+|------|--------------|
+| `css/style.css` | Main stylesheet. Declares `@layer` order, defines all 5 layers inline, design tokens, typography, components. Single source of truth for cascade. |
+| `css/reset.css` | Imported inside `@layer reset` in style.css. Browser normalization. |
+| `css/responsive.css` | Outside `@layer`. Mobile-first media queries. Highest cascade priority. |
+| `css/contact.css` | Contact page. Imported in `contact.html`. |
+| `css/guide.css` | Festival guide page. Imported in `festival-guide.html`. |
+| `css/components/header.css` | Nav overlay, glassmorphism on scroll. |
+| `css/components/hero.css` | Full-screen hero, responsive backgrounds. |
+| `css/components/sidebar.css` | Fixed sidebar, hover states. |
+
+**Note:** There is no separate `variables.css` or `layout.css`. Tokens and layout live in `style.css`.
+
+### JavaScript
+
+| File | Responsibility |
+|------|----------------|
+| `js/main.js` | i18n engine (`data-i18n` attribute lookup), `localStorage` persistence, contact form `preventDefault` + validation, mobile menu, sidebar toggle. |
+| `js/translations.js` | EN/ES string map. Export: `{ en: {...}, es: {...} }`. |
+| `js/animations.js` | GSAP module. Device profiling, hero timeline, scroll reveals, parallax, Lenis. Loaded deferred. |
 
 ---
 
-### **1. Empezar Por el Glosario**
-Abre `README.md` y lee el **GLOSARIO TÉCNICO** primero. Allí encontrarás:
-- Explicaciones de Flexbox, Grid, z-index, rem vs px
-- Analogías simples para cada concepto
-- Ejemplos del mundo real
+## Common Modifications / Modificaciones Frecuentes
 
-### **2. Explorar el Código HTML**
-Los archivos HTML tienen explicaciones de:
-- **¿POR QUÉ?** usamos cada elemento
-- **¿CÓMO FUNCIONA?** la técnica
-- **RESULTADO:** qué logramos
+### Change theme colors
 
-### **3. Entender el JavaScript**
-`js/main.js` explica paso a paso:
-- Cómo funciona el cambio de idioma
-- Cómo se guarda la preferencia del usuario
-- Cómo funciona el formulario de contacto
+Edit `:root` in `css/style.css` (base layer):
 
-### **4. Estudiar el CSS**
-Los archivos CSS traducidos (`variables.css`, `reset.css`, `layout.css`) explican:
-- Por qué cada propiedad es necesaria
-- Cómo trabajan juntas las propiedades
-- Analogías del mundo real para conceptos abstractos
-
----
-
-## 🔑 **Conceptos Clave Para Dominar**
-
-### **1. Flexbox (Sistema de Una Dimensión)**
-**Archivo:** `css/layout.css`
 ```css
-.flex-center {
-  display: flex;
-  justify-content: center;  /* Horizontal */
-  align-items: center;      /* Vertical */
-}
+--color-deep-blue: hsl(220 47% 5%);
+--color-accent-gold: hsl(51 100% 50%);
+--color-accent-teal: hsl(187 100% 42%);
 ```
-**Analogía:** Como organizar libros en UN estante con reglas especiales de alineación.
 
----
+### Add a new page
 
-### **2. CSS Grid (Sistema de Dos Dimensiones)**
-**Archivo:** `css/layout.css`
-```css
-.grid-12 {
-  display: grid;
-  grid-template-columns: repeat(12, 1fr);
-  gap: var(--spacing-md);
-}
-```
-**Analogía:** Como una tabla de Excel para layout - defines filas y columnas.
+1. Create `newpage.html` (copy structure from `index.html`).
+2. Add nav link in `<header>` of all HTML files.
+3. Create `css/newpage.css` if needed; import in `newpage.html` `<head>`.
+4. Add translations in `js/translations.js` under `en` and `es` for any new strings.
 
----
+### Add a new language (e.g. French)
 
-### **3. CSS Variables (Design Tokens)**
-**Archivo:** `css/variables.css`
-```css
-:root {
-  --color-accent-gold: #ffd700;
-}
+1. In `js/translations.js`: add `fr: { ... }` with same keys as `en`/`es`.
+2. In each HTML file: add `<button data-lang="fr">FR</button>` in the language selector.
+3. No changes needed in `main.js`; it reads `data-lang` and looks up the key in `translations`.
 
-.button {
-  background: var(--color-accent-gold);
-}
-```
-**Analogía:** Como tener un "libro de recetas" - defines el valor una vez, úsalo en todas partes.
+### Connect contact form to a backend
 
----
+In `js/main.js`, locate the form submit handler. Replace the `setTimeout` simulation with:
 
-### **4. Box-Sizing: Border-Box**
-**Archivo:** `css/reset.css`
-```css
-* {
-  box-sizing: border-box;
-}
-```
-**Analogía:** Una caja de zapatos. Con border-box, el papel burbuja (padding) va DENTRO - el tamaño exterior nunca cambia.
-
----
-
-### **5. Z-Index (Capas de Apilamiento)**
-**Archivo:** `css/variables.css`
-```css
---z-content: 1;      /* Contenido (abajo) */
---z-sidebar: 900;    /* Sidebar flotante */
---z-header: 1000;    /* Header (arriba de todo) */
-```
-**Analogía:** Como capas de hojas de papel transparente. Números más altos están "más arriba" en la pila.
-
----
-
-### **6. Position: Fixed**
-**Archivo:** `css/layout.css`
-```css
-.fixed {
-  position: fixed;
-}
-```
-**Analogía:** Como una nota adhesiva en tu monitor. No importa qué desplaces en la pantalla, la nota permanece en el mismo lugar.
-
----
-
-### **7. localStorage**
-**Archivo:** `js/main.js`
 ```javascript
-localStorage.setItem('preferred-language', 'es');
-const lang = localStorage.getItem('preferred-language');
-```
-**Analogía:** Una libreta que el navegador guarda para tu sitio. Los datos permanecen incluso si cierras el navegador.
-
----
-
-### **8. Event Listeners**
-**Archivo:** `js/main.js`
-```javascript
-button.addEventListener('click', function() {
-  console.log('¡Me hicieron clic!');
+const response = await fetch('/api/contact', {
+  method: 'POST',
+  headers: { 'Content-Type': 'application/json' },
+  body: JSON.stringify(formData)
 });
 ```
-**Analogía:** Como tener un timbre en tu puerta. El timbre "escucha" cuando alguien lo presiona y entonces suena.
+
+Handle `response.ok` for success/error UI.
+
+### Adjust responsive breakpoints
+
+Edit `css/responsive.css`. Breakpoints: 768px (tablet), 1024px (desktop), 1440px (large). For GSAP behavior, see `ScrollTrigger.matchMedia()` in `js/animations.js`.
 
 ---
 
-## 📞 **Estructura de Archivos Clave**
+## Architecture Decisions / Decisiones de Arquitectura
 
-```
-📦 the_history_of_planaxis/
-│
-├── 📄 index.html ✅ (Principal)
-├── 📄 festival-guide.html ✅ (Guía)
-├── 📄 contact.html ✅ (Contacto)
-│
-├── 📂 js/
-│   ├── main.js ✅ (Lógica principal)
-│   └── translations.js (Textos EN/ES)
-│
-├── 📂 css/
-│   ├── variables.css  (Design tokens)
-│   ├── reset.css  (Normalización)
-│   ├── layout.css  (Estructura)
-│   ├── header.css  
-│   ├── hero.css 
-│   ├── sidebar.css  
-│   ├── contact.css  
-│   ├── guide.css  
-│   └── responsive.css 
-│
-├── 📄 README.md ✅ (Con GLOSARIO TÉCNICO)
-└── 📄 GUIA_ESTUDIANTE.md ✅ (Este archivo)
-```
+| Decision | Rationale |
+|----------|-----------|
+| No build step | Static site; direct browser execution. No bundler overhead. |
+| CSS `@layer` | Explicit cascade order. Avoids specificity wars and `!important`. |
+| Design tokens in `:root` | Single source for colors, spacing, typography. Easy theming. |
+| ES6 modules | Clear separation of concerns. `main.js` and `animations.js` load independently. |
+| GSAP progressive enhancement | Animations degrade: Tier 0 (reduced motion) -> Tier 1 (CSS only) -> Tier 2/3 (GSAP). |
+| `responsive.css` outside `@layer` | Breakpoint overrides must win over component defaults. |
 
 ---
 
+## Testing Checklist / Lista de Pruebas
+
+Before shipping changes:
+
+- [ ] Test language switch (EN/ES) and verify `localStorage` persistence
+- [ ] Test contact form validation and submit feedback
+- [ ] Verify responsive layout at 320px, 768px, 1024px, 1440px
+- [ ] Check `prefers-reduced-motion: reduce` disables GSAP animations
+- [ ] Validate keyboard navigation (Tab, Enter on buttons/links)
+- [ ] Run Lighthouse (Performance, Accessibility)
+
+---
+
+## Related Docs / Documentacion Relacionada
+
+- [README.md](README.md) — Tech stack, architecture, design system, getting started
