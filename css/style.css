@@ -82,6 +82,10 @@
     text-rendering: optimizeLegibility;
   }
 
+  body {
+    overflow-x: hidden;
+  }
+
   /* Imágenes Responsivas por Defecto
      --------------------------------
      ¿POR QUÉ? Las imágenes son elementos inline por defecto, causando espacio
@@ -489,7 +493,6 @@
      ======================================================================== */
   .grid-auto-fit {
     display: grid;
-    container-type: inline-size;
     /* 
      * La fórmula mágica para grids intrínsecos:
      * - min(100%, 300px): Previene overflow en pantallas muy pequeñas
@@ -637,6 +640,7 @@
 
     display: flex;
     flex-direction: column;
+    min-width: 0;
     
     /* ========================================================================
        ALTURA 100% - CRÍTICO PARA ALINEACIÓN DE BOTONES
@@ -729,14 +733,14 @@
     margin-block-end: var(--space-sm);
   }
 
-  /* Container Query - Más espacio cuando el contenedor lo permite */
-  @container (min-width: 350px) {
+  /* Más espacio cuando el viewport lo permite (reemplaza container query
+     para evitar bugs de container-type en Safari mobile) */
+  @media (width >= 420px) {
     .card {
       --card-padding: var(--space-xl);
     }
 
     .card__title {
-      /* Incremento sutil: más jerarquía tipográfica con más ancho disponible */
       --card-title-size: calc(var(--font-size-lg) + 0.125rem);
     }
   }
@@ -1486,12 +1490,12 @@ html.lenis {
   flex-wrap: nowrap !important;
   gap: var(--space-md);
   width: max-content;
+}
 
-  .card {
-    min-width: 280px;
-    max-width: 320px;
-    flex-shrink: 0;
-  }
+.gsap-horizontal .card {
+  min-width: 280px;
+  max-width: 320px;
+  flex-shrink: 0;
 }
 
 /* ============================================================================
